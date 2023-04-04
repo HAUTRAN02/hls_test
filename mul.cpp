@@ -1,38 +1,33 @@
 #include "HLS/hls.h"
 #include <stdio.h>
 
-component void conv1(int in[36], int kernel[6], int out[36*6]){
- int channel, row, col; 
- int i,j; 
- for(channel=0;channel<6;channel++){
-   for(row=0;row<6;row++){
-     for(col=0;col<6;col++){
-       for(i=0;i<1;i++){
-         for(j=0;j<1;j++){
-              out[6*6*channel + 6*row + col] += in[(row+i)*6 + (col+j)] * kernel[6*6*channel + 6*row + col];
-         }
-       }
-     }
-   }
- }
-}
-
-int main (void) {
-int in[36];
-int kernel[6];
-int out[36*6];
-for(int i=0;i<6;i++)
-    for(int j=0;j<6;j++)
-        {
-            in[6*i+j]=1;
-        }
-for(int i=0;i<6;i++)
+component int conv1(int top1[3], int top2[3], int top3[3])
 {
-kernel[i] = 1;
+  int i;
+  for (i = 0; i < 6; i++)
+  {
+    top3[i] = top1[i]  * top2[i];
+  }
+  return top3[i];
 }
-conv1(in,kernel,out);
 
+int main(void)
+{
+  printf("start");
+  int top1[3];
+  int top2[3];
+  int top3[3];
+  int t4 = 1;
+  for (int j = 0; j < 3; j++)
+  {
+    top1[j] = j;
+  }
+  for (int i = 3; i < 6; i++)
+  {
+    top2[i - 3] = i;
+  }
+  t4 = conv1(top1, top2, top3);
 
-printf("done");
-return 0;
+  printf("done");
+  return 0;
 }

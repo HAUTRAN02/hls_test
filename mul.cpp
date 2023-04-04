@@ -1,25 +1,38 @@
 #include "HLS/hls.h"
 #include <stdio.h>
-component int dut(int a, int b) {
-return a*b;
-}
-component int dut1(int a, int b) {
-return a|b;
-}
-component int dut2(int a, int b) {
-return a+b;
-}
-int main (void) {
-int x1, x2, x3;
-ihc_hls_enqueue(&x1, &dut2, 1, 0);
-ihc_hls_enqueue(&x2, &dut2, 0, 1);
-ihc_hls_enqueue(&x3, &dut2, 1 ,1);
-ihc_hls_component_run_all(&dut2);
-ihc_hls_enqueue(&x1, &dut1, 1, 0);
-ihc_hls_enqueue(&x2, &dut1, 0, 1);
-ihc_hls_enqueue(&x3, &dut1, 1 ,1);
-ihc_hls_component_run_all(&dut1);
-printf("x1 = %d, x2 = %d, x3 = %d\n", x1, x2, x3);
-return 0;
+
+component void conv1(float in[6][6], float kernel[6][1][1], float out[6][6][6]){
+ int channel, row, col; 
+ int i,j; 
+ for(channel=0;channel<6;channel++){
+   for(row=0;row<6;row++){
+     for(col=0;col<6;col++){
+       for(i=0;i<1;i++){
+         for(j=0;j<1;j++){
+              out[channel][row][col] += in[row+i][col+j] * kernel[channel][i][j];
+         }
+       }
+     }
+   }
+ }
 }
 
+int main (void) {
+float in[6][6];
+float kernel[6][1][1];
+float out[6][6][6];
+for(int i=0;i<6;i++)
+    for(int j=0;j<6;j++)
+        {
+            in[i][j]=1.2;
+        }
+for(int i=0;i<6;i++)
+{
+kernel[i][0][0] = 1.1;
+}
+conv1(in,kernel,out);
+
+
+printf("done");
+return 0;
+}

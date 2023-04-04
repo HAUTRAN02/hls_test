@@ -1,7 +1,7 @@
 #include "HLS/hls.h"
 #include <stdio.h>
 
-component void conv1(float in[36], float kernel[6], float out[36*6]){
+component void conv1(int in[36], int kernel[6], int out[36*6]){
  int channel, row, col; 
  int i,j; 
  for(channel=0;channel<6;channel++){
@@ -18,17 +18,17 @@ component void conv1(float in[36], float kernel[6], float out[36*6]){
 }
 
 int main (void) {
-float in[36];
-float kernel[6];
-float out[36*6];
+int in[36];
+int kernel[6];
+int out[36*6];
 for(int i=0;i<6;i++)
     for(int j=0;j<6;j++)
         {
-            in[6*i+j]=1.2;
+            in[6*i+j]=1;
         }
 for(int i=0;i<6;i++)
 {
-kernel[i] = 1.1;
+kernel[i] = 1;
 }
 conv1(in,kernel,out);
 

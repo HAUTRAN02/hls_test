@@ -44,21 +44,20 @@ int main(void)
     uint8_t testArrA[36] = {0};
     uint8_t testArrB[6] = {1, 2, 3, 1, 2, 3};
     uint8_t testArrC[36 * 6] = {0};
-    int c=0;
+    float c=0;
+     
     printf("start");
-    for (int j = 4 ; j < 36; j++)
+    for (int j = 0 ; j < 36; j++)
     {
         testArrA[j] = j;
     }
     FILE *fp;
-    fopen_s(&fp,"C:/Users/Admins/Downloads/text.txt", "rb");
+    // fopen_s(&fp,"C:/Users/Admins/Downloads/text.txt", "rb");
+    fp = fopen("C:/Users/Admins/Downloads/text.txt", "r");
     for (int t = 0; t < 4; t++)
     {
-         fread(&c, sizeof(uint8_t), 1, fp);
-         testArrA[t] = c - 48;
-         printf("%d \t",*(testArrA + t));
-          fread(&c, sizeof(uint8_t), 1, fp);
-        
+         fscanf(fp, "%f ",  &c); 
+            printf("%f \t",c);
     }
     
 

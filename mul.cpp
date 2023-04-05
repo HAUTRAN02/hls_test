@@ -1,10 +1,12 @@
 #include "HLS/hls.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
 #include <HLS/ac_int.h>
 #include <iostream>
 #include <stdint.h>
 #define N (6*36)
+#define _CRT_SECURE_NO_DEPRECATE
 using Bus_T = ac_int<8 * N, false>;
 
 component hls_avalon_agent_component Bus_T sort_bus(hls_avalon_agent_register_argument Bus_T in_tensor,
@@ -42,12 +44,23 @@ int main(void)
     uint8_t testArrA[36] = {0};
     uint8_t testArrB[6] = {1, 2, 3, 1, 2, 3};
     uint8_t testArrC[36 * 6] = {0};
-
+    int c=0;
     printf("start");
-    for (int j = 0; j < 36; j++)
+    for (int j = 4 ; j < 36; j++)
     {
         testArrA[j] = j;
     }
+    FILE *fp;
+    fopen_s(&fp,"C:/Users/Admins/Downloads/text.txt", "rb");
+    for (int t = 0; t < 4; t++)
+    {
+         fread(&c, sizeof(uint8_t), 1, fp);
+         testArrA[t] = c - 48;
+         printf("%d \t",*(testArrA + t));
+          fread(&c, sizeof(uint8_t), 1, fp);
+        
+    }
+    
 
     Bus_T bus = *reinterpret_cast<Bus_T *>(testArrA);
     Bus_T bus1 = *reinterpret_cast<Bus_T *>(testArrB);

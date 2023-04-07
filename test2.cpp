@@ -6,15 +6,18 @@
 #include "HLS/ac_fixed_math.h"
 #include "stdio.h"
 
-typedef ac_fixed<10, 3, true> fixed_10_3_t;
+typedef ac_fixed<32, 16, true> fixed_10_3_t;
 typedef ac_fixed<9, 2, true> fixed_9_2_t;
 
 component 
-float
-test_float(float x){
-  float sin_ret = sinf(x);
-  float cos_ret = cosf(x);
-  return sqrtf(sin_ret * sin_ret + cos_ret * cos_ret);
+fixed_10_3_t
+test_float(fixed_10_3_t x[]){
+  fixed_10_3_t c[4];
+ for(int i=0;i<4;i++)
+ {
+  c[i] = x[i];
+ }
+  return c[0];
 }
 
 // Please refer to ac_fixed_math.h header file for fixed point math functions'
@@ -37,10 +40,10 @@ test_fixed(fixed_10_3_t x){
 constexpr int SIZE = 5;
 
 int main(){
-  constexpr float inputs[SIZE] = {
+   fixed_10_3_t inputs[SIZE] = {
     -0.807991899423 ,
     -2.09982907558 ,
-    -0.742066235466 ,
+    7.742066235466 ,
     -2.33217071676 ,
      1.14324158042
   };
@@ -59,10 +62,11 @@ int main(){
 
   for(int i = 0; i <SIZE; i++){
     fixed_10_3_t input1 = inputs[i];
-    float input2 = inputs[i];
+    fixed_9_2_t input2 = inputs[i];
 
     // declare output and diff variable
     fixed_9_2_t result1 = test_fixed(input1);
+    fixed_10_3_t  result2 = test_float(inputs);
 
     printf("result(fixed point): %.8f\n", result1.to_double());
 

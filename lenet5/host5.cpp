@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include "HLS/hls.h"
-#include "lenet5_lib.h"
+#include "lib5.h"
 
 int main()
 {
@@ -117,7 +117,7 @@ int main()
         image[28 * mm + nn] = *(float *)&datain[28 * mm + nn];
 
     // conv1(image, w_conv1, b_conv1, o_conv1);
-    conv1(image, w_conv1, b_conv1, o_conv1);
+    pred(image, w_conv1, b_conv1, o_conv1);
     // relu1(o_conv1, o_relu1);
     // avgpooling1(o_relu1, o_avgpooling1);
 

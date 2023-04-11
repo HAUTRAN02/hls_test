@@ -34,6 +34,16 @@ void conv1(float in1[28][28], float kernel1[6][1][1], float bias1[6], float out1
     }
   }
 }
+void relu1(float in2[6][28][28], float out2[6][28][28]){
+   int i, j,k;
+   for(k=0;k<6;k++){
+       for(i=0;i<28;i++){
+           for(j=0;j<28;j++){
+               out2[k][i][j] = (in2[k][i][j] < 0.0f)? 0.0f: in2[k][i][j];
+           }
+       }
+   }
+}
 component void pred(ihc::stream_in<float> &img_stream,
                     ihc::stream_in<float> &w1_stream,
                     ihc::stream_in<float> &b1_stream)
@@ -42,6 +52,8 @@ component void pred(ihc::stream_in<float> &img_stream,
   hls_register float w1_matrix[6][1][1];
   hls_register float b1_matrix[6];
   hls_register float o1_matrix[6][28][28];
+
+  hls_register float o2_matrix[6][28][28];
 
 #ifdef USE_COALESCE
 #pragma loop_coalesce
@@ -70,6 +82,7 @@ component void pred(ihc::stream_in<float> &img_stream,
   }
 
   conv1(img_matrix, w1_matrix, b1_matrix, o1_matrix);
+  relu1(o1_matrix,o2_matrix);
 // #ifdef USE_COALESCE
 // #pragma loop_coalesce
 // #endif

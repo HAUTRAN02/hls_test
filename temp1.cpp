@@ -10,7 +10,7 @@
 #include "HLS/hls_float.h"
 #include "lib5.h"
 
-void conv1(float in1[28][28], float kernel1[6][1][1], float bias1[6], float out1[6][28][28])
+component void conv1(float in1[28][28], float kernel1[6][1][1], float bias1[6], float out1[6][28][28])
 {
   int channel, row, col;
   int i, j;
@@ -36,7 +36,8 @@ void conv1(float in1[28][28], float kernel1[6][1][1], float bias1[6], float out1
 }
 component void pred(ihc::stream_in<float> &img_stream,
                     ihc::stream_in<float> &w1_stream,
-                    ihc::stream_in<float> &b1_stream)
+                    ihc::stream_in<float> &b1_stream,
+                    ihc::stream_in<float> &o1_stream)
 {
   hls_register float img_matrix[28][28];
   hls_register float w1_matrix[6][1][1];
@@ -70,15 +71,15 @@ component void pred(ihc::stream_in<float> &img_stream,
   }
 
   conv1(img_matrix, w1_matrix, b1_matrix, o1_matrix);
-// #ifdef USE_COALESCE
-// #pragma loop_coalesce
-// #endif
-//   for (int i = 0; i < 6; i++)
-//   {
-//     for (int j = 0; j < 28; j++)
-//       for (int k = 0; k < 28; k++)
-//       {
-//         o1_stream.write(o1_matrix[i][j][k]);
-//       }
-//   }
+#ifdef USE_COALESCE
+#pragma loop_coalesce
+#endif
+  for (int i = 0; i < 6; row++)
+  {
+    for (int j = 0; j < 28; col++)
+      for (int k = 0; k < 28; col++)
+      {
+        o1_stream.write(o1_matrix[i][j][k]);
+      }
+  }
 }

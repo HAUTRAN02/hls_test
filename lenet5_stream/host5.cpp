@@ -9,13 +9,6 @@
 
 int main()
 {
-   ihc::stream_in<float> img_stream;
-   ihc::stream_in<float> w1_stream;
-   ihc::stream_in<float> b1_stream;
-//    ihc::stream_in<float> o1_stream;
-
-
-
   float *dataset = (float *)malloc(LABEL_LEN * 28 * 28 * sizeof(float));
   int i, j, k,m,n, index;
   int acc = 0;
@@ -23,12 +16,12 @@ int main()
   float *datain;
   
   float image[28 * 28];
-  float w1;
+  float w_conv1[6];
       float w_conv2[16 * 6 * 5 * 5];
       float w_fc1[120 * 400];
       float w_fc2[84 * 120];
       float w_fc3[10 * 84];
-      float b1;
+      float b_conv1[6];
       float b_conv2[16];
       float b_fc1[120];
       float b_fc2[84];
@@ -45,11 +38,7 @@ int main()
 
   fp = fopen("C:/Users/Admins/Downloads/New folder/handwritten-digits-recognition-hls-main/data/weights/w_conv1.txt", "r");
   for (i = 0; i < 6; i++)
-  {
-    fscanf(fp, "%f ", &w1);
-    w1_stream.write(w1);
-  }
-    
+    fscanf(fp, "%f ", &(w_conv1[i]));
   fclose(fp);
 
      fp = fopen("C:/Users/Admins/Downloads/New folder/handwritten-digits-recognition-hls-main/data/weights/w_conv2.txt", "r");
@@ -88,11 +77,7 @@ int main()
 
    fp = fopen("C:/Users/Admins/Downloads/New folder/handwritten-digits-recognition-hls-main/data/weights/b_conv1.txt", "r");
    for(i=0;i<6;i++)
-   {
-    fscanf(fp, "%f ",  &b1);  
-    b1_stream.write(b1);;
-   }
-       fclose(fp);
+       fscanf(fp, "%f ",  &(b_conv1[i]));  fclose(fp);
 
    fp = fopen("C:/Users/Admins/Downloads/New folder/handwritten-digits-recognition-hls-main/data/weights/b_conv2.txt", "r");
    for(i=0;i<16;i++)
@@ -129,9 +114,41 @@ int main()
     datain = &dataset[i * 28 * 28];
     for (mm = 0; mm < 28; mm++)
       for (nn = 0; nn < 28; nn++)
-        img_stream.write( *(float *)&datain[28 * mm + nn]);
-    pred(img_stream, w1_stream, b1_stream);
- 
+        image[28 * mm + nn] = *(float *)&datain[28 * mm + nn];
+
+    // conv1(image, w_conv1, b_conv1, o_conv1);
+    pred(image, w_conv1, b_conv1, o_conv1);
+    // relu1(o_conv1, o_relu1);
+    // avgpooling1(o_relu1, o_avgpooling1);
+
+    // conv2(o_avgpooling1, w_conv2, b_conv2, o_conv2);
+    // relu2(o_conv2, o_relu2);
+    // avgpooling2(o_relu2, o_avgpooling2);
+
+    // flatten(o_avgpooling2, o_flatten);
+
+    // fc1(o_flatten, w_fc1, b_fc1, o_fc1);
+    // relu3(o_fc1, o_relu3);
+
+    // fc2(o_relu3, w_fc2, b_fc2, o_fc2);
+    // relu4(o_fc2, o_relu4);
+    // fc3(o_relu4, w_fc3, b_fc3, o_fc3);
+    // softmax(o_fc3, probs);
+    // int index = 0;
+    // float max = probs[0];
+    // for (j = 1; j < 10; j++)
+    // {
+    //   if (probs[j] > max)
+    //   {
+    //     index = j;
+    //     max = probs[j];
+    //   }
+    // }
+
+    // if (index == target[i])
+    //   acc++;
+    // printf("Predicted label: %d\n", index);
+    // printf("Prediction: %d/%d\n", acc, i + 1);
   }
   printf("done");
 }

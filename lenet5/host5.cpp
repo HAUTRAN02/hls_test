@@ -13,6 +13,9 @@ int main()
     ihc::stream_in<float> w1_stream;
     ihc::stream_in<float> b1_stream;
 
+    ihc::stream_in<float> w2_stream;
+    ihc::stream_in<float> b2_stream;
+
 
     float *dataset = (float *)malloc(LABEL_LEN * 28 * 28 * sizeof(float));
     int i, j, k, m, n, index;
@@ -22,12 +25,12 @@ int main()
 
     float image[28 * 28];
     float w1;
-    float w_conv2[16 * 6 * 5 * 5];
+    float w2;
     float w_fc1[120 * 400];
     float w_fc2[84 * 120];
     float w_fc3[10 * 84];
     float b1;
-    float b_conv2[16];
+    float b2;
     float b_fc1[120];
     float b_fc2[84];
     float b_fc3[10];
@@ -60,7 +63,8 @@ int main()
                 for (n = 0; n < 5; n++)
                 {
                     index = 16 * i + 6 * j + 5 * m + 5 * n;
-                    fscanf(fp, "%f ", &(w_conv2[6 * 5 * 5 * i + 5 * 5 * j + 5 * m + n]));
+                    fscanf(fp, "%f ", &w2);
+                    w2_stream.write(w2);
                 }
             }
         }
@@ -102,7 +106,10 @@ int main()
 
     fp = fopen("C:/Users/Admins/Downloads/New folder/handwritten-digits-recognition-hls-main/data/weights/b_conv2.txt", "r");
     for (i = 0; i < 16; i++)
-        fscanf(fp, "%f ", &(b_conv2[i]));
+    {   fscanf(fp, "%f ", &b2);
+        b2_stream.write(b2);
+    }
+        
     fclose(fp);
 
     fp = fopen("C:/Users/Admins/Downloads/New folder/handwritten-digits-recognition-hls-main/data/weights/b_fc1.txt", "r");
@@ -140,7 +147,7 @@ int main()
         for (mm = 0; mm < 28; mm++)
             for (nn = 0; nn < 28; nn++)
                 img_stream.write(*(float *)&datain[28 * mm + nn]);
-        pred(img_stream, w1_stream, b1_stream);
+        pred(img_stream, w1_stream, b1_stream,w2_stream,b2_stream);
     }
     printf("done");
 }

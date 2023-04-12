@@ -174,7 +174,7 @@ int main()
         for (mm = 0; mm < 28; mm++)
             for (nn = 0; nn < 28; nn++)
                 img_stream.write(*(float *)&datain[28 * mm + nn]);
-        pred(img_stream, w1_stream, b1_stream, w2_stream, b2_stream, wfc1_stream, bfc1_stream, wfc2_stream, bfc2_stream, wfc3_stream, bfc3_stream, soft_stream);
+        pred(img_stream, w1_stream, b1_stream, w2_stream, b2_stream, wfc1_stream, bfc1_stream, wfc2_stream, bfc2_stream, wfc3_stream, bfc3_stream,soft_stream);
         for (int i = 0; i < 10; i++)
         {
             soft_matrix[i] = soft_stream.read();

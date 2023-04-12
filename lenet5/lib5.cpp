@@ -192,15 +192,17 @@ void fc3(float in12[84], float weights12[10][84], float bias12[10], float out12[
     }
   }
 }
- void softmax(float in13[10], float out13[10]){
-   int i;
-   float sum = 0;
-   for(i=0;i<10;i++)
-       sum += expf(in13[i]);
+void softmax(float in13[10], float out13[10])
+{
+  int i;
+  float sum = 0;
+  for (i = 0; i < 10; i++)
+    sum += expf(in13[i]);
 
-   for(i=0;i<10;i++){
-       out13[i] = fabsf(expf(in13[i]) / (sum * 1.0f));
-   }
+  for (i = 0; i < 10; i++)
+  {
+    out13[i] = fabsf(expf(in13[i]) / (sum * 1.0f));
+  }
 }
 component void pred(ihc::stream_in<float> &img_stream,
                     ihc::stream_in<float> &w1_stream,
@@ -227,26 +229,26 @@ component void pred(ihc::stream_in<float> &img_stream,
   hls_register float w2_matrix[16][6][5][5];
   hls_register float o4_matrix[16][10][10];
 
-  hls_register float o5_matrix[16][10][10];
+   float o5_matrix[16][10][10];
 
-  hls_register float o6_matrix[16][5][5];
+   float o6_matrix[16][5][5];
 
-  hls_register float o7_matrix[400];
-  hls_register float wfc1_matrix[120][400];
-  hls_register float bfc1_matrix[120];
-  hls_register float o8_matrix[120];
-  hls_register float o9_matrix[120];
+   float o7_matrix[400];
+   float wfc1_matrix[120][400];
+   float bfc1_matrix[120];
+   float o8_matrix[120];
+   float o9_matrix[120];
 
-  hls_register float wfc2_matrix[84][120];
-  hls_register float bfc2_matrix[84];
+   float wfc2_matrix[84][120];
+   float bfc2_matrix[84];
 
-  hls_register float o10_matrix[84];
-  hls_register float o11_matrix[84];
+   float o10_matrix[84];
+   float o11_matrix[84];
 
-  hls_register float wfc3_matrix[10][84];
-  hls_register float bfc3_matrix[10];
-  hls_register float o12_matrix[10];
-  hls_register float o13_matrix[10];
+   float wfc3_matrix[10][84];
+   float bfc3_matrix[10];
+   float o12_matrix[10];
+   float o13_matrix[10];
 
 #ifdef USE_COALESCE
 #pragma loop_coalesce
@@ -273,16 +275,22 @@ component void pred(ihc::stream_in<float> &img_stream,
   {
     b1_matrix[i] = b1_stream.read();
   }
-
+#ifdef USE_COALESCE
+#pragma loop_coalesce
+#endif
   for (int i = 0; i < 16; i++)
     for (int j = 0; j < 6; j++)
       for (int k = 0; k < 5; k++)
         for (int h = 0; h < 5; h++)
           w2_matrix[i][j][k][h] = w2_stream.read();
-
+#ifdef USE_COALESCE
+#pragma loop_coalesce
+#endif
   for (int i = 0; i < 16; i++)
     b2_matrix[i] = b2_stream.read();
-
+#ifdef USE_COALESCE
+#pragma loop_coalesce
+#endif
   for (int i = 0; i < 120; i++)
   {
     for (int j = 0; j < 400; j++)
@@ -290,12 +298,17 @@ component void pred(ihc::stream_in<float> &img_stream,
       wfc1_matrix[i][j] = wfc1_stream.read();
     }
   }
+#ifdef USE_COALESCE
+#pragma loop_coalesce
+#endif
   for (int i = 0; i < 120; i++)
   {
 
     bfc1_matrix[i] = bfc1_stream.read();
   }
-
+#ifdef USE_COALESCE
+#pragma loop_coalesce
+#endif
   for (int i = 0; i < 84; i++)
   {
     for (int j = 0; j < 120; j++)
@@ -303,11 +316,17 @@ component void pred(ihc::stream_in<float> &img_stream,
       wfc2_matrix[i][j] = wfc2_stream.read();
     }
   }
+#ifdef USE_COALESCE
+#pragma loop_coalesce
+#endif
   for (int i = 0; i < 84; i++)
   {
 
     bfc2_matrix[i] = bfc2_stream.read();
   }
+#ifdef USE_COALESCE
+#pragma loop_coalesce
+#endif
   for (int i = 0; i < 10; i++)
   {
     for (int j = 0; j < 84; j++)
@@ -315,6 +334,9 @@ component void pred(ihc::stream_in<float> &img_stream,
       wfc3_matrix[i][j] = wfc3_stream.read();
     }
   }
+#ifdef USE_COALESCE
+#pragma loop_coalesce
+#endif
   for (int i = 0; i < 10; i++)
   {
     bfc3_matrix[i] = bfc3_stream.read();
@@ -331,14 +353,12 @@ component void pred(ihc::stream_in<float> &img_stream,
   relu3(o8_matrix, o9_matrix);
   fc2(o9_matrix, wfc2_matrix, bfc2_matrix, o10_matrix);
   relu4(o10_matrix, o11_matrix);
-  fc3(o11_matrix,wfc3_matrix,bfc3_matrix,o12_matrix);
-  softmax(o12_matrix,o13_matrix);
+  fc3(o11_matrix, wfc3_matrix, bfc3_matrix, o12_matrix);
+  softmax(o12_matrix, o13_matrix);
 
-  #ifdef USE_COALESCE
-  #pragma loop_coalesce
-  #endif
-    for (int i = 0; i < 10; i++)
-    {
-          soft_stream.write(o13_matrix[i]);
-    }
+
+  for (int i = 0; i < 10; i++)
+  {
+    soft_stream.write(o13_matrix[i]);
+  }
 }

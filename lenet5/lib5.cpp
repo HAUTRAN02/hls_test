@@ -214,8 +214,8 @@ component void pred(ihc::stream_in<float> &img_stream,
                     ihc::stream_in<float> &wfc2_stream,
                     ihc::stream_in<float> &bfc2_stream,
                     ihc::stream_in<float> &wfc3_stream,
-                    ihc::stream_in<float> &bfc3_stream,
-                    ihc::stream_out<float> &soft_stream)
+                    ihc::stream_in<float> &bfc3_stream
+                    )
 {
   hls_register float img_matrix[28][28];
   hls_register float w1_matrix[6][1][1];
@@ -345,20 +345,20 @@ component void pred(ihc::stream_in<float> &img_stream,
   conv1(img_matrix, w1_matrix, b1_matrix, o1_matrix);
   relu1(o1_matrix, o2_matrix);
   avgpooling1(o2_matrix, o3_matrix);
-  conv2(o3_matrix, w2_matrix, b2_matrix, o4_matrix);
-  relu2(o4_matrix, o5_matrix);
-  avgpooling2(o5_matrix, o6_matrix);
-  flatten(o6_matrix, o7_matrix);
-  fc1(o7_matrix, wfc1_matrix, bfc1_matrix, o8_matrix);
-  relu3(o8_matrix, o9_matrix);
-  fc2(o9_matrix, wfc2_matrix, bfc2_matrix, o10_matrix);
-  relu4(o10_matrix, o11_matrix);
-  fc3(o11_matrix, wfc3_matrix, bfc3_matrix, o12_matrix);
-  softmax(o12_matrix, o13_matrix);
+  // conv2(o3_matrix, w2_matrix, b2_matrix, o4_matrix);
+  // relu2(o4_matrix, o5_matrix);
+  // avgpooling2(o5_matrix, o6_matrix);
+  // flatten(o6_matrix, o7_matrix);
+  // fc1(o7_matrix, wfc1_matrix, bfc1_matrix, o8_matrix);
+  // relu3(o8_matrix, o9_matrix);
+  // fc2(o9_matrix, wfc2_matrix, bfc2_matrix, o10_matrix);
+  // relu4(o10_matrix, o11_matrix);
+  // fc3(o11_matrix, wfc3_matrix, bfc3_matrix, o12_matrix);
+  // softmax(o12_matrix, o13_matrix);
 
 
-  for (int i = 0; i < 10; i++)
-  {
-    soft_stream.write(o13_matrix[i]);
-  }
+  // for (int i = 0; i < 10; i++)
+  // {
+  //   soft_stream.write(o13_matrix[i]);
+  // }
 }

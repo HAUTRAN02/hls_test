@@ -217,17 +217,17 @@ component void pred(ihc::stream_in<float> &img_stream,
                     ihc::stream_in<float> &bfc3_stream
                     )
 {
-  hls_register float img_matrix[28][28];
-  hls_register float w1_matrix[6][1][1];
-  hls_register float b1_matrix[6];
-  hls_register float o1_matrix[6][28][28];
+   float img_matrix[28][28];
+   float w1_matrix[6][1][1];
+   float b1_matrix[6];
+   float o1_matrix[6][28][28];
 
-  hls_register float o2_matrix[6][28][28];
-  hls_register float o3_matrix[6][14][14];
+   float o2_matrix[6][28][28];
+   float o3_matrix[6][14][14];
 
-  hls_register float b2_matrix[16];
-  hls_register float w2_matrix[16][6][5][5];
-  hls_register float o4_matrix[16][10][10];
+   float b2_matrix[16];
+   float w2_matrix[16][6][5][5];
+   float o4_matrix[16][10][10];
 
    float o5_matrix[16][10][10];
 

@@ -19,16 +19,16 @@ component void pred(ihc::stream_in<float> &img_stream,
                     ihc::stream_in<float> &wfc3_stream,
                     ihc::stream_in<float> &bfc3_stream,
                     ihc::stream_out<float> &soft_stream);
-void conv1(hls_stable_argument float in1[28][28],hls_stable_argument float kernel1[6][1][1],hls_stable_argument float bias1[6], float out1[6][28][28]);
-void relu1(hls_stable_argument float in2[6][28][28], float out2[6][14][14]);
-void avgpooling1(hls_stable_argument float in3[6][28][28], float out3[6][14][14]);
-void conv2(hls_stable_argument float in4[6][14][14],hls_stable_argument  float kernel4[16][6][5][5],hls_stable_argument float bias4[16], float out4[16][10][10]);
-void relu2(hls_stable_argument float in5[16][10][10], float out5[16][10][10]);
-void avgpooling2(hls_stable_argument float in6[16][10][10], float out6[16][5][5]);
-void flatten(hls_stable_argument float in7[16][5][5], float out7[16*5*5]);
-void fc1(hls_stable_argument float in8[400],hls_stable_argument  float weights8[120][400],hls_stable_argument  float bias8[120], float out8[120]);
-void relu3(hls_stable_argument float in9[120], float out9[120]);
-void fc2(hls_stable_argument float in10[120],hls_stable_argument  float weights10[84][120],hls_stable_argument  float bias10[84], float out10[84]);
-void relu4(hls_stable_argument float in11[84], float out11[84]);
-void fc3(hls_stable_argument float in12[84],hls_stable_argument  float weights12[10][84],hls_stable_argument  float bias12[10], float out12[10]);
-void softmax(hls_stable_argument float in13[10], float out13[10]);
+void conv1(float in1[28][28], float kernel1[6][1][1], float bias1[6], float out1[6][28][28]);
+void relu1(float in2[6][28][28], float out2[6][14][14]);
+void avgpooling1(float in3[6][28][28], float out3[6][14][14]);
+void conv2(float in4[6][14][14], float kernel4[16][6][5][5], float bias4[16], float out4[16][10][10]);
+void relu2(float in5[16][10][10], float out5[16][10][10]);
+void avgpooling2(float in6[16][10][10], float out6[16][5][5]);
+void flatten(float in7[16][5][5], float out7[16*5*5]);
+void fc1(float in8[400], float weights8[120][400], float bias8[120], float out8[120]);
+void relu3(float in9[120], float out9[120]);
+void fc2(float in10[120], float weights10[84][120], float bias10[84], float out10[84]);
+void relu4(float in11[84], float out11[84]);
+void fc3(float in12[84], float weights12[10][84], float bias12[10], float out12[10]);
+void softmax(float in13[10], float out13[10]);

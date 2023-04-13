@@ -10,7 +10,7 @@
 #include "HLS/hls_float.h"
 #include "lib5.h"
 
-void conv1(float in1[28][28], float kernel1[6][1][1], float bias1[6], float out1[6][28][28])
+void conv1(hls_stable_argument float in1[28][28],hls_stable_argument float kernel1[6][1][1],hls_stable_argument float bias1[6], float out1[6][28][28])
 {
   int channel, row, col;
   int i, j;
@@ -34,7 +34,7 @@ void conv1(float in1[28][28], float kernel1[6][1][1], float bias1[6], float out1
     }
   }
 }
-void relu1(float in2[6][28][28], float out2[6][28][28])
+void relu1(hls_stable_argument float in2[6][28][28], float out2[6][28][28])
 {
   int i, j, k;
   for (k = 0; k < 6; k++)
@@ -48,7 +48,7 @@ void relu1(float in2[6][28][28], float out2[6][28][28])
     }
   }
 }
-void avgpooling1(float in3[6][28][28], float out3[6][14][14])
+void avgpooling1(hls_stable_argument float in3[6][28][28], float out3[6][14][14])
 {
   int n_channel, i, j;
   for (n_channel = 0; n_channel < 6; n_channel++)
@@ -62,7 +62,7 @@ void avgpooling1(float in3[6][28][28], float out3[6][14][14])
     }
   }
 }
-void conv2(float in4[6][14][14], float kernel4[16][6][5][5], float bias4[16], float out4[16][10][10])
+void conv2(hls_stable_argument float in4[6][14][14],hls_stable_argument float kernel4[16][6][5][5],hls_stable_argument float bias4[16], float out4[16][10][10])
 {
   int channel, row, col;
   int i, j, k;
@@ -89,7 +89,7 @@ void conv2(float in4[6][14][14], float kernel4[16][6][5][5], float bias4[16], fl
     }
   }
 }
-void relu2(float in5[16][10][10], float out5[16][10][10])
+void relu2(hls_stable_argument float in5[16][10][10], float out5[16][10][10])
 {
   int i, j, k;
   for (k = 0; k < 16; k++)
@@ -104,7 +104,7 @@ void relu2(float in5[16][10][10], float out5[16][10][10])
   }
 }
 
-void avgpooling2(float in6[16][10][10], float out6[16][5][5])
+void avgpooling2(hls_stable_argument float in6[16][10][10], float out6[16][5][5])
 {
   int n_channel, i, j;
   for (n_channel = 0; n_channel < 16; n_channel++)
@@ -118,7 +118,7 @@ void avgpooling2(float in6[16][10][10], float out6[16][5][5])
     }
   }
 }
-void flatten(float in7[16][5][5], float out7[16 * 5 * 5])
+void flatten(hls_stable_argument float in7[16][5][5], float out7[16 * 5 * 5])
 {
   int i, j, k;
   int index = 0;
@@ -134,7 +134,7 @@ void flatten(float in7[16][5][5], float out7[16 * 5 * 5])
     }
   }
 }
-void fc1(float in8[400], float weights8[120][400], float bias8[120], float out8[120])
+void fc1(hls_stable_argument float in8[400],hls_stable_argument  float weights8[120][400],hls_stable_argument float bias8[120], float out8[120])
 {
   int i, j;
   for (i = 0; i < 120; i++)
@@ -148,7 +148,7 @@ void fc1(float in8[400], float weights8[120][400], float bias8[120], float out8[
     }
   }
 }
-void relu3(float in9[120], float out9[120])
+void relu3(hls_stable_argument float in9[120], float out9[120])
 {
   int i;
   for (i = 0; i < 120; i++)
@@ -156,7 +156,7 @@ void relu3(float in9[120], float out9[120])
     out9[i] = (in9[i] < 0.0f) ? 0.0f : in9[i];
   }
 }
-void fc2(float in10[120], float weights10[84][120], float bias10[84], float out10[84])
+void fc2(hls_stable_argument float in10[120],hls_stable_argument float weights10[84][120],hls_stable_argument float bias10[84], float out10[84])
 {
   int i, j;
   for (i = 0; i < 84; i++)
@@ -170,7 +170,7 @@ void fc2(float in10[120], float weights10[84][120], float bias10[84], float out1
     }
   }
 }
-void relu4(float in11[84], float out11[84])
+void relu4(hls_stable_argument float in11[84], float out11[84])
 {
   int i;
   for (i = 0; i < 84; i++)
@@ -178,7 +178,7 @@ void relu4(float in11[84], float out11[84])
     out11[i] = (in11[i] < 0.0f) ? 0.0f : in11[i];
   }
 }
-void fc3(float in12[84], float weights12[10][84], float bias12[10], float out12[10])
+void fc3(hls_stable_argument float in12[84],hls_stable_argument float weights12[10][84],hls_stable_argument float bias12[10], float out12[10])
 {
   int i, j;
   for (i = 0; i < 10; i++)
@@ -192,7 +192,7 @@ void fc3(float in12[84], float weights12[10][84], float bias12[10], float out12[
     }
   }
 }
-void softmax(float in13[10], float out13[10])
+void softmax(hls_stable_argument float in13[10], float out13[10])
 {
   int i;
   float sum = 0;
@@ -217,10 +217,10 @@ component void pred(ihc::stream_in<float> &img_stream,
                     ihc::stream_in<float> &bfc3_stream,
                     ihc::stream_out<float> &soft_stream)
 {
-   float img_matrix[28][28];
+   hls_register float img_matrix[28][28];
  float w1_matrix[6][1][1];
    float b1_matrix[6];
- float o1_matrix[6][28][28];
+  float o1_matrix[6][28][28];
 
  float o2_matrix[6][28][28];
  float o3_matrix[6][14][14];
@@ -242,10 +242,10 @@ component void pred(ihc::stream_in<float> &img_stream,
    float wfc2_matrix[84][120];
    float bfc2_matrix[84];
 
-   float o10_matrix[84];
-   float o11_matrix[84];
+     float o10_matrix[84];
+    float o11_matrix[84];
 
-   float wfc3_matrix[10][84];
+    float wfc3_matrix[10][84];
    float bfc3_matrix[10];
    float o12_matrix[10];
    float o13_matrix[10];

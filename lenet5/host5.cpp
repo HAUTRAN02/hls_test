@@ -68,7 +68,7 @@ int main()
                 for (n = 0; n < 5; n++)
                 {
                     index = 16 * i + 6 * j + 5 * m + 5 * n;
-                    fscanf(fp, "%f ", &w2);
+                    fscanf(fp, "%f ", &w2);  // w_conv2[16][6][5][5]
                     w2_stream.write(w2);
                 }
             }

@@ -174,27 +174,27 @@ int main()
         for (mm = 0; mm < 28; mm++)
             for (nn = 0; nn < 28; nn++)
                 img_stream.write(*(float *)&datain[28 * mm + nn]);
-        pred(img_stream, w1_stream, b1_stream, w2_stream, b2_stream, wfc1_stream, bfc1_stream, wfc2_stream, bfc2_stream, wfc3_stream, bfc3_stream,soft_stream);
-        for (int i = 0; i < 10; i++)
-        {
-            soft_matrix[i] = soft_stream.read();
-        }
-        int index = 0;
-        float max = soft_matrix[0];
-        for (j = 1; j < 10; j++)
-        {
-            if (soft_matrix[j] > max)
-            {
-                index = j;
-                max = soft_matrix[j];
-            }
-        }
+        pred(img_stream, w1_stream, b1_stream, w2_stream, b2_stream, wfc1_stream, bfc1_stream, wfc2_stream, bfc2_stream, wfc3_stream, bfc3_stream);
+        // for (int i = 0; i < 10; i++)
+        // {
+        //     soft_matrix[i] = soft_stream.read();
+        // }
+        // int index = 0;
+        // float max = soft_matrix[0];
+        // for (j = 1; j < 10; j++)
+        // {
+        //     if (soft_matrix[j] > max)
+        //     {
+        //         index = j;
+        //         max = soft_matrix[j];
+        //     }
+        // }
 
-        if (index == target[i])
-            acc++;
-        printf("Predicted label: %d\n", index);
-        printf("label: %d\n", target[i]);
-        printf("Prediction: %d/%d\n", acc, i + 1);
+        // if (index == target[i])
+        //     acc++;
+        // printf("Predicted label: %d\n", index);
+        // printf("label: %d\n", target[i]);
+        // printf("Prediction: %d/%d\n", acc, i + 1);
     }
     printf("done");
 }

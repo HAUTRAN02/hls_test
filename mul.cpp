@@ -1,5 +1,9 @@
 #include "HLS/hls.h"
 #include <stdio.h>
+void test(int a[5][5],int j)
+{   int i = 1;
+    a[i][j] = a[i][j]  +7;
+}
 component void dut(int a[5][5])
 {      int t;
     int x1[5][5];
@@ -9,8 +13,9 @@ component void dut(int a[5][5])
     int i = 0;
         for (int j = 0; j < 5; j++)
         {   
-            a[i][j] =  a[i][j] + 3*k ;
-            k++;
+            a[i][j] =  a[i][j] + 1; //a[0]
+            test(a,j);
+           
         }
            
 }

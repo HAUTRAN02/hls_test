@@ -22,7 +22,7 @@ component void conv1(ihc::stream_in<float> &img_stream,
            ihc::stream_in<float> &w1_stream,
            ihc::stream_in<float> &b1_stream, ihc::stream<float> &o1_stream);
 component void relu1(ihc::stream<float> &o1_stream, ihc::stream<float> &o2_stream);
-void avgpooling1(float in3[6][28][28], float out3[6][14][14]);
+component void avgpooling1(ihc::stream<float> &o2_stream, ihc::stream<float> &o3_stream);
 void conv2(float in4[6][14][14], float kernel4[16][6][5][5], float bias4[16], float out4[16][10][10]);
 void relu2(float in5[16][10][10], float out5[16][10][10]);
 void avgpooling2(float in6[16][10][10], float out6[16][5][5]);

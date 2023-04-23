@@ -9,11 +9,15 @@
 #include "HLS/hls_float_math.h"
 #include "HLS/hls_float.h"
 #include "lib5.h"
-// 
+//
 component void conv1(ihc::stream_in<float> &img_stream,
-           ihc::stream_in<float> &w1_stream,
-           ihc::stream_in<float> &b1_stream, ihc::stream<float> &o1_stream)
-{float in1[28][28]; float kernel1[6][1][1]; float bias1[6]; float out1[6][28][28];
+                     ihc::stream_in<float> &w1_stream,
+                     ihc::stream_in<float> &b1_stream, ihc::stream<float> &o1_stream)
+{
+  float in1[28][28];
+  float kernel1[6][1][1];
+  float bias1[6];
+  float out1[6][28][28];
   for (int i = 0; i < 28; i++)
   {
     for (int j = 0; j < 28; j++)
@@ -55,14 +59,16 @@ component void conv1(ihc::stream_in<float> &img_stream,
 }
 
 component void relu1(ihc::stream<float> &o1_stream, ihc::stream<float> &o2_stream)
-{  int i, j, k;
-  float in2[6][28][28]; float out2[6][28][28];
-   for (k = 0; k < 6; k++)
+{
+  int i, j, k;
+  float in2[6][28][28];
+  float out2[6][28][28];
+  for (k = 0; k < 6; k++)
   {
     for (i = 0; i < 28; i++)
     {
       for (j = 0; j < 28; j++)
-      { 
+      {
         in2[k][i][j] = o1_stream.read();
       }
     }
@@ -80,16 +86,31 @@ component void relu1(ihc::stream<float> &o1_stream, ihc::stream<float> &o2_strea
     }
   }
 }
-void avgpooling1(float in3[6][28][28], float out3[6][14][14])
+component void avgpooling1(ihc::stream<float> &o2_stream, ihc::stream<float> &o3_stream)
 {
+  int k;
   int n_channel, i, j;
+  float out3[6][14][14];
+  float out2[6][28][28];
+  for (k = 0; k < 6; k++)
+  {
+    for (i = 0; i < 28; i++)
+    {
+      for (j = 0; j < 28; j++)
+      {
+        out2[k][i][j] = o2_stream.read();
+      }
+    }
+  }
+
   for (n_channel = 0; n_channel < 6; n_channel++)
   {
     for (i = 0; i < 28; i += 2)
     {
       for (j = 0; j < 28; j += 2)
       {
-        out3[n_channel][i / 2][j / 2] = (in3[n_channel][i][j] + in3[n_channel][i + 1][j] + in3[n_channel][i][j + 1] + in3[n_channel][i + 1][j + 1]) / (4.0f);
+        out3[n_channel][i / 2][j / 2] = (out2[n_channel][i][j] + out2[n_channel][i + 1][j] + out2[n_channel][i][j + 1] + out2[n_channel][i + 1][j + 1]) / (4.0f);
+        o3_stream.write(out3[n_channel][i / 2][j / 2]);
       }
     }
   }
@@ -236,21 +257,21 @@ void softmax(float in13[10], float out13[10])
     out13[i] = fabsf(expf(in13[i]) / (sum * 1.0f));
   }
 }
- void pred(ihc::stream_in<float> &img_stream,
-                    ihc::stream_in<float> &w1_stream,
-                    ihc::stream_in<float> &b1_stream,
-                    ihc::stream_in<float> &w2_stream,
-                    ihc::stream_in<float> &b2_stream,
-                    ihc::stream_in<float> &wfc1_stream,
-                    ihc::stream_in<float> &bfc1_stream,
-                    ihc::stream_in<float> &wfc2_stream,
-                    ihc::stream_in<float> &bfc2_stream,
-                    ihc::stream_in<float> &wfc3_stream,
-                    ihc::stream_in<float> &bfc3_stream)
+void pred(ihc::stream_in<float> &img_stream,
+          ihc::stream_in<float> &w1_stream,
+          ihc::stream_in<float> &b1_stream,
+          ihc::stream_in<float> &w2_stream,
+          ihc::stream_in<float> &b2_stream,
+          ihc::stream_in<float> &wfc1_stream,
+          ihc::stream_in<float> &bfc1_stream,
+          ihc::stream_in<float> &wfc2_stream,
+          ihc::stream_in<float> &bfc2_stream,
+          ihc::stream_in<float> &wfc3_stream,
+          ihc::stream_in<float> &bfc3_stream)
 {
   ihc::stream<float> o1_stream;
   ihc::stream<float> o2_stream;
-  // ihc::stream_out<float> o3_stream;
+  ihc::stream<float> o3_stream;
   // ihc::stream_out<float> o4_stream;
 
   // for (int i = 0; i < 6; i++)
@@ -315,7 +336,7 @@ void softmax(float in13[10], float out13[10])
 
   conv1(img_stream, w1_stream, b1_stream, o1_stream);
   relu1(o1_stream, o2_stream);
-  // avgpooling1(o2_matrix, o3_matrix);
+  avgpooling1(o2_stream, o3_stream);
   // conv2(o3_matrix, w2_matrix, b2_matrix, o4_matrix);
   // relu2(o4_matrix, o5_matrix);
   // avgpooling2(o5_matrix, o6_matrix);

@@ -5,6 +5,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include "HLS/hls.h"
+#include "HLS/ac_fixed.h"
+#include "HLS/ac_fixed_math.h"
 #include "lib5.h"
 
 int main()
@@ -14,18 +16,18 @@ int main()
   int acc = 0;
   int mm, nn;
   float *datain;
-  float image[28 * 28];
-  float w_conv1[6];
-  float w_conv2[16*6*5*5];
-  float w_fc1[120*400];
-  float w_fc2[84*120];
-  float w_fc3[10*84];
-  float b_conv1[6];
-  float b_conv2[16];
-  float b_fc1[120];
-  float b_fc2[84];
-  float b_fc3[10];
-  float probs[10];
+  fixed_9_2_t image[28 * 28];
+  fixed_9_2_t w_conv1[6];
+  fixed_9_2_t w_conv2[16*6*5*5];
+  fixed_9_2_t w_fc1[120*400];
+  fixed_9_2_t w_fc2[84*120];
+  fixed_9_2_t w_fc3[10*84];
+  fixed_9_2_t b_conv1[6];
+  fixed_9_2_t b_conv2[16];
+  fixed_9_2_t b_fc1[120];
+  fixed_9_2_t b_fc2[84];
+  fixed_9_2_t b_fc3[10];
+  fixed_9_2_t probs[10];
   float temp;
 
  
@@ -161,7 +163,7 @@ int main()
     // conv1(image, w_conv1, b_conv1, o_conv1);
     pred(image, w_conv1, b_conv1, w_conv2, b_conv2, w_fc1, b_fc1, w_fc2, b_fc2, w_fc3, b_fc3, probs);
     int index = 0;
-    float max = probs[0];
+    fixed_9_2_t max = probs[0];
     for (j = 1; j < 10; j++)
     {
       if (probs[j] > max)

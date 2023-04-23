@@ -8,13 +8,15 @@
 #include "HLS/hls.h"
 #include "HLS/hls_float_math.h"
 #include "HLS/hls_float.h"
+#include "HLS/ac_fixed_math.h"
+#include "HLS/ac_fixed.h"
 #include "lib5.h"
 
 void conv1(
-    float *input0,
-    float *w_conv1,
-    float *b_conv1,
-    float *o_conv1)
+    fixed_9_2_t *input0,
+    fixed_9_2_t *w_conv1,
+    fixed_9_2_t *b_conv1,
+    fixed_9_2_t *o_conv1)
 {
   int channel, row, col, i, j;
   for (channel = 0; channel < 6; channel++)
@@ -37,8 +39,8 @@ void conv1(
     }
   }
 }
-void relu1(float *input1,
-           float *output1)
+void relu1(fixed_9_2_t *input1,
+           fixed_9_2_t *output1)
 {
   int i, j, k;
   for (k = 0; k < 6; k++)
@@ -52,27 +54,30 @@ void relu1(float *input1,
     }
   }
 }
-void avgpooling1(float *input1,
-                 float *output1)
-{
+void avgpooling1(fixed_9_2_t *input1,
+                 fixed_9_2_t *output1)
+{ int t1;
   int n_channel, i, j;
+  fixed_9_2_t temp;
   for (n_channel = 0; n_channel < 6; n_channel++)
   {
     for (i = 0; i < 28; i += 2)
     {
       for (j = 0; j < 28; j += 2)
       {
-        output1[n_channel * 14 * 14 + 14 * (i / 2) + (j / 2)] = (input1[n_channel * 28 * 28 + 28 * i + j] + input1[n_channel * 28 * 28 + (i + 1) * 28 + j] + input1[n_channel * 28 * 28 + i * 28 + (j + 1)] + input1[n_channel * 28 * 28 + (i + 1) * 28 + (j + 1)]) / (4.0f);
+        t1 = n_channel * 14 * 14 + 14 * (i / 2) + (j / 2);
+        temp = (input1[n_channel * 28 * 28 + 28 * i + j] + input1[n_channel * 28 * 28 + (i + 1) * 28 + j] + input1[n_channel * 28 * 28 + i * 28 + (j + 1)] + input1[n_channel * 28 * 28 + (i + 1) * 28 + (j + 1)]);
+        output1[t1] = temp.to_double()  / (4.0f);
       }
     }
   }
 }
 
 
-void conv2(float *input2,
-           float *kernel,
-           float *bias,
-           float *output2)
+void conv2(fixed_9_2_t *input2,
+           fixed_9_2_t *kernel,
+           fixed_9_2_t *bias,
+           fixed_9_2_t *output2)
 {
   int channel, row, col;
   int i, j, k;
@@ -101,8 +106,8 @@ void conv2(float *input2,
 }
 
 
-void relu2(float *input3,
-           float *output3)
+void relu2(fixed_9_2_t *input3,
+           fixed_9_2_t *output3)
 {
   int i, j, k;
   for (k = 0; k < 16; k++)
@@ -119,25 +124,28 @@ void relu2(float *input3,
 
 
 
-void avgpooling2(float *input4,
-                 float *output4)
+void avgpooling2(fixed_9_2_t *input4,
+                 fixed_9_2_t *output4)
 {
-  int n_channel, i, j;
+  int n_channel, i, j;int t1;
+  fixed_9_2_t temp;
   for (n_channel = 0; n_channel < 16; n_channel++)
   {
     for (i = 0; i < 10; i += 2)
     {
       for (j = 0; j < 10; j += 2)
       {
-        output4[n_channel * 5 * 5 + 5 * (i / 2) + (j / 2)] = (input4[n_channel * 10 * 10 + 10 * i + j] + input4[n_channel * 10 * 10 + 10 * (i + 1) + j] + input4[n_channel * 10 * 10 + i*10 + (j + 1)] + input4[n_channel * 10 * 10 + 10 * (i + 1) + j + 1]) / (4.0f);
+        t1 = n_channel * 5 * 5 + 5 * (i / 2) + (j / 2);
+        temp = (input4[n_channel * 10 * 10 + 10 * i + j] + input4[n_channel * 10 * 10 + 10 * (i + 1) + j] + input4[n_channel * 10 * 10 + i*10 + (j + 1)] + input4[n_channel * 10 * 10 + 10 * (i + 1) + j + 1]);
+        output4[t1] = temp.to_double() / (4.0f);
       }
     }
   }
 }
 
 
-void flatten(float *input5,
-             float *output5)
+void flatten(fixed_9_2_t *input5,
+             fixed_9_2_t *output5)
 {
   int i, j, k;
   int index = 0;
@@ -154,10 +162,10 @@ void flatten(float *input5,
   }
 }
 
-void fc1(float *input6,
-         float *weights,
-         float *bias,
-         float *output6)
+void fc1(fixed_9_2_t *input6,
+         fixed_9_2_t *weights,
+         fixed_9_2_t *bias,
+         fixed_9_2_t *output6)
 {
   int i, j;
   for (i = 0; i < 120; i++)
@@ -172,8 +180,8 @@ void fc1(float *input6,
   }
 }
 
-void relu3(float *input7,
-           float *output7)
+void relu3(fixed_9_2_t *input7,
+           fixed_9_2_t *output7)
 {
   int i;
   for (i = 0; i < 120; i++)
@@ -182,10 +190,10 @@ void relu3(float *input7,
   }
 }
 
-void fc2(float *input8,
-         float *weights,
-         float *bias,
-         float *output8)
+void fc2(fixed_9_2_t *input8,
+         fixed_9_2_t *weights,
+         fixed_9_2_t *bias,
+         fixed_9_2_t *output8)
 {
   int i, j;
   for (i = 0; i < 84; i++)
@@ -200,8 +208,8 @@ void fc2(float *input8,
   }
 }
 
-void relu4(float *input9,
-           float *output9)
+void relu4(fixed_9_2_t *input9,
+           fixed_9_2_t *output9)
 {
   int i;
   for (i = 0; i < 84; i++)
@@ -210,10 +218,10 @@ void relu4(float *input9,
   }
 }
 
-void fc3(float *input10,
-         float *weights,
-         float *bias,
-         float *output10)
+void fc3(fixed_9_2_t *input10,
+         fixed_9_2_t *weights,
+         fixed_9_2_t *bias,
+         fixed_9_2_t *output10)
 {
   int i, j;
   for (i = 0; i < 10; i++)
@@ -228,38 +236,45 @@ void fc3(float *input10,
   }
 }
 
-void softmax(float *input11,
-             float *output11)
+void softmax(fixed_9_2_t *input11,
+             fixed_9_2_t *output11)
 {
   int i;
-  float sum = 0;
+  fixed_9_2_t temp;
+  fixed_9_2_t sum = 0;
   for (i = 0; i < 10; i++)
-    sum += exp(input11[i]);
+  {
+
+    sum += exp_fixed(input11[i]);
+  }
 
   for (i = 0; i < 10; i++)
   {
-    output11[i] = fabs(exp(input11[i]) / (sum * 1.0f));
+    temp = exp_fixed(input11[i]);
+    output11[i] = fabs(temp.to_double() / (sum.to_double() * 1.0f));
   }
+
 }
-component void pred(hls_avalon_agent_memory_argument(28 * 28 * sizeof(int))  float *image,
-                    hls_avalon_agent_memory_argument(6 * sizeof(int)) float *w_conv1,
-                    hls_avalon_agent_memory_argument(6 * sizeof(int)) float *b_conv1,
-                    hls_avalon_agent_memory_argument(16 * 6 * 5 * 5 * sizeof(int)) float *w_conv2,
-                    hls_avalon_agent_memory_argument(16 * sizeof(int)) float *b_conv2,
-                    hls_avalon_agent_memory_argument(120 * 400 * sizeof(int)) float *w_fc1,
-                    hls_avalon_agent_memory_argument(120 * sizeof(int)) float *b_fc1,
-                    hls_avalon_agent_memory_argument(84 * 120 * sizeof(int)) float *w_fc2,
-                    hls_avalon_agent_memory_argument(84 * sizeof(int)) float *b_fc2,
-                    hls_avalon_agent_memory_argument(10 * 84 * sizeof(int)) float *w_fc3,
-                    hls_avalon_agent_memory_argument(10 * sizeof(int)) float *b_fc3,
-                    hls_avalon_agent_memory_argument(10 * sizeof(int)) float *probs)
+
+component void pred(hls_avalon_agent_memory_argument(28 * 28 * sizeof(fixed_9_2_t))  fixed_9_2_t *image,
+                    hls_avalon_agent_memory_argument(6 * sizeof(fixed_9_2_t)) fixed_9_2_t *w_conv1,
+                    hls_avalon_agent_memory_argument(6 * sizeof(fixed_9_2_t)) fixed_9_2_t *b_conv1,
+                    hls_avalon_agent_memory_argument(16 * 6 * 5 * 5 * sizeof(int)) fixed_9_2_t *w_conv2,
+                    hls_avalon_agent_memory_argument(16 * sizeof(fixed_9_2_t)) fixed_9_2_t *b_conv2,
+                    hls_avalon_agent_memory_argument(120 * 400 * sizeof(fixed_9_2_t)) fixed_9_2_t *w_fc1,
+                    hls_avalon_agent_memory_argument(120 * sizeof(fixed_9_2_t)) fixed_9_2_t *b_fc1,
+                    hls_avalon_agent_memory_argument(84 * 120 * sizeof(fixed_9_2_t)) fixed_9_2_t *w_fc2,
+                    hls_avalon_agent_memory_argument(84 * sizeof(fixed_9_2_t)) fixed_9_2_t *b_fc2,
+                    hls_avalon_agent_memory_argument(10 * 84 * sizeof(fixed_9_2_t)) fixed_9_2_t *w_fc3,
+                    hls_avalon_agent_memory_argument(10 * sizeof(fixed_9_2_t)) fixed_9_2_t *b_fc3,
+                    hls_avalon_agent_memory_argument(10 * sizeof(fixed_9_2_t)) fixed_9_2_t *probs)
 {
-  float o_conv1[6 * 28 * 28], o_relu1[6 * 28 * 28], o_avgpooling1[6 * 14 * 14];
-  float o_conv2[16 * 10 * 10], o_relu2[16 * 10 * 10], o_avgpooling2[16 * 5 * 5];
-  float o_flatten[400];
-  float o_fc1[120], o_relu3[120];
-  float o_fc2[84], o_relu4[84];
-  float o_fc3[10];
+  fixed_9_2_t o_conv1[6 * 28 * 28], o_relu1[6 * 28 * 28], o_avgpooling1[6 * 14 * 14];
+  fixed_9_2_t o_conv2[16 * 10 * 10], o_relu2[16 * 10 * 10], o_avgpooling2[16 * 5 * 5];
+  fixed_9_2_t o_flatten[400];
+  fixed_9_2_t o_fc1[120], o_relu3[120];
+  fixed_9_2_t o_fc2[84], o_relu4[84];
+  fixed_9_2_t o_fc3[10];
 
 
   conv1(image, w_conv1, b_conv1, o_conv1);

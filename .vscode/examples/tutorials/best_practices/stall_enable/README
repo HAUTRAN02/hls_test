@@ -1,0 +1,79 @@
+This tutorial demonstrates how to use the hls_use_stall_enable_clusters
+component attribute for the Intel HLS Compiler.
+
+-------------------------------------------------------------------------------
+DESCRIPTION OF hls_use_stall_enable_clusters
+-------------------------------------------------------------------------------
+Use the hls_use_stall_enable_clusters component attribute to reduce the area
+of a design, at a possible cost of decreased fMAX and throughput.
+
+The compiler typically groups related operations into 'clusters'.  In many
+cases, the operations are grouped together into a stall-free cluster. A
+stall-free cluster executes the operations without any stalls and contains
+a FIFO at the end of the cluster that holds results if the cluster is
+stalled. This FIFO adds area and latency to the component but might enable
+higher fMAX and increased throughput.
+
+If you prefer lower area usage and latency over higher throughput, use the
+hls_use_stall_enable_clusters component attribute to bias the compile
+to produce stall-enabled clusters. Stall-enabled clusters lack the FIFO,
+which reduces area and latency, but pass stall signals to the all of the
+contained operations. Passing stall signals might reduce fMAX. Not all
+operations support stall, and these operations cannot be contained in a
+stall-enabled cluster. The compiler generates a warning if some operations
+cannot be placed into a user requested stall-enabled cluster.
+
+*NOTE: The compiler uses stall-enable clusters for HLS components automatically
+       if it can determine that stall-enable is always beneficial.
+       This attribute requests the compiler to form stall-enabled clusters
+       if possible.
+
+*NOTE: This attribute is not applicable for designs targeting Stratix 10,
+       unless you specify the --hyper-optimized-handshaking=off option of
+       the Intel HLS Compiler i++ command.
+
+-------------------------------------------------------------------------------
+WHEN TO USE hls_use_stall_enable_clusters
+-------------------------------------------------------------------------------
+Use the hls_use_stall_enable_clusters component attribute if lower latency and area
+usage are more important than higher throughput.
+
+-------------------------------------------------------------------------------
+ABOUT THE TUTORIAL
+-------------------------------------------------------------------------------
+After running the tutorial, open the HTML report for each configuration.
+
+Key observations:
+
+        - The latency for the stall-free cluster is 3 cycles longer for
+          for the 'mult' component than the stall-enable cluster version, due
+          to the FIFO at the end of the stall-free cluster.  The estimated
+          number of MLABs and FFs is lower for the stall-enable cluster.
+          (Throughput Analysis -> Verification Statistics)
+
+*NOTE: To compare the actual area as well as fMAX for the two designs, compile
+       the components with Intel Quartus Prime. Once the compilations are
+       finished, observe that:
+
+        - The design with the hls_use_stall_enable_clusters component
+          attribute uses fewer estimated ALMs, FFs, and MLABs.
+
+        - The fMAX from Intel Quartus Prime compilation is lower for the
+          stall-enable cluster
+
+-------------------------------------------------------------------------------
+HOW TO COMPILE YOUR COMPONENT WITH INTEL QUARTUS PRIME
+-------------------------------------------------------------------------------
+Option 1: add "--quartus-compile" to i++ command.
+Option 2: on Linux, run: "make USERCXXFLAGS=--quartus-compile"
+          on Windows, run: "build quartus-compile"
+
+-------------------------------------------------------------------------------
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

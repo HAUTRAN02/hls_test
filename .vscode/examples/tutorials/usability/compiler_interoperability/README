@@ -1,0 +1,35 @@
+In some cases, you might want to compile your testbench separately from your
+component, for example if you want to make changes to your testbench code
+without re-compiling your HLS component. You have two options:
+
+1. Compile your testbench with the Intel HLS Compiler, and compile your
+   component code with the Intel HLS Compiler.
+
+2. Compile your testbench with a native compiler, (That is, GCC on Linux and the
+   Microsoft C++ Compiler on Windows) and your component with the Intel HLS
+   Compiler.
+
+In both of these cases, follow a similar build flow:
+
+1. Use the i++ command with the -c flag to compile your component code into an
+   object file.
+
+2. Use the Intel HLS compiler or your native compiler to compile your testbench
+   code into an object file(s) as follows:
+   * Intel HLS compiler: Use the i++ command with the -c flag
+   * GCC compiler: Use the g++ command with the -c flag
+   * Microsoft C++ compiler: Use the cl command with the /c flag
+
+3. Link the object files using the i++ command.
+
+This tutorial includes a build script that illustrates this flow using
+testbenches compiled with both the Intel HLS compiler and your native compiler.
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial on Linux:
+  - On Linux, run "make"
+  - On Windows, run "build"
+

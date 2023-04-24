@@ -1,0 +1,115 @@
+This tutorial demonstrates how you can use memory attributes to force a constant
+to be implemented in LUTs, single port RAMs, or dual port RAMs. A constant
+is a local or global variable that is not initialized at runtime and does not
+have stores.
+
+For more information about memory attributes, see Table "Intel HLS Compiler
+Component Memory Attributes" in the Intel HLS Compiler Reference Manual.
+
+In this tutorial, we define a constant array at global scope called "a". We
+also define a component called "foo" within which there are four concurrent
+loads from constant "a" at random locations.
+
+Run the tutorial as described at the end of this document.
+
+1. Implement a constant in LUTs
+===============================
+
+  In the first version (part_1_ROM_in_LUTs.cpp), we apply the
+  hls_memory_impl("MLAB") attribute to "a". Since "a" is a constant, the
+  compiler puts it in LUTs.
+
+  Open the high-level design report
+  (part_1_ROM_in_LUTs.prj/reports/report.html), and go to the Function Memory
+  Viewer (System Viewers > Function Memory Viewer). In the Function Memory
+  List pane, click "a" under function "foo". In the Function Memory Viewer
+  pane, you can see that "a" has one bank. If you click the label "Bank 0"
+  under "a", you can see that the bank has four replicates, and there is one
+  load from each replicate.
+
+  Go to Area Analysis of System (Area Analysis > Area Analysis of System) and
+  click "Expand All". Under "foo > foo.B1.start > Computation, you can see
+  "On-chip Read-Only Memory Lookup (x4)", which are the four replicates of "a"
+  created for the four loads. The four lookups do not use RAMs.
+
+  Note that both attributes hls_register and hls_memory_impl("MLAB")
+  force the compiler to implement a constant in LUTs. These two attributes are
+  interchangeable when applied to constants.
+
+2. Implement a constant in single-port RAMs
+=============================================
+
+  In the second version (part_2_single_ported_ROM.cpp), we apply the attribute
+  hls_memory_impl("BLOCK_RAM") to "a", which forces "a" to be implemented in
+  block RAMs.
+
+  Open the high-level design report
+  (part_2_single_ported_ROM.prj/reports/report.html), and go to the Function
+  Memory Viewer (System Viewers > Function Memory Viewer). In the Function
+  Memory List pane, click "a" under function "foo". In the Function Memory
+  Viewer pane, you can see that "a" has one bank. Similar to the last part, if
+  you click the label "Bank 0" under "a", you can see that the bank has four
+  replicates, and there is one load from each replicate. 
+
+  Go to Area Analysis of System (Area Analysis > Area Analysis of System) and
+  click "Expand All". Under "foo > foo.B1.start > Computation, you can see
+  "On-chip Read-Only Memory Lookup (x4)", which are the four replicates of "a"
+  created for the four loads. The four lookups use RAMs but no ALUTs or FFs.
+
+3. Implement a constant in dual-port RAMs
+===========================================
+
+  In the third version (part_3_dual_ported_ROM.cpp), we apply the attributes
+  hls_doublepump and hls_numbanks(1) to "a" to control its memory geometry and
+  bank configuration. If any memory attribute is applied to control the memory
+  geometry and/or bank configuration of a constant, the compiler implements
+  the constant in dual-port ROMs. In this case, the attributes force "a" to
+  have one memory bank, and the memory bank is implemented in double pumped
+  dual-port RAMs which provides four ports for simultaneous loads.
+
+  Open the high-level design report
+  (part_3_dual_ported_ROM.prj/reports/report.html), and go to the Function
+  Memory Viewer (System Viewers > Function Memory Viewer). In the Function
+  Memory List pane, click "a" under function "foo". In the Function Memory
+  Viewer pane, you can see that "a" has one bank. If you click the label "Bank
+  0" under "a", you can see that the bank has one replicate with four load
+  ports.
+
+  Go to Area Analysis of System (Area Analysis > Area Analysis of System) and
+  click "Expand All". Under function "foo", you can see that variable "a" uses
+  two RAMs and some ALUTs & FFs. The ALUTs & FFs are needed to implement the
+  control logic for a double-pumped dual-port RAM.
+
+Summary
+=======
+If you have a constant with N loads in your component, then
+
+  - Using hls_register or hls_memory_impl("MLAB") instructs the compiler put
+    your constant in LUTs.
+
+  - Using hls_memory_impl("BLOCK_RAM") instructs the compiler put your
+    constant in single-port RAMs with N replicates.
+
+  - Using any attribute that controls the memory geometry or bank
+    configuration instructs the compiler put your constant in dual-port RAMs.
+    The number of banks and number of replicates for each bank then depend on
+    the memory geometry and bank configuration.
+     * Attributes that control the memory geometry: hls_numbanks, hls_bankbits,
+       hls_bankwidth
+     * Attributes that control the memory bank configuration: hls_singlepump,
+       hls_doublepump, hls_max_replicates, hls_simple_dual_port_memory
+
+Note that if you do not apply any attribute to your constant, or you apply only
+hls_memory to your constant, the compiler will implement it in either LUTs or
+single-port RAMs based on the size of your constant. You can test it by changing
+the size of "a" and removing all the attributes applied to it in one of the cpp
+files.
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

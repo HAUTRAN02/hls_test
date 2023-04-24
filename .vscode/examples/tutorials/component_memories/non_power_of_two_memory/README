@@ -1,0 +1,94 @@
+This tutorial demonstrates how you can use hls_force_pow2_depth attribute to 
+control the padding of non-power of two memory.
+
+Run the Makefile, and for each of the following [ProjectFolder] directories, 
+navigate to the High-Level Design Reports ([ProjectFolder]/reports/report.html) 
+in the following order:
+
+1. part_1_pow2.prj
+==================
+
+  In part 1, the hls_force_pow2_depth attribute is not applied to local memory 
+  int A_local[1536]. Therefore, A_local is padded to the next power of two by 
+  default.
+
+  a. Open the High-Level Design Reports and click "Area Analysis" > "Area 
+  Analysis of System". Click "Expand All". 
+  
+  Observation: Under function "part1", you can see that variable A_local uses 
+  8 RAMs.
+
+  b. In the High-Level Design Reports, click "System Viewer" > 
+  "Function Memory Viewer". In the left pane, expand A_local.
+  A_local is stored on two banks: Bank 0, Bank 1. Click Bank 0 or 
+  Bank 1 and review the "Details" pane. 
+  
+  Observation: The implemented bank size is 8192 bytes = (2 private copies) x 
+  (1024 words) x (4 bytes per word)
+
+  Explanation: A_local is an array of int with size of 1536 words. So, A_local 
+  requires 1536 words and each word is 4 bytes. A_local is padded to 2048 words 
+  (the next power of two) and is separated into two banks so that each bank 
+  stores 1024 words. The hls_max_concurrency attribute is set to 2, so two 
+  private copies are created for A_local. 
+  
+  c. Hover your pointer over copy 0 and copy 1 graph and review the contents of 
+  the pop-up box.
+
+  Observation: Depth per copy: 1024 words. Number of private copies: 2.
+
+  Explanation: The requested size for each copy is 768 words (1536 divided by 2 
+  banks). So in each copy, memory words [0-767] are occupied by A_local and 
+  [768-1023] are unused padding.
+
+2. part_2_non_pow2.prj
+======================
+
+  In part 2, the hls_force_pow2_depth(0) attribute is applied to local memory 
+  int A_local[1536]. Therefore, A_local is not padded to the next power of two.
+
+  a. Open the High-Level Design Reports and click "Area Analysis" > "Area 
+  Analysis of System". Click "Expand All". 
+
+  Observation: Under function "part2", you can see that variable A_local uses 
+  6 RAMs.
+
+  b. In the High-Level Design Reports, click "System Viewer" > "Function Memory 
+  Viewer", and expand A_local in the left pane. A_local is stored on two banks: 
+  Bank 0, Bank 1. Click Bank 0 or Bank 1 and review the "Details" pane.
+
+  Observation: The implemented bank size is 6144 bytes = (2 private copies) x 
+  (768 words) x (4 bytes per word)
+
+  Explanation: A_local is an array of int with size 1536 words. So A_local requires 
+  1536 words and each word is 4 bytes. A_local is separated into two banks so 
+  each bank stores 768 words. The hls_max_concurrency is set to 2, so two 
+  private copies are created for A_local. 
+  
+  c. Hover your pointer over copy 0 and copy 1 graph and review the contents of
+  the pop-up box.
+
+  Observation: Depth per copy: 768 words. Number of private copies: 2.
+
+  Explanation: The requested size for each copy is 768 words (1536 divided by 2 
+  banks) and each copy is implemented in 768 words. The entire copy is occupied 
+  by A_local and padding is not inserted.
+
+Summary
+=======
+
+Comparing part1 and part2, we reduce the memory usage from 8 RAMs to 6 RAMs. The
+implemented size is lowered from 8192 bytes to 6144 bytes. The padding at the 
+end of each copy is also removed with hls_force_pow2_depth(0) attribute applied.
+
+When your memory has a non-power-of-two size and you don't want to waste RAMs on 
+padding, you can set hls_force_pow2_depth attribute to 0 on your memory.
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

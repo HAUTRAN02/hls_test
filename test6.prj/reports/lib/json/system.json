@@ -1,0 +1,116 @@
+{
+  "nodes":
+  [
+    {
+      "name":"dut"
+      , "id":2916269656
+      , "type":"component"
+      , "children":
+      [
+        {
+          "name":"Stream Read"
+          , "id":2919017728
+          , "details":
+          [
+            {
+              "type":"table"
+              , "Basic Block":"dut.B1.start"
+              , "Width":"16 bits"
+              , "Depth":"0"
+              , "Stall-free":"No"
+              , "Latency":"0"
+            }
+          ]
+          , "debug":
+          [
+            [
+              {
+                "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\test6.cpp"
+                , "line":12
+              }
+            ]
+          ]
+          , "type":"inst"
+        }
+        , {
+          "name":"Stream Write"
+          , "id":2919473408
+          , "details":
+          [
+            {
+              "type":"table"
+              , "Basic Block":"dut.B1.start"
+              , "Width":"16 bits"
+              , "Depth":"0"
+              , "Stall-free":"No"
+              , "Latency":"0"
+            }
+          ]
+          , "debug":
+          [
+            [
+              {
+                "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\test6.cpp"
+                , "line":16
+              }
+            ]
+          ]
+          , "type":"inst"
+        }
+      ]
+    }
+    , {
+      "name":"return.dut"
+      , "id":2916176544
+      , "details":
+      [
+        {
+          "type":"table"
+          , "Width":"16 bits"
+          , "Depth":"0"
+          , "Ready Latency":"0"
+          , "Bits per Symbol":"16 bits"
+          , "Uses Packets":"No"
+          , "Uses Ready":"Yes"
+          , "Uses Empty":"No"
+          , "First symbol in high order bits":"No"
+        }
+      ]
+      , "type":"stream"
+    }
+    , {
+      "name":"call.dut"
+      , "id":2916176928
+      , "details":
+      [
+        {
+          "type":"table"
+          , "Width":"16 bits"
+          , "Depth":"0"
+          , "Ready Latency":"0"
+          , "Bits per Symbol":"16 bits"
+          , "Uses Packets":"No"
+          , "Uses Valid":"Yes"
+          , "Uses Empty":"No"
+          , "First symbol in high order bits":"No"
+        }
+      ]
+      , "type":"stream"
+    }
+  ]
+  , "links":
+  [
+    {
+      "from":2919473408
+      , "to":2916176544
+    }
+    , {
+      "from":2916176928
+      , "to":2919017728
+    }
+    , {
+      "from":2919017728
+      , "to":2919473408
+    }
+  ]
+}

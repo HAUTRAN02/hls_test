@@ -1,0 +1,129 @@
+This tutorial demonstrates a method to reduce the width of stall-free cluster exit
+FIFOs. The compiler puts instructions that do not cause stalls into a stall free
+cluster. Each such cluster has an exit node which contains a FIFO whose width depends
+on the amount of data that needs to be moved out from the cluster.
+
+When the amount of data being moved is large, these FIFOs can become thousands of
+bits wide and limit the fMAX achieved by the design. Further, very large FIFOs can
+cause severe routing congestion, causing the compiler to fail while fitting the
+design on the FPGA. Hence, it's important to learn how to identify and fix this
+bottleneck.
+
+This tutorial uses optimizations introduced in other tutorials:
+1. Use of attributes "hls_register" and "hls_max_concurrency". For more details,
+please look at the tutorial located at:
+	tutorials/best_practices/optimize_ii_using_hls_register
+
+2. Optimizing operations performed on arrays inside loops. For more details,
+please look at the tutorial located at:
+	tutorials/best_practices/parallelize_array_operation
+
+1. part_1_with_wide_cluster_exit_fifo.cpp:
+------------------------------------------
+This file contains a component that results in a wide exit FIFO. 
+
+Open the report at the location:
+  part_1_with_wide_cluster_exit_fifo.prj/reports/report.html.
+On the "Summary" page, click on "Clock Frequency Summary" tab and note the value of
+fMAX. Next, you can check that one of clusters has a large exit FIFO. Go to 
+"System Viewers" and click on "Graph Viewer", click on "design_v1.B3" on the left
+hand pane and click on the "Exit" rectangle in the figure for "Cluster 2". Next, in
+the "Details" pane at the bottom of the page, you will find that the value of
+"Exit FIFO Width" is larger than 4096 bits.
+
+The FIFO is very wide because we are accessing the "accumulators" array in two
+different loops (marked as loops A and B in the code): once to sum up values for the
+keys and once to write the sum on the output stream of the component. Hence, all the
+data in the array is transported out from "Cluster 2" of first loop via its exit FIFO
+and then provided to the cluster present in the second loop.
+
+The width would increase if we increased the size of the "accumulators" array and the
+negative effect on fMAX would become progressively worse. We can significantly reduce
+the FIFO width by merging the two loops and eliminating the need to transport the
+data from one cluster to another.
+
+2. part_2_cluster_exit_fifo_reduced.cpp:
+-------------------------------------------
+In this file the loops are merged. The merge has been done as follows:
+
+1. Instead of running two loops: one from 0 to N-1 and other from 0 to KEY_RANGE-1,
+run a single loop from 0 to (N + KEY_RANGE - 1).
+
+2. In the first N iterations, read key value pairs from input stream A and accumulate
+the values for each key.
+
+3. In the last KEY_RANGE iterations, emit one key-value pair and then shift each
+value in the accumulators array to the left by one position. By shifting the values
+to the left, we ensure that we only have to emit the first element of the array. This
+is reflected by the code:
+
+    B.write(std::make_pair(i-N, accumulators[0]));
+    #pragma unroll
+    for (int k=0; k<KEY_RANGE-1; k++) {
+        accumulators[k]=accumulators[k+1];    
+    }
+
+Alternatively, we could have written the above, simply as:
+	
+	B.write(std::make_pair(i-N, accumulators[i-N]));
+
+However, if we did so, the compiler would not know which array index is going to be
+accessed at run time and therefore, it would create hardware to select the correct
+index. This extra hardware and would have reduced the fMAX achieved by the design.
+
+Open the report at the location:
+  part_2_cluster_exit_fifo_reduced.cpp/reports/report.html. 
+On the "Summary" page, click on "Clock Frequency Summary" tab and note the value of
+fMAX. You will find that it is much higher than the value obtained for part 1 above.
+Finally, go to "System Viewers" and click on "Graph Viewer" and observe that fewer
+basic blocks and clusters have been generated than before and that the clusters of
+"design_v2.B3" do not have exit FIFOs as large as before.
+
+Since the loops have been merged, the data in "accumulators" array does not need to
+be moved outside the block and as a result, the cluster exit FIFO has a small width.
+
+Other alternatives:
+-------------------
+These alternatives can also help reduce the exit FIFO width but they may have
+other effects on performance. Use these if the optimizations mentioned above are
+not applicable to your design:
+
+1. You could also remove the "hls_max_concurrency" attribute. This will generate a
+component whose invocations will not be overlapped. However, for such low concurrency
+components, the compiler can perform other optimizations that will eliminate the wide
+cluster exit FIFO.
+
+2. You could choose to remove the "hls_register" attribute on the "accumulators"
+array by changing the line:
+    int accumulators[KEY_RANGE] hls_register;
+to:
+    int accumulators[KEY_RANGE];
+
+This will allow the compiler to implement the array using a memory module. As a
+result, any block that wants to access the array data will do so using memory
+load/store operations, eliminating the need for moving data around using cluster exit
+FIFO. However, since memory accesses have higher latency, this can increase the II of
+the loop which is performing the memory access operations.
+
+3. You could use attribute "hls_use_stall_enable_clusters" on the component.
+This converts stall-free clusters into stall-enable clusters. Stall-enable
+clusters do not generate an exit FIFO. However, converting to stall-enable
+clusters can affect the fMAX as there can be a larger fan-out of the enable
+signal within stall-enable clusters.
+
+For more details about this attribute, see the following tutorial: 
+    tutorials/best_practices/stall_enable
+
+In summary, cluster exit FIFOs thousands of bits wide can severely reduce the fMAX.
+Whenever the FIFO width exceeds 1024 bits, consider reducing the exit FIFO width by
+merging the loops accessing the common array variable or at least, merging the
+instructions that access the common array variables, into one loop. The same logic
+applies to non-array variables as well.
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"

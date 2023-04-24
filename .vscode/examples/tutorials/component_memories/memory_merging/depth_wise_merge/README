@@ -1,0 +1,89 @@
+This tutorial demonstrates how you can merge memories in a depth-wise manner and
+when this could be beneficial.
+ 
+The following figure shows an example of how depth-wise merge works:
+    
+      block RAM            block RAM                   block RAM
+      +------+             +------+                    +------+
+      |      |             |      |                    |      |
+      |      |             |      |                    |      |
+      | mem1 | 128-words   | mem2 | 128-words     =>   | mem1 |
+      |      |             |      |                    |      |
+      |      |             |      |                    |      |
+      +------+             +------+                    +------+ 256-words
+      32-bits              32-bits                     |      |
+                                                       |      |
+                                                       | mem2 |
+                                                       |      |
+                                                       |      |
+                                                       +------+
+                                                       32-bits
+
+The memories being merged depth-wise can have different widths. Also, there is
+no constraint on the number of memories that can be merged.
+
+In this tutorial, we define a component called "test", inside which there are
+two arrays "a[ARR_SIZE]" and "b[ARR_SIZE]" that have one mutual exclusive
+store and one mutual exclusive load.
+ 
+Run the tutorial as described at the end of this document.
+ 
+1. Without merging
+==================
+ 
+  In the first version (part_1_no_merge.cpp), the two arrays "a[ARR_SIZE]" and
+  "b[ARR_SIZE]" are not merged.
+ 
+  Open the high-level design report (part_1_no_merge.prj/reports/report.html),
+  and go to the Function Memory Viewer (System Viewers > Function Memory
+  Viewer). In the Function Memory List pane, you can see two memory systems
+  "a" and "b" that are generated for the two arrays defined in the component,
+  respectively. Click "a", and in the Function Memory Viewer pane, you can see
+  that it has one load and two stores (one of the stores is used for
+  initialization). Same for "b". 
+ 
+  Go to Area Analysis of System (Area Analysis > Area Analysis of System) and
+  click "Expand All". Under function "test", you can see that both variable
+  "a" and variable "b" use one RAM each.
+ 
+  In the Summary page, you can see that this component uses two RAMs in total.
+ 
+2. Merge the two arrays using hls_merge
+=======================================
+ 
+  In the second version (part_2_merged.cpp), the two arrays "a[ARR_SIZE]" and
+  "b[ARR_SIZE]" are merged depth-wise using the hls_merge attribute.
+ 
+  Open the high-level design report (part_2_merged.prj/reports/report.html), and
+  go to the Function Memory Viewer (System Viewers > Function Memory Viewer).
+  In the Function Memory List pane, you can see that there is only one memory
+  system called "a,b". Click "a,b", and you can see in the Function Memory
+  Viewer pane that it has one load and one store. The mutual exclusive loads and
+  stores of "a" and "b" are merged.
+  
+  Go to Area Analysis of System (Area Analysis > Area Analysis of System) and
+  click "Expand All". Under function "test", you can see that variable "a"
+  uses one RAM; However variable "b" uses no RAMs because it is merged with
+  "a".
+ 
+  In the Summary page, you can see that this component uses only one RAM that is
+  for both "a" and "b".
+
+Summary
+=======
+When your component has multiple memories defined at the same scope and accesses
+to them are mutually exclusive, merging these memories can also merge the
+loads/stores to the memories due to their mutual exclusivity, which usually
+results in better resource utilization without sacrificing performance. If your
+design is area-sensitive, you can also merge memories that don't have mutually
+exclusive accesses for better area usage, although it may cause a degradation in
+performance.
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+ 
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

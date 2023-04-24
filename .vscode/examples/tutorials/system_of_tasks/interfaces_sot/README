@@ -1,0 +1,64 @@
+There are three ways to transfer data in and out of a task in a system of
+tasks: 
+    1. Through function arguments and the return value. 
+    2. Through explicit Avalon Streaming interfaces.
+    3. Through explicit Avalon MM Master interfaces.
+
+This tutorial uses vector addition as an example and demonstrates how you can
+use explicit Avalon Streaming and MM Master interfaces in System of Tasks.
+
+For more details and explanation of Streaming and MM Master interfaces, refer to
+the Component Interfaces section of Intel HLS Compiler Reference Manual.
+
+Run the Makefile.
+
+1. Transfer data through Avalon Streaming interfaces
+====================================================
+
+In the first version (part_1_stream.cpp), the component calls the vector_add
+task function and passes the size of the vector "N" as its argument. The task
+function gets the two input vectors from ihc::stream_in named "A_in" and "B_in",
+respectively. It adds the two vectors and returns the result through
+ihc::stream_out named "C_out". "A_in", "B_in" and "C_out" are defined at global
+scope.
+
+Open the high-level design report (part_1_stream.prj/reports/report.html), and
+go to the Function Viewer (System Viewers > Graph Viewer). In the Function List
+pane, click the vector_add task function. In the Function Viewer pane, you can
+see that the vector_add task reads from streams "A_in" and "B_in" and then
+writes to stream "C_out".
+
+2. Transfer data through Avalon MM Master interfaces
+====================================================
+
+In the second version (part_2_mm_host.cpp), the component passes the size of
+vector "N" to the task, and it also passes 3 explicit MM Master interface
+objects ("A_in", "B_in" and "C_out") that connect to the system memories storing
+the input and output vectors.
+
+Open the high-level design report (part_2_mm_host.prj/reports/report.html),
+and go to the Function Viewer (System Viewers > Graph Viewer). In the Function
+List pane, click the vector_add task function. In the Function Viewer pane, you
+can see that the vector_add task loads input vectors from system memory "A_in"
+and "B_in" (ID: 1), and then stores the result to "C_out" (ID: 2).  "A_in" and
+"B_in" share the same MM Master interface because they are defined in the same
+address space (ihc::aspace<1>).
+
+Note:
+1. Unlike Streaming interfaces, you cannot use an MM Master interface
+(ihc::mm_host) defined at global or file scope in a component or its tasks.
+2. You can use only a pointer or reference to an explicit MM Master interface
+(ihc::mm_host) as an argument to task functions. Pointers or references to
+other types cannot be passed to task functions as arguments.
+3. You can pass multiple pointers based on the same MM Master interface to one
+task. You can also have multiple tasks sharing the same MM Master interface.
+The MM Master interface can have any configuration.
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

@@ -1,0 +1,59 @@
+There are two tutorials related to speculated iterations, review them in the 
+following order:
+	1. tutorials/loop_controls/speculated_iterations
+	2. tutorials/loop_controls/small_speculated_iterations
+
+Loop speculation is an optimization technique that enables more efficient loop 
+pipelining by allowing future loop iterations to be initiated before determining 
+whether they will actually need to be initiated. Use the pragma 
+speculated_iterations to directly control the number of speculated iterations 
+for a loop. The pragma is applied to loops and must appear directly before the 
+loop as follows:
+
+#pragma speculated_iterations k // where k >= 0
+for (...) {}
+
+The compiler generates hardware to run k extra iterations of the loop while 
+ensuring that the extra iterations do not affect functional correctness. This 
+extra hardware reduces the II of the loop if the exit condition calculation is 
+the bottleneck to lowering II. If the calculation takes many cycles, it is 
+better to specify a larger value for the speculated_iterations pragma. 
+
+The tutorial runs the design twice:
+	1. With speculated iterations turned off
+	2. With compiler-determined number of speculated iterations on component 
+	   `spec`
+
+To see the improvement between designs, open the High-Level Design Reports: 
+	- part_1_noSpecIter.prj/reports/report.html 
+	- part_2_specIter.prj/reports/report.html
+
+Navigate to Throughput Analysis > Loops Analysis, find component "spec" to see 
+the II and number of speculated iterations. 
+
+In component spec, the exit condition that has two multiplies and a compare is 
+the bottleneck preventing II=1. It takes seven cycles. Each multiply operation
+takes three cycles and the compare takes one cycle.
+
+Observe in the report for part_1_noSpecIter.prj, the II for the loop under the 
+component is 7, which matches the exit condition bottleneck.
+
+In part_2_specIter.cpp, the compiler has determined to increase the speculated 
+iterations to seven to cover the seven-cycle exit condition. Observe we have 
+achieved II=1 in the report for part_2_specIter.prj for component spec.
+
+Navigate to Throughput Analysis > Verification Statistics in both reports. 
+Observe that the latency for the component was decreased in part_2_specIter.prj
+
+Be aware that the report does not seem to make an indication that there is a 
+difference between 'complex loop exit conditions' and 'loop-carried dependencies'.
+Applying the pragma will only help scenarios where the exit condition is the 
+bottleneck to lowering II.
+
+This tutorial requires the following tools to be installed: 
+	- Intel HLS Compiler
+	- ModelSim
+
+To run this tutorial: 
+	- On Linux run "make" 
+	- On Windows run "build"

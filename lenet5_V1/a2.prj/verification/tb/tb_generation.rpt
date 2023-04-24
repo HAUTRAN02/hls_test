@@ -1,0 +1,311 @@
+Info: Starting: Create simulation model
+Info: qsys-generate C:\Users\Admins\Downloads\examples\mul\lenet5_V1\a2.prj\verification\tb.qsys --simulation=VERILOG --allow-mixed-language-simulation --output-directory=C:\Users\Admins\Downloads\examples\mul\lenet5_V1\a2.prj\verification\tb\simulation --family="Cyclone V" --part=5CGXFC7C7F23C8
+Progress: Loading verification/tb.qsys
+Progress: Reading input file
+Progress: Adding clock_reset_inst [hls_sim_clock_reset 1.0]
+Progress: Parameterizing module clock_reset_inst
+Progress: Adding component_dpi_controller_pred_inst [hls_sim_component_dpi_controller 1.0]
+Progress: Parameterizing module component_dpi_controller_pred_inst
+Progress: Adding concatenate_component_done_inst [avalon_concatenate_singlebit_conduits 1.0]
+Progress: Parameterizing module concatenate_component_done_inst
+Progress: Adding concatenate_component_wait_for_stream_writes_inst [avalon_concatenate_singlebit_conduits 1.0]
+Progress: Parameterizing module concatenate_component_wait_for_stream_writes_inst
+Progress: Adding main_dpi_controller_inst [hls_sim_main_dpi_controller 1.0]
+Progress: Parameterizing module main_dpi_controller_inst
+Progress: Adding mm_host_dpi_bfm_pred_avs_b_conv1_inst [hls_sim_mm_host_dpi_bfm 1.0]
+Progress: Parameterizing module mm_host_dpi_bfm_pred_avs_b_conv1_inst
+Progress: Adding mm_host_dpi_bfm_pred_avs_b_conv2_inst [hls_sim_mm_host_dpi_bfm 1.0]
+Progress: Parameterizing module mm_host_dpi_bfm_pred_avs_b_conv2_inst
+Progress: Adding mm_host_dpi_bfm_pred_avs_b_fc1_inst [hls_sim_mm_host_dpi_bfm 1.0]
+Progress: Parameterizing module mm_host_dpi_bfm_pred_avs_b_fc1_inst
+Progress: Adding mm_host_dpi_bfm_pred_avs_b_fc2_inst [hls_sim_mm_host_dpi_bfm 1.0]
+Progress: Parameterizing module mm_host_dpi_bfm_pred_avs_b_fc2_inst
+Progress: Adding mm_host_dpi_bfm_pred_avs_b_fc3_inst [hls_sim_mm_host_dpi_bfm 1.0]
+Progress: Parameterizing module mm_host_dpi_bfm_pred_avs_b_fc3_inst
+Progress: Adding mm_host_dpi_bfm_pred_avs_image_inst [hls_sim_mm_host_dpi_bfm 1.0]
+Progress: Parameterizing module mm_host_dpi_bfm_pred_avs_image_inst
+Progress: Adding mm_host_dpi_bfm_pred_avs_probs_inst [hls_sim_mm_host_dpi_bfm 1.0]
+Progress: Parameterizing module mm_host_dpi_bfm_pred_avs_probs_inst
+Progress: Adding mm_host_dpi_bfm_pred_avs_w_conv1_inst [hls_sim_mm_host_dpi_bfm 1.0]
+Progress: Parameterizing module mm_host_dpi_bfm_pred_avs_w_conv1_inst
+Progress: Adding mm_host_dpi_bfm_pred_avs_w_conv2_inst [hls_sim_mm_host_dpi_bfm 1.0]
+Progress: Parameterizing module mm_host_dpi_bfm_pred_avs_w_conv2_inst
+Progress: Adding mm_host_dpi_bfm_pred_avs_w_fc1_inst [hls_sim_mm_host_dpi_bfm 1.0]
+Progress: Parameterizing module mm_host_dpi_bfm_pred_avs_w_fc1_inst
+Progress: Adding mm_host_dpi_bfm_pred_avs_w_fc2_inst [hls_sim_mm_host_dpi_bfm 1.0]
+Progress: Parameterizing module mm_host_dpi_bfm_pred_avs_w_fc2_inst
+Progress: Adding mm_host_dpi_bfm_pred_avs_w_fc3_inst [hls_sim_mm_host_dpi_bfm 1.0]
+Progress: Parameterizing module mm_host_dpi_bfm_pred_avs_w_fc3_inst
+Progress: Adding pred_component_dpi_controller_agent_done_concatenate_inst [avalon_concatenate_singlebit_conduits 1.0]
+Progress: Parameterizing module pred_component_dpi_controller_agent_done_concatenate_inst
+Progress: Adding pred_component_dpi_controller_agent_readback_fanout_inst [avalon_conduit_fanout 1.0]
+Progress: Parameterizing module pred_component_dpi_controller_agent_readback_fanout_inst
+Progress: Adding pred_component_dpi_controller_agent_ready_concatenate_inst [avalon_concatenate_singlebit_conduits 1.0]
+Progress: Parameterizing module pred_component_dpi_controller_agent_ready_concatenate_inst
+Progress: Adding pred_component_dpi_controller_bind_conduit_fanout_inst [avalon_conduit_fanout 1.0]
+Progress: Parameterizing module pred_component_dpi_controller_bind_conduit_fanout_inst
+Progress: Adding pred_component_dpi_controller_enable_conduit_fanout_inst [avalon_conduit_fanout 1.0]
+Progress: Parameterizing module pred_component_dpi_controller_enable_conduit_fanout_inst
+Progress: Adding pred_component_dpi_controller_implicit_ready_conduit_fanout_inst [avalon_conduit_fanout 1.0]
+Progress: Parameterizing module pred_component_dpi_controller_implicit_ready_conduit_fanout_inst
+Progress: Adding pred_inst [pred 1.0]
+Progress: Parameterizing module pred_inst
+Progress: Adding split_component_start_inst [avalon_split_multibit_conduit 1.0]
+Progress: Parameterizing module split_component_start_inst
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Warning: tb.component_dpi_controller_pred_inst.dpi_control_stream_writes_active: Interface has no signals
+Warning: tb.mm_host_dpi_bfm_pred_avs_b_conv1_inst.cra_control_agent_memory_writes_done: Interface has no signals
+Warning: tb.mm_host_dpi_bfm_pred_avs_b_conv2_inst.cra_control_agent_memory_writes_done: Interface has no signals
+Warning: tb.mm_host_dpi_bfm_pred_avs_b_fc1_inst.cra_control_agent_memory_writes_done: Interface has no signals
+Warning: tb.mm_host_dpi_bfm_pred_avs_b_fc2_inst.cra_control_agent_memory_writes_done: Interface has no signals
+Warning: tb.mm_host_dpi_bfm_pred_avs_b_fc3_inst.cra_control_agent_memory_writes_done: Interface has no signals
+Warning: tb.mm_host_dpi_bfm_pred_avs_image_inst.cra_control_agent_memory_writes_done: Interface has no signals
+Warning: tb.mm_host_dpi_bfm_pred_avs_probs_inst.cra_control_agent_memory_writes_done: Interface has no signals
+Warning: tb.mm_host_dpi_bfm_pred_avs_w_conv1_inst.cra_control_agent_memory_writes_done: Interface has no signals
+Warning: tb.mm_host_dpi_bfm_pred_avs_w_conv2_inst.cra_control_agent_memory_writes_done: Interface has no signals
+Warning: tb.mm_host_dpi_bfm_pred_avs_w_fc1_inst.cra_control_agent_memory_writes_done: Interface has no signals
+Warning: tb.mm_host_dpi_bfm_pred_avs_w_fc2_inst.cra_control_agent_memory_writes_done: Interface has no signals
+Warning: tb.mm_host_dpi_bfm_pred_avs_w_fc3_inst.cra_control_agent_memory_writes_done: Interface has no signals
+Warning: tb.component_dpi_controller_pred_inst: component_dpi_controller_pred_inst.dpi_control_stream_writes_active must be exported, or connected to a matching conduit.
+Warning: tb.component_dpi_controller_pred_inst: component_dpi_controller_pred_inst.agent_busy must be exported, or connected to a matching conduit.
+Warning: tb.component_dpi_controller_pred_inst: component_dpi_controller_pred_inst.returndata must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_b_conv1_inst: mm_host_dpi_bfm_pred_avs_b_conv1_inst.cra_control_done_writes_to_cra must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_b_conv1_inst: mm_host_dpi_bfm_pred_avs_b_conv1_inst.cra_control_agent_memory_writes_done must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_b_conv1_inst: mm_host_dpi_bfm_pred_avs_b_conv1_inst.agent_busy_out must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_b_conv2_inst: mm_host_dpi_bfm_pred_avs_b_conv2_inst.cra_control_done_writes_to_cra must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_b_conv2_inst: mm_host_dpi_bfm_pred_avs_b_conv2_inst.cra_control_agent_memory_writes_done must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_b_conv2_inst: mm_host_dpi_bfm_pred_avs_b_conv2_inst.agent_busy_out must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_b_fc1_inst: mm_host_dpi_bfm_pred_avs_b_fc1_inst.cra_control_done_writes_to_cra must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_b_fc1_inst: mm_host_dpi_bfm_pred_avs_b_fc1_inst.cra_control_agent_memory_writes_done must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_b_fc1_inst: mm_host_dpi_bfm_pred_avs_b_fc1_inst.agent_busy_out must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_b_fc2_inst: mm_host_dpi_bfm_pred_avs_b_fc2_inst.cra_control_done_writes_to_cra must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_b_fc2_inst: mm_host_dpi_bfm_pred_avs_b_fc2_inst.cra_control_agent_memory_writes_done must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_b_fc2_inst: mm_host_dpi_bfm_pred_avs_b_fc2_inst.agent_busy_out must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_b_fc3_inst: mm_host_dpi_bfm_pred_avs_b_fc3_inst.cra_control_done_writes_to_cra must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_b_fc3_inst: mm_host_dpi_bfm_pred_avs_b_fc3_inst.cra_control_agent_memory_writes_done must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_b_fc3_inst: mm_host_dpi_bfm_pred_avs_b_fc3_inst.agent_busy_out must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_image_inst: mm_host_dpi_bfm_pred_avs_image_inst.cra_control_done_writes_to_cra must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_image_inst: mm_host_dpi_bfm_pred_avs_image_inst.cra_control_agent_memory_writes_done must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_image_inst: mm_host_dpi_bfm_pred_avs_image_inst.agent_busy_out must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_probs_inst: mm_host_dpi_bfm_pred_avs_probs_inst.cra_control_done_writes_to_cra must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_probs_inst: mm_host_dpi_bfm_pred_avs_probs_inst.cra_control_agent_memory_writes_done must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_probs_inst: mm_host_dpi_bfm_pred_avs_probs_inst.agent_busy_out must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_w_conv1_inst: mm_host_dpi_bfm_pred_avs_w_conv1_inst.cra_control_done_writes_to_cra must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_w_conv1_inst: mm_host_dpi_bfm_pred_avs_w_conv1_inst.cra_control_agent_memory_writes_done must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_w_conv1_inst: mm_host_dpi_bfm_pred_avs_w_conv1_inst.agent_busy_out must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_w_conv2_inst: mm_host_dpi_bfm_pred_avs_w_conv2_inst.cra_control_done_writes_to_cra must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_w_conv2_inst: mm_host_dpi_bfm_pred_avs_w_conv2_inst.cra_control_agent_memory_writes_done must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_w_conv2_inst: mm_host_dpi_bfm_pred_avs_w_conv2_inst.agent_busy_out must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_w_fc1_inst: mm_host_dpi_bfm_pred_avs_w_fc1_inst.cra_control_done_writes_to_cra must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_w_fc1_inst: mm_host_dpi_bfm_pred_avs_w_fc1_inst.cra_control_agent_memory_writes_done must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_w_fc1_inst: mm_host_dpi_bfm_pred_avs_w_fc1_inst.agent_busy_out must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_w_fc2_inst: mm_host_dpi_bfm_pred_avs_w_fc2_inst.cra_control_done_writes_to_cra must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_w_fc2_inst: mm_host_dpi_bfm_pred_avs_w_fc2_inst.cra_control_agent_memory_writes_done must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_w_fc2_inst: mm_host_dpi_bfm_pred_avs_w_fc2_inst.agent_busy_out must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_w_fc3_inst: mm_host_dpi_bfm_pred_avs_w_fc3_inst.cra_control_done_writes_to_cra must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_w_fc3_inst: mm_host_dpi_bfm_pred_avs_w_fc3_inst.cra_control_agent_memory_writes_done must be exported, or connected to a matching conduit.
+Warning: tb.mm_host_dpi_bfm_pred_avs_w_fc3_inst: mm_host_dpi_bfm_pred_avs_w_fc3_inst.agent_busy_out must be exported, or connected to a matching conduit.
+Info: tb: Generating tb "tb" for SIM_VERILOG
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_conv1_inst.m0 and slave pred_inst.avs_b_conv1 because the master has writedata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_conv1_inst.m0 and slave pred_inst.avs_b_conv1 because the master has burstcount signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_conv1_inst.m0 and slave pred_inst.avs_b_conv1 because the master has readdata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_conv1_inst.m0 and slave pred_inst.avs_b_conv1 because the master has address signal 5 bit wide, but the slave is 3 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_conv1_inst.m0 and slave pred_inst.avs_b_conv1 because the master has waitrequest signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_conv1_inst.m0 and slave pred_inst.avs_b_conv1 because the master has byteenable signal 1 bit wide, but the slave is 4 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_conv1_inst.m0 and slave pred_inst.avs_b_conv1 because the master has readdatavalid signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_conv2_inst.m0 and slave pred_inst.avs_b_conv2 because the master has writedata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_conv2_inst.m0 and slave pred_inst.avs_b_conv2 because the master has burstcount signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_conv2_inst.m0 and slave pred_inst.avs_b_conv2 because the master has readdata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_conv2_inst.m0 and slave pred_inst.avs_b_conv2 because the master has address signal 6 bit wide, but the slave is 4 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_conv2_inst.m0 and slave pred_inst.avs_b_conv2 because the master has waitrequest signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_conv2_inst.m0 and slave pred_inst.avs_b_conv2 because the master has byteenable signal 1 bit wide, but the slave is 4 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_conv2_inst.m0 and slave pred_inst.avs_b_conv2 because the master has readdatavalid signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_fc1_inst.m0 and slave pred_inst.avs_b_fc1 because the master has writedata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_fc1_inst.m0 and slave pred_inst.avs_b_fc1 because the master has burstcount signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_fc1_inst.m0 and slave pred_inst.avs_b_fc1 because the master has readdata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_fc1_inst.m0 and slave pred_inst.avs_b_fc1 because the master has address signal 9 bit wide, but the slave is 7 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_fc1_inst.m0 and slave pred_inst.avs_b_fc1 because the master has waitrequest signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_fc1_inst.m0 and slave pred_inst.avs_b_fc1 because the master has byteenable signal 1 bit wide, but the slave is 4 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_fc1_inst.m0 and slave pred_inst.avs_b_fc1 because the master has readdatavalid signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_fc2_inst.m0 and slave pred_inst.avs_b_fc2 because the master has writedata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_fc2_inst.m0 and slave pred_inst.avs_b_fc2 because the master has burstcount signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_fc2_inst.m0 and slave pred_inst.avs_b_fc2 because the master has readdata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_fc2_inst.m0 and slave pred_inst.avs_b_fc2 because the master has address signal 9 bit wide, but the slave is 7 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_fc2_inst.m0 and slave pred_inst.avs_b_fc2 because the master has waitrequest signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_fc2_inst.m0 and slave pred_inst.avs_b_fc2 because the master has byteenable signal 1 bit wide, but the slave is 4 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_fc2_inst.m0 and slave pred_inst.avs_b_fc2 because the master has readdatavalid signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_fc3_inst.m0 and slave pred_inst.avs_b_fc3 because the master has writedata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_fc3_inst.m0 and slave pred_inst.avs_b_fc3 because the master has burstcount signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_fc3_inst.m0 and slave pred_inst.avs_b_fc3 because the master has readdata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_fc3_inst.m0 and slave pred_inst.avs_b_fc3 because the master has address signal 6 bit wide, but the slave is 4 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_fc3_inst.m0 and slave pred_inst.avs_b_fc3 because the master has waitrequest signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_fc3_inst.m0 and slave pred_inst.avs_b_fc3 because the master has byteenable signal 1 bit wide, but the slave is 4 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_b_fc3_inst.m0 and slave pred_inst.avs_b_fc3 because the master has readdatavalid signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_image_inst.m0 and slave pred_inst.avs_image because the master has writedata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_image_inst.m0 and slave pred_inst.avs_image because the master has burstcount signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_image_inst.m0 and slave pred_inst.avs_image because the master has readdata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_image_inst.m0 and slave pred_inst.avs_image because the master has address signal 12 bit wide, but the slave is 10 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_image_inst.m0 and slave pred_inst.avs_image because the master has waitrequest signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_image_inst.m0 and slave pred_inst.avs_image because the master has byteenable signal 1 bit wide, but the slave is 4 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_image_inst.m0 and slave pred_inst.avs_image because the master has readdatavalid signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_probs_inst.m0 and slave pred_inst.avs_probs because the master has writedata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_probs_inst.m0 and slave pred_inst.avs_probs because the master has burstcount signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_probs_inst.m0 and slave pred_inst.avs_probs because the master has readdata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_probs_inst.m0 and slave pred_inst.avs_probs because the master has address signal 6 bit wide, but the slave is 4 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_probs_inst.m0 and slave pred_inst.avs_probs because the master has waitrequest signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_probs_inst.m0 and slave pred_inst.avs_probs because the master has byteenable signal 1 bit wide, but the slave is 4 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_probs_inst.m0 and slave pred_inst.avs_probs because the master has readdatavalid signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_conv1_inst.m0 and slave pred_inst.avs_w_conv1 because the master has writedata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_conv1_inst.m0 and slave pred_inst.avs_w_conv1 because the master has burstcount signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_conv1_inst.m0 and slave pred_inst.avs_w_conv1 because the master has readdata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_conv1_inst.m0 and slave pred_inst.avs_w_conv1 because the master has address signal 5 bit wide, but the slave is 3 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_conv1_inst.m0 and slave pred_inst.avs_w_conv1 because the master has waitrequest signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_conv1_inst.m0 and slave pred_inst.avs_w_conv1 because the master has byteenable signal 1 bit wide, but the slave is 4 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_conv1_inst.m0 and slave pred_inst.avs_w_conv1 because the master has readdatavalid signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_conv2_inst.m0 and slave pred_inst.avs_w_conv2 because the master has writedata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_conv2_inst.m0 and slave pred_inst.avs_w_conv2 because the master has burstcount signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_conv2_inst.m0 and slave pred_inst.avs_w_conv2 because the master has readdata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_conv2_inst.m0 and slave pred_inst.avs_w_conv2 because the master has address signal 14 bit wide, but the slave is 12 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_conv2_inst.m0 and slave pred_inst.avs_w_conv2 because the master has waitrequest signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_conv2_inst.m0 and slave pred_inst.avs_w_conv2 because the master has byteenable signal 1 bit wide, but the slave is 4 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_conv2_inst.m0 and slave pred_inst.avs_w_conv2 because the master has readdatavalid signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_fc1_inst.m0 and slave pred_inst.avs_w_fc1 because the master has writedata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_fc1_inst.m0 and slave pred_inst.avs_w_fc1 because the master has burstcount signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_fc1_inst.m0 and slave pred_inst.avs_w_fc1 because the master has readdata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_fc1_inst.m0 and slave pred_inst.avs_w_fc1 because the master has address signal 18 bit wide, but the slave is 16 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_fc1_inst.m0 and slave pred_inst.avs_w_fc1 because the master has waitrequest signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_fc1_inst.m0 and slave pred_inst.avs_w_fc1 because the master has byteenable signal 1 bit wide, but the slave is 4 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_fc1_inst.m0 and slave pred_inst.avs_w_fc1 because the master has readdatavalid signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_fc2_inst.m0 and slave pred_inst.avs_w_fc2 because the master has writedata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_fc2_inst.m0 and slave pred_inst.avs_w_fc2 because the master has burstcount signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_fc2_inst.m0 and slave pred_inst.avs_w_fc2 because the master has readdata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_fc2_inst.m0 and slave pred_inst.avs_w_fc2 because the master has address signal 16 bit wide, but the slave is 14 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_fc2_inst.m0 and slave pred_inst.avs_w_fc2 because the master has waitrequest signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_fc2_inst.m0 and slave pred_inst.avs_w_fc2 because the master has byteenable signal 1 bit wide, but the slave is 4 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_fc2_inst.m0 and slave pred_inst.avs_w_fc2 because the master has readdatavalid signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_fc3_inst.m0 and slave pred_inst.avs_w_fc3 because the master has writedata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_fc3_inst.m0 and slave pred_inst.avs_w_fc3 because the master has burstcount signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_fc3_inst.m0 and slave pred_inst.avs_w_fc3 because the master has readdata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_fc3_inst.m0 and slave pred_inst.avs_w_fc3 because the master has address signal 12 bit wide, but the slave is 10 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_fc3_inst.m0 and slave pred_inst.avs_w_fc3 because the master has waitrequest signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_fc3_inst.m0 and slave pred_inst.avs_w_fc3 because the master has byteenable signal 1 bit wide, but the slave is 4 bit wide.
+Info: Interconnect is inserted between master mm_host_dpi_bfm_pred_avs_w_fc3_inst.m0 and slave pred_inst.avs_w_fc3 because the master has readdatavalid signal 1 bit wide, but the slave is 0 bit wide.
+Info: clock_reset_inst: "tb" instantiated hls_sim_clock_reset "clock_reset_inst"
+Info: component_dpi_controller_pred_inst: "tb" instantiated hls_sim_component_dpi_controller "component_dpi_controller_pred_inst"
+Info: concatenate_component_done_inst: "tb" instantiated avalon_concatenate_singlebit_conduits "concatenate_component_done_inst"
+Info: main_dpi_controller_inst: "tb" instantiated hls_sim_main_dpi_controller "main_dpi_controller_inst"
+Info: mm_host_dpi_bfm_pred_avs_b_conv1_inst: "tb" instantiated hls_sim_mm_host_dpi_bfm "mm_host_dpi_bfm_pred_avs_b_conv1_inst"
+Info: pred_component_dpi_controller_agent_done_concatenate_inst: "tb" instantiated avalon_concatenate_singlebit_conduits "pred_component_dpi_controller_agent_done_concatenate_inst"
+Info: pred_component_dpi_controller_agent_readback_fanout_inst: "tb" instantiated avalon_conduit_fanout "pred_component_dpi_controller_agent_readback_fanout_inst"
+Info: pred_inst: "tb" instantiated pred "pred_inst"
+Info: split_component_start_inst: "tb" instantiated avalon_split_multibit_conduit "split_component_start_inst"
+Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: mm_interconnect_0: "tb" instantiated altera_mm_interconnect "mm_interconnect_0"
+Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: mm_interconnect_1: "tb" instantiated altera_mm_interconnect "mm_interconnect_1"
+Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: mm_interconnect_2: "tb" instantiated altera_mm_interconnect "mm_interconnect_2"
+Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: mm_interconnect_3: "tb" instantiated altera_mm_interconnect "mm_interconnect_3"
+Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: mm_interconnect_4: "tb" instantiated altera_mm_interconnect "mm_interconnect_4"
+Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: mm_interconnect_5: "tb" instantiated altera_mm_interconnect "mm_interconnect_5"
+Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: mm_interconnect_6: "tb" instantiated altera_mm_interconnect "mm_interconnect_6"
+Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: mm_interconnect_7: "tb" instantiated altera_mm_interconnect "mm_interconnect_7"
+Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: mm_interconnect_8: "tb" instantiated altera_mm_interconnect "mm_interconnect_8"
+Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: mm_interconnect_9: "tb" instantiated altera_mm_interconnect "mm_interconnect_9"
+Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: mm_interconnect_10: "tb" instantiated altera_mm_interconnect "mm_interconnect_10"
+Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: mm_interconnect_11: "tb" instantiated altera_mm_interconnect "mm_interconnect_11"
+Info: irq_mapper: "tb" instantiated altera_irq_mapper "irq_mapper"
+Info: pred_internal_inst: "pred_inst" instantiated pred_internal "pred_internal_inst"
+Info: Reusing file C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/submodules/hld_sim_latency_tracker.sv
+Info: mm_host_dpi_bfm_pred_avs_b_conv1_inst_m0_translator: "mm_interconnect_0" instantiated altera_merlin_master_translator "mm_host_dpi_bfm_pred_avs_b_conv1_inst_m0_translator"
+Info: pred_inst_avs_b_conv1_translator: "mm_interconnect_0" instantiated altera_merlin_slave_translator "pred_inst_avs_b_conv1_translator"
+Info: mm_host_dpi_bfm_pred_avs_b_conv1_inst_m0_agent: "mm_interconnect_0" instantiated altera_merlin_master_agent "mm_host_dpi_bfm_pred_avs_b_conv1_inst_m0_agent"
+Info: pred_inst_avs_b_conv1_agent: "mm_interconnect_0" instantiated altera_merlin_slave_agent "pred_inst_avs_b_conv1_agent"
+Info: pred_inst_avs_b_conv1_agent_rsp_fifo: "mm_interconnect_0" instantiated altera_avalon_sc_fifo "pred_inst_avs_b_conv1_agent_rsp_fifo"
+Info: router: "mm_interconnect_0" instantiated altera_merlin_router "router"
+Info: router_001: "mm_interconnect_0" instantiated altera_merlin_router "router_001"
+Info: cmd_demux: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "cmd_demux"
+Info: cmd_mux: "mm_interconnect_0" instantiated altera_merlin_multiplexer "cmd_mux"
+Info: rsp_mux: "mm_interconnect_0" instantiated altera_merlin_multiplexer "rsp_mux"
+Info: Reusing file C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/submodules/altera_merlin_arbitrator.sv
+Info: pred_inst_avs_b_conv1_cmd_width_adapter: "mm_interconnect_0" instantiated altera_merlin_width_adapter "pred_inst_avs_b_conv1_cmd_width_adapter"
+Info: Reusing file C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/submodules/altera_merlin_burst_uncompressor.sv
+Info: avalon_st_adapter: "mm_interconnect_0" instantiated altera_avalon_st_adapter "avalon_st_adapter"
+Info: router: "mm_interconnect_1" instantiated altera_merlin_router "router"
+Info: router_001: "mm_interconnect_1" instantiated altera_merlin_router "router_001"
+Info: cmd_demux: "mm_interconnect_1" instantiated altera_merlin_demultiplexer "cmd_demux"
+Info: cmd_mux: "mm_interconnect_1" instantiated altera_merlin_multiplexer "cmd_mux"
+Info: Reusing file C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/submodules/altera_merlin_arbitrator.sv
+Info: rsp_mux: "mm_interconnect_1" instantiated altera_merlin_multiplexer "rsp_mux"
+Info: Reusing file C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/submodules/altera_merlin_arbitrator.sv
+Info: router: "mm_interconnect_2" instantiated altera_merlin_router "router"
+Info: router_001: "mm_interconnect_2" instantiated altera_merlin_router "router_001"
+Info: cmd_demux: "mm_interconnect_2" instantiated altera_merlin_demultiplexer "cmd_demux"
+Info: cmd_mux: "mm_interconnect_2" instantiated altera_merlin_multiplexer "cmd_mux"
+Info: Reusing file C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/submodules/altera_merlin_arbitrator.sv
+Info: rsp_mux: "mm_interconnect_2" instantiated altera_merlin_multiplexer "rsp_mux"
+Info: Reusing file C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/submodules/altera_merlin_arbitrator.sv
+Info: router: "mm_interconnect_5" instantiated altera_merlin_router "router"
+Info: router_001: "mm_interconnect_5" instantiated altera_merlin_router "router_001"
+Info: cmd_demux: "mm_interconnect_5" instantiated altera_merlin_demultiplexer "cmd_demux"
+Info: cmd_mux: "mm_interconnect_5" instantiated altera_merlin_multiplexer "cmd_mux"
+Info: Reusing file C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/submodules/altera_merlin_arbitrator.sv
+Info: rsp_mux: "mm_interconnect_5" instantiated altera_merlin_multiplexer "rsp_mux"
+Info: Reusing file C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/submodules/altera_merlin_arbitrator.sv
+Info: router: "mm_interconnect_8" instantiated altera_merlin_router "router"
+Info: router_001: "mm_interconnect_8" instantiated altera_merlin_router "router_001"
+Info: cmd_demux: "mm_interconnect_8" instantiated altera_merlin_demultiplexer "cmd_demux"
+Info: cmd_mux: "mm_interconnect_8" instantiated altera_merlin_multiplexer "cmd_mux"
+Info: Reusing file C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/submodules/altera_merlin_arbitrator.sv
+Info: rsp_mux: "mm_interconnect_8" instantiated altera_merlin_multiplexer "rsp_mux"
+Info: Reusing file C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/submodules/altera_merlin_arbitrator.sv
+Info: router: "mm_interconnect_9" instantiated altera_merlin_router "router"
+Info: router_001: "mm_interconnect_9" instantiated altera_merlin_router "router_001"
+Info: cmd_demux: "mm_interconnect_9" instantiated altera_merlin_demultiplexer "cmd_demux"
+Info: cmd_mux: "mm_interconnect_9" instantiated altera_merlin_multiplexer "cmd_mux"
+Info: Reusing file C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/submodules/altera_merlin_arbitrator.sv
+Info: rsp_mux: "mm_interconnect_9" instantiated altera_merlin_multiplexer "rsp_mux"
+Info: Reusing file C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/submodules/altera_merlin_arbitrator.sv
+Info: router: "mm_interconnect_10" instantiated altera_merlin_router "router"
+Info: router_001: "mm_interconnect_10" instantiated altera_merlin_router "router_001"
+Info: cmd_demux: "mm_interconnect_10" instantiated altera_merlin_demultiplexer "cmd_demux"
+Info: cmd_mux: "mm_interconnect_10" instantiated altera_merlin_multiplexer "cmd_mux"
+Info: Reusing file C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/submodules/altera_merlin_arbitrator.sv
+Info: rsp_mux: "mm_interconnect_10" instantiated altera_merlin_multiplexer "rsp_mux"
+Info: Reusing file C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/submodules/altera_merlin_arbitrator.sv
+Info: error_adapter_0: "avalon_st_adapter" instantiated error_adapter "error_adapter_0"
+Info: tb: Done "tb" with 67 modules, 1246 files
+Info: qsys-generate succeeded.
+Info: Finished: Create simulation model
+Info: Starting: Create Modelsim Project.
+Info: sim-script-gen --spd=C:\Users\Admins\Downloads\examples\mul\lenet5_V1\a2.prj\verification\tb\tb.spd --output-directory=C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/ --use-relative-paths=true
+Info: Doing: ip-make-simscript --spd=C:\Users\Admins\Downloads\examples\mul\lenet5_V1\a2.prj\verification\tb\tb.spd --output-directory=C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/ --use-relative-paths=true
+Info: Generating the following file(s) for MODELSIM simulator in C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/ directory:
+Info: 	mentor/msim_setup.tcl
+Info: Generating the following file(s) for VCS simulator in C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/ directory:
+Info: 	synopsys/vcs/vcs_setup.sh
+Info: Generating the following file(s) for VCSMX simulator in C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/ directory:
+Info: 	synopsys/vcsmx/synopsys_sim.setup
+Info: 	synopsys/vcsmx/vcsmx_setup.sh
+Info: Generating the following file(s) for NCSIM simulator in C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/ directory:
+Info: 	cadence/cds.lib
+Info: 	cadence/hdl.var
+Info: 	cadence/ncsim_setup.sh
+Info: 	37 .cds.lib files in cadence/cds_libs/ directory
+Info: Generating the following file(s) for RIVIERA simulator in C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/ directory:
+Info: 	aldec/rivierapro_setup.tcl
+Info: For information on how to simulate your IP, see the explanatory comments in the simulator-specific subdirectories under C:/Users/Admins/Downloads/examples/mul/lenet5_V1/a2.prj/verification/tb/simulation/.
+Info: Regenerate these scripts whenever you make any change to any Quartus-generated IP in your project.
+Info: Finished: Create Modelsim Project.

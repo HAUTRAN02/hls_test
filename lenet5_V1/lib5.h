@@ -7,9 +7,9 @@
 #include "HLS/ac_fixed.h"
 #include "HLS/ac_fixed_math.h"
 #include "HLS/hls.h"
-#define LABEL_LEN 5
+#define LABEL_LEN 1
 #define _CRT_SECURE_NO_DEPRECATE
-typedef ac_fixed<12,6, true> fixed_9_2_t;
+typedef ac_fixed<16,8, true> fixed_9_2_t;
 void conv1(
     fixed_9_2_t *input0,
     fixed_9_2_t *w_conv1,
@@ -59,15 +59,15 @@ void fc3(fixed_9_2_t *input10,
 
 void softmax(fixed_9_2_t *input11,
              fixed_9_2_t *output11);
-component void pred(hls_avalon_agent_memory_argument(28 * 28 * sizeof(fixed_9_2_t))  fixed_9_2_t *image,
-                    hls_avalon_agent_memory_argument(6 * sizeof(fixed_9_2_t)) fixed_9_2_t *w_conv1,
-                    hls_avalon_agent_memory_argument(6 * sizeof(fixed_9_2_t)) fixed_9_2_t *b_conv1,
-                    hls_avalon_agent_memory_argument(16 * 6 * 5 * 5 * sizeof(fixed_9_2_t)) fixed_9_2_t *w_conv2,
-                    hls_avalon_agent_memory_argument(16 * sizeof(fixed_9_2_t)) fixed_9_2_t *b_conv2,
-                    hls_avalon_agent_memory_argument(120 * 400 * sizeof(fixed_9_2_t)) fixed_9_2_t *w_fc1,
-                    hls_avalon_agent_memory_argument(120 * sizeof(fixed_9_2_t)) fixed_9_2_t *b_fc1,
-                    hls_avalon_agent_memory_argument(84 * 120 * sizeof(fixed_9_2_t)) fixed_9_2_t *w_fc2,
-                    hls_avalon_agent_memory_argument(84 * sizeof(fixed_9_2_t)) fixed_9_2_t *b_fc2,
-                    hls_avalon_agent_memory_argument(10 * 84 * sizeof(fixed_9_2_t)) fixed_9_2_t *w_fc3,
-                    hls_avalon_agent_memory_argument(10 * sizeof(fixed_9_2_t)) fixed_9_2_t *b_fc3,
-                    hls_avalon_agent_memory_argument(10 * sizeof(fixed_9_2_t)) fixed_9_2_t *probs);
+component void pred(hls_avalon_agent_memory_argument(28 * 28 * sizeof(2))  fixed_9_2_t *image,
+                    hls_avalon_agent_memory_argument(6 * sizeof(2)) fixed_9_2_t *w_conv1,
+                    hls_avalon_agent_memory_argument(6 * sizeof(2)) fixed_9_2_t *b_conv1,
+                    hls_avalon_agent_memory_argument(16 * 6 * 5 * 5 * sizeof(2)) fixed_9_2_t *w_conv2,
+                    hls_avalon_agent_memory_argument(16 * sizeof(4)) fixed_9_2_t *b_conv2,
+                    hls_avalon_agent_memory_argument(120 * 400 * sizeof(2)) fixed_9_2_t *w_fc1,
+                    hls_avalon_agent_memory_argument(120 * sizeof(4)) fixed_9_2_t *b_fc1,
+                    hls_avalon_agent_memory_argument(84 * 120 * sizeof(2)) fixed_9_2_t *w_fc2,
+                    hls_avalon_agent_memory_argument(84 * sizeof(2)) fixed_9_2_t *b_fc2,
+                    hls_avalon_agent_memory_argument(10 * 84 * sizeof(2)) fixed_9_2_t *w_fc3,
+                    hls_avalon_agent_memory_argument(10 * sizeof(2)) fixed_9_2_t *b_fc3,
+                    hls_avalon_agent_memory_argument(10 * sizeof(2)) fixed_9_2_t *probs);

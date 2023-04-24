@@ -1,0 +1,1223 @@
+{
+  "name":"loop_attributes"
+  , "id":4294967295
+  , "nodes":
+  [
+    {
+      "name":"pred"
+      , "id":1209346560
+      , "clk":"No"
+      , "fmax":"240.00"
+      , "debug":
+      [
+        [
+          {
+            "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+            , "line":256
+          }
+        ]
+      ]
+      , "type":"component"
+      , "children":
+      [
+        {
+          "name":"pred.B0.runOnce"
+          , "id":1197499744
+          , "af":"240.00"
+          , "br":"0"
+          , "ci":"0"
+          , "fo":"Disabled"
+          , "ii":"1"
+          , "ll":"1"
+          , "lt":"2.000000"
+          , "mi":"n/a"
+          , "pl":"Yes"
+          , "tc":"0"
+          , "tn":"1"
+          , "type":"bb"
+        }
+        , {
+          "name":"pred.B1.start"
+          , "id":1197499648
+          , "af":"240.00"
+          , "br":"0"
+          , "ci":"1"
+          , "fo":"Disabled"
+          , "ii":"1"
+          , "ll":"1"
+          , "lt":"2.000000"
+          , "mi":"1"
+          , "pl":"Yes"
+          , "tc":"0"
+          , "tn":"1"
+          , "details":
+          [
+            {
+              "type":"text"
+              , "text":"Hyper-Optimized loop structure: n/a"
+            }
+          ]
+          , "debug":
+          [
+            [
+              {
+                "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                , "line":256
+              }
+            ]
+          ]
+          , "type":"loop"
+          , "children":
+          [
+            {
+              "name":"Fused loop pred.B2"
+              , "id":1197500896
+              , "af":"174.96"
+              , "br":"0"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"10.000000"
+              , "mi":"1"
+              , "pl":"Yes"
+              , "tc":"0"
+              , "tn":"0"
+              , "details":
+              [
+                {
+                  "type":"text"
+                  , "text":"Hyper-Optimized loop structure: n/a"
+                }
+              ]
+              , "debug":
+              [
+                [
+                  {
+                    "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                    , "line":44
+                  }
+                ]
+              ]
+              , "type":"loop"
+              , "children":
+              [
+                {
+                  "name":"Fused loop pred.B3"
+                  , "id":1197500704
+                  , "af":"174.96"
+                  , "br":"0"
+                  , "ci":"0"
+                  , "fo":"Disabled"
+                  , "ii":"1"
+                  , "ll":"3"
+                  , "lt":"8.000000"
+                  , "mi":"1"
+                  , "pl":"Yes"
+                  , "tc":"0"
+                  , "tn":"0"
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"Hyper-Optimized loop structure: n/a"
+                    }
+                  ]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                        , "line":46
+                      }
+                    ]
+                  ]
+                  , "type":"loop"
+                  , "children":
+                  [
+                    {
+                      "name":"Fused loop pred.B4"
+                      , "id":1197502528
+                      , "af":"174.96"
+                      , "br":"1"
+                      , "ci":"0"
+                      , "fo":"Disabled"
+                      , "ii":"1"
+                      , "ll":"4"
+                      , "lt":"48.000000"
+                      , "mi":"1"
+                      , "pl":"Yes"
+                      , "tc":"28"
+                      , "tn":"1"
+                      , "details":
+                      [
+                        {
+                          "type":"text"
+                          , "text":"Hyper-Optimized loop structure: n/a"
+                        }
+                      ]
+                      , "debug":
+                      [
+                        [
+                          {
+                            "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                            , "line":48
+                          }
+                        ]
+                      ]
+                      , "type":"loop"
+                    }
+                  ]
+                }
+                , {
+                  "name":"pred.B5"
+                  , "id":1197502624
+                  , "af":"240.00"
+                  , "br":"1"
+                  , "ci":"0"
+                  , "fo":"Disabled"
+                  , "ii":"1"
+                  , "ll":"3"
+                  , "lt":"0.000000"
+                  , "mi":"n/a"
+                  , "pl":"Yes"
+                  , "tc":"28"
+                  , "tn":"1"
+                  , "type":"bb"
+                }
+              ]
+            }
+            , {
+              "name":"pred.B6"
+              , "id":1197499552
+              , "af":"240.00"
+              , "br":"1"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"0.000000"
+              , "mi":"n/a"
+              , "pl":"Yes"
+              , "tc":"6"
+              , "tn":"1"
+              , "type":"bb"
+            }
+            , {
+              "name":"pred.B7"
+              , "id":1197499936
+              , "af":"240.00"
+              , "br":"0"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"0.000000"
+              , "mi":"n/a"
+              , "pl":"Yes"
+              , "tc":"0"
+              , "tn":"1"
+              , "type":"bb"
+            }
+            , {
+              "name":"pred.B8"
+              , "id":1197500320
+              , "af":"174.96"
+              , "br":"0"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"4.000000"
+              , "mi":"1"
+              , "pl":"Yes"
+              , "tc":"0"
+              , "tn":"0"
+              , "details":
+              [
+                {
+                  "type":"text"
+                  , "text":"Hyper-Optimized loop structure: n/a"
+                }
+              ]
+              , "debug":
+              [
+                [
+                  {
+                    "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                    , "line":59
+                  }
+                ]
+              ]
+              , "type":"loop"
+              , "children":
+              [
+                {
+                  "name":"pred.B9"
+                  , "id":1197502048
+                  , "af":"174.96"
+                  , "br":"0"
+                  , "ci":"0"
+                  , "fo":"Disabled"
+                  , "ii":"1"
+                  , "ll":"3"
+                  , "lt":"8.000000"
+                  , "mi":"1"
+                  , "pl":"Yes"
+                  , "tc":"0"
+                  , "tn":"0"
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"Hyper-Optimized loop structure: n/a"
+                    }
+                  ]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                        , "line":61
+                      }
+                    ]
+                  ]
+                  , "type":"loop"
+                  , "children":
+                  [
+                    {
+                      "name":"pred.B10"
+                      , "id":1197502720
+                      , "af":"174.96"
+                      , "br":"1"
+                      , "ci":"0"
+                      , "fo":"Disabled"
+                      , "ii":"1"
+                      , "ll":"4"
+                      , "lt":"82.000000"
+                      , "mi":"1"
+                      , "pl":"Yes"
+                      , "tc":"14"
+                      , "tn":"1"
+                      , "details":
+                      [
+                        {
+                          "type":"text"
+                          , "text":"Hyper-Optimized loop structure: n/a"
+                        }
+                      ]
+                      , "debug":
+                      [
+                        [
+                          {
+                            "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                            , "line":63
+                          }
+                        ]
+                      ]
+                      , "type":"loop"
+                    }
+                  ]
+                }
+                , {
+                  "name":"pred.B11"
+                  , "id":1197502144
+                  , "af":"240.00"
+                  , "br":"1"
+                  , "ci":"0"
+                  , "fo":"Disabled"
+                  , "ii":"1"
+                  , "ll":"3"
+                  , "lt":"0.000000"
+                  , "mi":"n/a"
+                  , "pl":"Yes"
+                  , "tc":"14"
+                  , "tn":"1"
+                  , "type":"bb"
+                }
+              ]
+            }
+            , {
+              "name":"pred.B12"
+              , "id":1197502912
+              , "af":"240.00"
+              , "br":"1"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"0.000000"
+              , "mi":"n/a"
+              , "pl":"Yes"
+              , "tc":"6"
+              , "tn":"1"
+              , "type":"bb"
+            }
+            , {
+              "name":"pred.B13"
+              , "id":1197500032
+              , "af":"240.00"
+              , "br":"0"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"0.000000"
+              , "mi":"n/a"
+              , "pl":"Yes"
+              , "tc":"0"
+              , "tn":"1"
+              , "type":"bb"
+            }
+            , {
+              "name":"Fused loop pred.B14"
+              , "id":1197500128
+              , "af":"174.96"
+              , "br":"0"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"5.000000"
+              , "mi":"1"
+              , "pl":"Yes"
+              , "tc":"0"
+              , "tn":"0"
+              , "details":
+              [
+                {
+                  "type":"text"
+                  , "text":"Hyper-Optimized loop structure: n/a"
+                }
+              ]
+              , "debug":
+              [
+                [
+                  {
+                    "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                    , "line":108
+                  }
+                ]
+              ]
+              , "type":"loop"
+              , "children":
+              [
+                {
+                  "name":"Fused loop pred.B15"
+                  , "id":1197500416
+                  , "af":"174.96"
+                  , "br":"0"
+                  , "ci":"0"
+                  , "fo":"Disabled"
+                  , "ii":"1"
+                  , "ll":"3"
+                  , "lt":"7.000000"
+                  , "mi":"1"
+                  , "pl":"Yes"
+                  , "tc":"0"
+                  , "tn":"0"
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"Hyper-Optimized loop structure: n/a"
+                    }
+                  ]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                        , "line":110
+                      }
+                    ]
+                  ]
+                  , "type":"loop"
+                  , "children":
+                  [
+                    {
+                      "name":"Fused loop pred.B16"
+                      , "id":1197500800
+                      , "af":"174.96"
+                      , "br":"0"
+                      , "ci":"0"
+                      , "fo":"Disabled"
+                      , "ii":"1"
+                      , "ll":"4"
+                      , "lt":"11.000000"
+                      , "mi":"1"
+                      , "pl":"Yes"
+                      , "tc":"0"
+                      , "tn":"0"
+                      , "details":
+                      [
+                        {
+                          "type":"text"
+                          , "text":"Hyper-Optimized loop structure: n/a"
+                        }
+                      ]
+                      , "debug":
+                      [
+                        [
+                          {
+                            "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                            , "line":112
+                          }
+                        ]
+                      ]
+                      , "type":"loop"
+                      , "children":
+                      [
+                        {
+                          "name":"pred.B17"
+                          , "id":1197501856
+                          , "af":"240.00"
+                          , "br":"0"
+                          , "ci":"0"
+                          , "fo":"Disabled"
+                          , "ii":"n/a"
+                          , "ll":"5"
+                          , "lt":"4.000000"
+                          , "mi":"n/a"
+                          , "pl":"No"
+                          , "tc":"0"
+                          , "tn":"1"
+                          , "details":
+                          [
+                            {
+                              "type":"text"
+                              , "text":"Hyper-Optimized loop structure: n/a"
+                            }
+                          ]
+                          , "debug":
+                          [
+                            [
+                              {
+                                "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                                , "line":85
+                              }
+                            ]
+                          ]
+                          , "type":"loop"
+                          , "children":
+                          [
+                            {
+                              "name":"pred.B18"
+                              , "id":1197501952
+                              , "af":"174.96"
+                              , "br":"0"
+                              , "ci":"0"
+                              , "fo":"Disabled"
+                              , "ii":"1"
+                              , "ll":"6"
+                              , "lt":"10.000000"
+                              , "mi":"1"
+                              , "pl":"Yes"
+                              , "tc":"0"
+                              , "tn":"0"
+                              , "details":
+                              [
+                                {
+                                  "type":"text"
+                                  , "text":"Hyper-Optimized loop structure: n/a"
+                                }
+                              ]
+                              , "debug":
+                              [
+                                [
+                                  {
+                                    "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                                    , "line":87
+                                  }
+                                ]
+                              ]
+                              , "type":"loop"
+                              , "children":
+                              [
+                                {
+                                  "name":"pred.B19"
+                                  , "id":1197499840
+                                  , "af":"240.00"
+                                  , "br":"1"
+                                  , "ci":"0"
+                                  , "fo":"Disabled"
+                                  , "ii":"23"
+                                  , "ll":"7"
+                                  , "lt":"43.000000"
+                                  , "mi":"23"
+                                  , "pl":"Yes"
+                                  , "tc":"5"
+                                  , "tn":"0"
+                                  , "details":
+                                  [
+                                    {
+                                      "type":"text"
+                                      , "text":"Hyper-Optimized loop structure: n/a"
+                                    }
+                                  ]
+                                  , "debug":
+                                  [
+                                    [
+                                      {
+                                        "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                                        , "line":89
+                                      }
+                                    ]
+                                  ]
+                                  , "type":"loop"
+                                }
+                              ]
+                            }
+                            , {
+                              "name":"pred.B20"
+                              , "id":1197501376
+                              , "af":"240.00"
+                              , "br":"1"
+                              , "ci":"0"
+                              , "fo":"Disabled"
+                              , "ii":"1"
+                              , "ll":"6"
+                              , "lt":"1.000000"
+                              , "mi":"n/a"
+                              , "pl":"Yes"
+                              , "tc":"5"
+                              , "tn":"1"
+                              , "type":"bb"
+                            }
+                          ]
+                        }
+                        , {
+                          "name":"pred.B21"
+                          , "id":1197501472
+                          , "af":"240.00"
+                          , "br":"1"
+                          , "ci":"0"
+                          , "fo":"Disabled"
+                          , "ii":"1"
+                          , "ll":"5"
+                          , "lt":"0.000000"
+                          , "mi":"n/a"
+                          , "pl":"Yes"
+                          , "tc":"6"
+                          , "tn":"1"
+                          , "type":"bb"
+                        }
+                      ]
+                    }
+                    , {
+                      "name":"pred.B22"
+                      , "id":1197501568
+                      , "af":"240.00"
+                      , "br":"1"
+                      , "ci":"0"
+                      , "fo":"Disabled"
+                      , "ii":"1"
+                      , "ll":"4"
+                      , "lt":"7.000000"
+                      , "mi":"n/a"
+                      , "pl":"Yes"
+                      , "tc":"10"
+                      , "tn":"1"
+                      , "type":"bb"
+                    }
+                  ]
+                }
+                , {
+                  "name":"pred.B23"
+                  , "id":1197503008
+                  , "af":"240.00"
+                  , "br":"1"
+                  , "ci":"0"
+                  , "fo":"Disabled"
+                  , "ii":"1"
+                  , "ll":"3"
+                  , "lt":"0.000000"
+                  , "mi":"n/a"
+                  , "pl":"Yes"
+                  , "tc":"10"
+                  , "tn":"1"
+                  , "type":"bb"
+                }
+              ]
+            }
+            , {
+              "name":"pred.B24"
+              , "id":1197500224
+              , "af":"240.00"
+              , "br":"1"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"0.000000"
+              , "mi":"n/a"
+              , "pl":"Yes"
+              , "tc":"16"
+              , "tn":"1"
+              , "type":"bb"
+            }
+            , {
+              "name":"pred.B25"
+              , "id":1197502240
+              , "af":"240.00"
+              , "br":"0"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"0.000000"
+              , "mi":"n/a"
+              , "pl":"Yes"
+              , "tc":"0"
+              , "tn":"1"
+              , "type":"bb"
+            }
+            , {
+              "name":"Fused loop pred.B26"
+              , "id":1197503104
+              , "af":"174.96"
+              , "br":"0"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"7.000000"
+              , "mi":"1"
+              , "pl":"Yes"
+              , "tc":"0"
+              , "tn":"0"
+              , "details":
+              [
+                {
+                  "type":"text"
+                  , "text":"Hyper-Optimized loop structure: n/a"
+                }
+              ]
+              , "debug":
+              [
+                [
+                  {
+                    "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                    , "line":144
+                  }
+                ]
+              ]
+              , "type":"loop"
+              , "children":
+              [
+                {
+                  "name":"Fused loop pred.B27"
+                  , "id":1197502336
+                  , "af":"174.96"
+                  , "br":"0"
+                  , "ci":"0"
+                  , "fo":"Disabled"
+                  , "ii":"1"
+                  , "ll":"3"
+                  , "lt":"7.000000"
+                  , "mi":"1"
+                  , "pl":"Yes"
+                  , "tc":"0"
+                  , "tn":"0"
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"Hyper-Optimized loop structure: n/a"
+                    }
+                  ]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                        , "line":146
+                      }
+                    ]
+                  ]
+                  , "type":"loop"
+                  , "children":
+                  [
+                    {
+                      "name":"Fused loop pred.B28"
+                      , "id":1197502432
+                      , "af":"174.96"
+                      , "br":"1"
+                      , "ci":"0"
+                      , "fo":"Disabled"
+                      , "ii":"1"
+                      , "ll":"4"
+                      , "lt":"82.000000"
+                      , "mi":"1"
+                      , "pl":"Yes"
+                      , "tc":"5"
+                      , "tn":"1"
+                      , "details":
+                      [
+                        {
+                          "type":"text"
+                          , "text":"Hyper-Optimized loop structure: n/a"
+                        }
+                      ]
+                      , "debug":
+                      [
+                        [
+                          {
+                            "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                            , "line":148
+                          }
+                        ]
+                      ]
+                      , "type":"loop"
+                    }
+                  ]
+                }
+                , {
+                  "name":"pred.B29"
+                  , "id":1200804592
+                  , "af":"240.00"
+                  , "br":"1"
+                  , "ci":"0"
+                  , "fo":"Disabled"
+                  , "ii":"1"
+                  , "ll":"3"
+                  , "lt":"0.000000"
+                  , "mi":"n/a"
+                  , "pl":"Yes"
+                  , "tc":"5"
+                  , "tn":"1"
+                  , "type":"bb"
+                }
+              ]
+            }
+            , {
+              "name":"pred.B30"
+              , "id":1200810544
+              , "af":"240.00"
+              , "br":"1"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"0.000000"
+              , "mi":"n/a"
+              , "pl":"Yes"
+              , "tc":"16"
+              , "tn":"1"
+              , "type":"bb"
+            }
+            , {
+              "name":"pred.B31"
+              , "id":1200806512
+              , "af":"240.00"
+              , "br":"0"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"0.000000"
+              , "mi":"n/a"
+              , "pl":"Yes"
+              , "tc":"0"
+              , "tn":"1"
+              , "type":"bb"
+            }
+            , {
+              "name":"Fused loop pred.B32"
+              , "id":1200804688
+              , "af":"174.96"
+              , "br":"0"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"5.000000"
+              , "mi":"1"
+              , "pl":"Yes"
+              , "tc":"0"
+              , "tn":"0"
+              , "details":
+              [
+                {
+                  "type":"text"
+                  , "text":"Hyper-Optimized loop structure: n/a"
+                }
+              ]
+              , "debug":
+              [
+                [
+                  {
+                    "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                    , "line":179
+                  }
+                ]
+              ]
+              , "type":"loop"
+              , "children":
+              [
+                {
+                  "name":"pred.B33"
+                  , "id":1200806608
+                  , "af":"240.00"
+                  , "br":"1"
+                  , "ci":"0"
+                  , "fo":"Disabled"
+                  , "ii":"23"
+                  , "ll":"3"
+                  , "lt":"43.000000"
+                  , "mi":"23"
+                  , "pl":"Yes"
+                  , "tc":"400"
+                  , "tn":"0"
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"Hyper-Optimized loop structure: n/a"
+                    }
+                  ]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                        , "line":165
+                      }
+                    ]
+                  ]
+                  , "type":"loop"
+                }
+              ]
+            }
+            , {
+              "name":"pred.B34"
+              , "id":1200807184
+              , "af":"240.00"
+              , "br":"1"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"10.000000"
+              , "mi":"n/a"
+              , "pl":"Yes"
+              , "tc":"120"
+              , "tn":"1"
+              , "type":"bb"
+            }
+            , {
+              "name":"pred.B35"
+              , "id":1200804784
+              , "af":"240.00"
+              , "br":"0"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"0.000000"
+              , "mi":"n/a"
+              , "pl":"Yes"
+              , "tc":"0"
+              , "tn":"1"
+              , "type":"bb"
+            }
+            , {
+              "name":"Fused loop pred.B36"
+              , "id":1200809200
+              , "af":"174.96"
+              , "br":"0"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"3.000000"
+              , "mi":"1"
+              , "pl":"Yes"
+              , "tc":"0"
+              , "tn":"0"
+              , "details":
+              [
+                {
+                  "type":"text"
+                  , "text":"Hyper-Optimized loop structure: n/a"
+                }
+              ]
+              , "debug":
+              [
+                [
+                  {
+                    "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                    , "line":207
+                  }
+                ]
+              ]
+              , "type":"loop"
+              , "children":
+              [
+                {
+                  "name":"pred.B37"
+                  , "id":1200810640
+                  , "af":"240.00"
+                  , "br":"1"
+                  , "ci":"0"
+                  , "fo":"Disabled"
+                  , "ii":"23"
+                  , "ll":"3"
+                  , "lt":"45.000000"
+                  , "mi":"23"
+                  , "pl":"Yes"
+                  , "tc":"120"
+                  , "tn":"0"
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"Hyper-Optimized loop structure: n/a"
+                    }
+                  ]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                        , "line":193
+                      }
+                    ]
+                  ]
+                  , "type":"loop"
+                }
+              ]
+            }
+            , {
+              "name":"pred.B38"
+              , "id":1200809296
+              , "af":"240.00"
+              , "br":"1"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"10.000000"
+              , "mi":"n/a"
+              , "pl":"Yes"
+              , "tc":"84"
+              , "tn":"1"
+              , "type":"bb"
+            }
+            , {
+              "name":"pred.B39"
+              , "id":1200808912
+              , "af":"240.00"
+              , "br":"0"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"0.000000"
+              , "mi":"n/a"
+              , "pl":"Yes"
+              , "tc":"0"
+              , "tn":"1"
+              , "type":"bb"
+            }
+            , {
+              "name":"pred.B40"
+              , "id":1200807280
+              , "af":"174.96"
+              , "br":"0"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"6.000000"
+              , "mi":"1"
+              , "pl":"Yes"
+              , "tc":"0"
+              , "tn":"0"
+              , "details":
+              [
+                {
+                  "type":"text"
+                  , "text":"Hyper-Optimized loop structure: n/a"
+                }
+              ]
+              , "debug":
+              [
+                [
+                  {
+                    "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                    , "line":219
+                  }
+                ]
+              ]
+              , "type":"loop"
+              , "children":
+              [
+                {
+                  "name":"pred.B41"
+                  , "id":1200806320
+                  , "af":"240.00"
+                  , "br":"1"
+                  , "ci":"0"
+                  , "fo":"Disabled"
+                  , "ii":"23"
+                  , "ll":"3"
+                  , "lt":"43.000000"
+                  , "mi":"23"
+                  , "pl":"Yes"
+                  , "tc":"84"
+                  , "tn":"0"
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"Hyper-Optimized loop structure: n/a"
+                    }
+                  ]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                        , "line":221
+                      }
+                    ]
+                  ]
+                  , "type":"loop"
+                }
+              ]
+            }
+            , {
+              "name":"pred.B42"
+              , "id":1200805840
+              , "af":"240.00"
+              , "br":"1"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"3.000000"
+              , "mi":"n/a"
+              , "pl":"Yes"
+              , "tc":"10"
+              , "tn":"1"
+              , "type":"bb"
+            }
+            , {
+              "name":"pred.B43"
+              , "id":1200809968
+              , "af":"240.00"
+              , "br":"0"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"0.000000"
+              , "mi":"n/a"
+              , "pl":"Yes"
+              , "tc":"0"
+              , "tn":"1"
+              , "type":"bb"
+            }
+            , {
+              "name":"pred.B45"
+              , "id":1200806704
+              , "af":"240.00"
+              , "br":"1"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"49"
+              , "ll":"2"
+              , "lt":"171.000000"
+              , "mi":"1"
+              , "pl":"Yes"
+              , "tc":"10"
+              , "tn":"0"
+              , "details":
+              [
+                {
+                  "type":"text"
+                  , "text":"Hyper-Optimized loop structure: n/a"
+                }
+              ]
+              , "debug":
+              [
+                [
+                  {
+                    "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                    , "line":236
+                  }
+                ]
+              ]
+              , "type":"loop"
+            }
+            , {
+              "name":"pred.B44"
+              , "id":1200807856
+              , "af":"240.00"
+              , "br":"0"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"1.000000"
+              , "mi":"n/a"
+              , "pl":"Yes"
+              , "tc":"0"
+              , "tn":"1"
+              , "type":"bb"
+            }
+            , {
+              "name":"pred.B46"
+              , "id":1200806416
+              , "af":"174.96"
+              , "br":"1"
+              , "ci":"0"
+              , "fo":"Disabled"
+              , "ii":"1"
+              , "ll":"2"
+              , "lt":"128.000000"
+              , "mi":"1"
+              , "pl":"Yes"
+              , "tc":"10"
+              , "tn":"1"
+              , "details":
+              [
+                {
+                  "type":"text"
+                  , "text":"Hyper-Optimized loop structure: n/a"
+                }
+              ]
+              , "debug":
+              [
+                [
+                  {
+                    "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                    , "line":239
+                  }
+                ]
+              ]
+              , "type":"loop"
+            }
+          ]
+        }
+        , {
+          "name":"pred.B47"
+          , "id":1200808720
+          , "af":"240.00"
+          , "br":"0"
+          , "ci":"0"
+          , "fo":"Disabled"
+          , "ii":"1"
+          , "ll":"1"
+          , "lt":"1.000000"
+          , "mi":"n/a"
+          , "pl":"Yes"
+          , "tc":"0"
+          , "tn":"1"
+          , "type":"bb"
+        }
+      ]
+    }
+  ]
+}

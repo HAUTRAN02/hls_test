@@ -1,0 +1,123 @@
+This tutorial demonstrates how you can use memory attributes to implement your
+local non-constant variables (including struct member variables) in registers
+(on the datapath), memory logic array block (MLABs) or random access memory
+(RAM) blocks. RAM blocks implement memory using a high density of memory
+cells. MLAB is a memory implemented in FPGA soft logic, instead of dedicated
+RAM blocks.
+
+For more information about memory attributes, see Table "Intel HLS Compiler
+Component Memory Attributes" in the Intel HLS Compiler Reference Manual.
+
+The compiler provides the following memory attributes for controlling memory
+implementation type:
+
+  - hls_register
+    Implement the variable into pipelined registers that are carried through
+    the datapath.
+  
+  - hls_memory
+    Implement the variable into dual-port memories, either MLABs or block
+    RAMs. The user can choose the dual-port memory type by passing an
+    optional string argument, which can either be "MLAB" or "BLOCK_RAM".
+
+In this tutorial, we define a component called "foo" within which we define a
+an array "a[ARR_SIZE]". Each time the component is called, it initializes "a",
+then it stores "wdata" to "a[waddr]" and loads from "a[raddr]". "waddr",
+"raddr" and "wdata" are passed as arguments.
+
+Run the tutorial as described at the end of this document.
+
+1. Implement a local variable in registers
+==========================================
+
+  In the first version (part_1_register.cpp), we force the compiler to carry
+  "a" through the component's datapath in registers using the hls_register
+  attribute.
+
+  Open the high-level design report (part_1_register.prj/reports/report.html),
+  and go to the Function Memory Viewer (System Viewers > Function Memory
+  Viewer). In the Function Memory List pane, click "a" under function "foo". In
+  the Function Memory Viewer pane, you can see that "a" is implemented in
+  registers.
+  
+  Go to Area Analysis of System (Area Analysis > Area Analysis of System) and
+  click "Expand All". Under function "foo", you can see that variable "a" does
+  not use RAMs or MLABs.
+
+2. Implement a local variable in memories
+=========================================
+
+  In the second version (part_2_memory_auto.cpp), we apply the hls_memory
+  attribute to "a", which asks the compiler to implement "a" in MLABs or block
+  RAMs. The compiler determines whether to implement "a" in MLABs or in block
+  RAMS based on the size of "a" and its access pattern.
+
+  Open the high-level design report
+  (part_2_memory_auto.prj/reports/report.html), and go to the Function Memory
+  Viewer (System Viewers > Function Memory Viewer). In the Function Memory List
+  pane, click "a" under function "foo". In the Function Memory Viewer pane, you
+  can see that "a" is implemented in a dual-port memory.
+  
+  Go to Area Analysis of System (Area Analysis > Area Analysis of System) and
+  click "Expand All". Under function "foo", you can see that variable "a" does
+  not use ALUTs or FFs but uses MLABs or RAMs. You can change ARR_SIZE in
+  part_2_memory_auto.cpp and see how it affects the decision made by the
+  compiler to implement "a" in MLABs or block RAMs.
+
+3. Implement a local variable in MLABs
+======================================
+
+  In this version (part_3_memory_MLAB.cpp), we use the hls_memory_impl("MLAB")
+  attribute to ask the compiler to implement "a" in MLABs.
+
+  Open the high-level design report
+  (part_3_memory_MLAB.prj/reports/report.html), and go to the Function Memory
+  Viewer (System Viewers > Function Memory Viewer). In the Function Memory List
+  pane, click "a" under function "foo". In the Function Memory Viewer pane, you
+  can see that "a" is implemented in dual-port memories.
+  
+  Go to Area Analysis of System (Area Analysis > Area Analysis of System) and
+  click "Expand All". Under function "foo", you can see that variable "a" uses
+  only MLABs.
+
+4. Implement a local variable in block RAMs
+===========================================
+
+  In this version (part_4_memory_blockRAMs.cpp), we use the
+  hls_memory_impl("BLOCK_RAM") attribute to ask the compiler to implement "a"
+  in block RAMs.
+
+  Open the high-level design report
+  (part_4_memory_blockRAMs.prj/reports/report.html), and go to the Function
+  Memory Viewer (System Viewers > Function Memory Viewer). In the Function
+  Memory List pane, click "a" under function "foo". In the Function Memory
+  Viewer pane, you can see that "a" is implemented in dual port memories.
+  
+  Go to Area Analysis of System (Area Analysis > Area Analysis of System) and
+  click "Expand All". Under function "foo", you can see that variable "a" uses
+  only RAMs.
+
+Summary
+=======
+
+If you do not specify the intended implementation of your local non-constant
+variable, the compiler can choose to implement your variable in registers,
+MLABs or block RAMs based on its size and its access pattern (i.e. number of
+accesses, static/dynamic accesses). You can override the compilers decision by
+using any of the above attributes. Note that this implementation choice may
+have an impact on design area and fMAX.
+
+Note:
+  The memory attributes introduced above have slightly different meaning when
+  applied to constants (i.e. local or global variables that are not
+  initialized at runtime and do not have stores). Check the
+  exceptions/attributes_on_rom tutorial for more information.
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

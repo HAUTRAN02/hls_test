@@ -1,0 +1,80 @@
+This tutorial demonstrates how to control the initialization behavior of statics
+in a component.
+
+There are two options for the initialization behavior of static variables:
+
+  - hls_init_on_reset: Initialize the static variable's value after the
+    component is reset. The initial component invocation after reset may
+    have a longer latency due to the hardware required for initialization.
+
+  - hls_init_on_powerup: Initialize the static variable's value on power-up
+    using a MIF file. This initialization method reduces the component's
+    resource utilization and start-up latency. 
+
+The default behavior of the compiler is to initialize a static variable on
+reset.
+
+In this tutorial, we define a component called "counter", inside which there is
+a static array "counter_arr[ARR_SIZE]" that is initialized with some number from
+0 to 15. The component takes an argument "x" and increments "counter_arr[x]" by 
+one each time it is invoked.
+
+Run the tutorial as described at the end of this document.
+
+1. Initialize a static variable on reset
+========================================
+  
+  In the first version (part_1_init_on_reset.cpp), the static array
+  "counter_arr" is initialized on reset by applying the memory attribute
+  hls_init_on_reset.
+  
+  Open the high-level design report
+  (part_1_init_on_reset.prj/reports/report.html), and go to the Graph Viewer
+  (System Viewers > Graph Viewer). In the Graph List pane, click the "counter"
+  function. In the Graph Viewer pane, you can see that the "counter" function
+  has a "counter.B1.runOnce" basic-block with a store to "counter_arr" that is
+  used to initialize the value of "counter_arr" on the component reset.
+
+  If you go to the Function memory viewer (System Viewers > Function Memory
+  Viewer), you can see that the memory system "counter_arr" has two stores and
+  one load. One of these stores is used to initialize the value of
+  "counter_arr" on the component reset.
+
+2. Initialize a static variable on power-up
+===========================================
+  
+  In the second version (part_2_init_on_powerup.cpp), the static array
+  "counter_arr" is initialized on power-up by applying the memory attribute
+  hls_init_on_powerup.
+
+  Open the high-level design report
+  (part_1_init_on_reset.prj/reports/report.html), and go to the Graph Viewer
+  (System Viewers > Graph Viewer). In the Graph List pane, click the "counter"
+  function. In the Graph Viewer pane, you can see that the "counter" function
+  does not have the initial store to "counter_arr". The value of "counter_arr"
+  is initialized on power-up using a MIF file.
+
+  If you go to the Function memory viewer (System Viewers > Function Memory
+  Viewer), you can see that the memory system "counter_arr" has only one
+  store and one load; there is no extra store to initialize the memory.
+ 
+Compare the area usage of the two versions as shown in the Summary page of
+each report, note that initializing the static variable on power-up uses less
+ALUTs and FFs.
+
+To view the difference in "start-up latency", open the waveforms at
+verification/vsim.wlf in each project folder. Observe the behavior of the start
+and busy signals for the two versions. In the first version where "counter_arr"
+is initialized on reset, the component has a large latency before it is ready
+(i.e. the busy signal goes low when start is asserted high). However, in the
+second version where "counter_arr" is initialized on power-up, the component is
+ready almost instantaneously after the start signal is asserted high.
+ 
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

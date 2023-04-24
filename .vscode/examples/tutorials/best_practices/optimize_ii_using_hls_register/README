@@ -1,0 +1,110 @@
+This tutorial demonstrates a method to improve the loop II when the loop is accessing
+an array that has been implemented as a memory module. Memory modules are accessed
+using load/store operations which have higher latency than register access. By using
+the "hls_register" memory attribute on the array, you can have the compiler implement
+the array using registers in the datapath. As a result, the generated hardware will
+be able to access the array data without using memory operations and this will help
+reduce the loop II.
+
+Further, this tutorial will demonstrate how to use the hls_max_concurrency attribute
+to improve throughput by running multiple invocations of the component in parallel.
+
+1. part_1_implemented_using_memory_module.cpp
+---------------------------------------------
+The loop that we will optimize is:
+
+  for (int i=0; i<N; i++) {
+      std::pair<int,int> k_v_pair = A.read();
+      int key = k_v_pair.first;
+      int value = k_v_pair.second;
+      accumulators[key]+=value;
+  }
+
+The compiler will implement the array "accumulators" as a memory module in the
+generated hardware.
+
+Open the report at the location:
+  part_1_implemented_using_memory_module.prj/reports/report.html
+Click on "System Viewers" and select "Function Memory Viewer". On the left hand pane,
+click on "accumulators" under "design_v1". Observe that the "accumulators" array has
+been implemented as a memory module of size 128 bytes.
+
+Next, click on "Throughput Analysis" and go to "Loop Analysis". Observe that the II
+for the loop inside block "design_v1.B3" is 2. Reading from and writing to the
+"accumulators" array in each iteration creates a load-store dependency. In other
+words, the next iteration cannot start until the current iteration finishes. Since
+the latency of each iteration is high due to the memory access operations, a new
+iteration cannot be launched at every clock cycle. Consequently, the II is greater
+than 1.
+
+Click on the row labeled "design_v1.B1.start" and note that the Details pane at the
+bottom of the page shows that the maximum number of concurrent iterations is 1.
+Essentially, the different invocations run serially which is not optimal for
+throughput.
+
+Note that in the test bench (main function) we are calling the component several
+times using the "ihc_hls_enqueue_noret" call. For more details on the enqueue call
+see the tutorial located at:
+  tutorials/usability/enqueue_call
+
+Click on "Throughput Analysis" and go to the "Verification Statistics" report. This
+report is generated after the simulation flow runs. The Makefile/build.bat script
+provided with this tutorial will run the simulation flow and hence the report will be
+available.
+
+Click on the row labeled "Enqueued component invocations", go to the Details pane at
+the bottom of the page and scroll down. Note the value of throughput for the streams
+A and B. A and B are the input and output streams respectively, of the component.
+Observe that the throughput values are much lower than the optimal value of
+1 word/cycle.
+
+2. part_2_implemented_using_registers.cpp:
+------------------------------------------
+First, note that the attribute "hls_max_concurrency" has been added to the component
+and is set to the value 2. As a result, the generated hardware will run 2 invocations
+of the component in parallel. This will increase the component throughput by trading
+off area consumed on the FPGA.
+
+Next, we use the "hls_register" attribute and rewrite the array declaration:
+
+  int accumulators[KEY_RANGE];
+
+to:
+
+  int accumulators[KEY_RANGE] hls_register;
+This will ensure that the array is implemented using registers in the datapath rather
+than a memory module.
+
+Open the report at the location:
+  part_2_implemented_using_registers.cpp/reports/report.html
+and go to the "Loop Analysis" report again. Observe that the loop II for
+"design_v2.B3" is now 1. Since register accesses have low latency, all operations in
+the loop iteration finish within 1 cycle, allowing one new iteration to be launched
+every clock cycle. Click on the row labeled "design_v2.B1.start" and note that the
+maximum number of concurrent iterations is 2, as listed in the Details pane.
+
+Next, click on "System Viewers", go to "Function Memory Viewer" and observe that the
+array "accumulators" is shown to be implemented using registers.
+
+Finally, go to the "Verification Statistics" report and note that the throughput
+values for both the streams are higher than in part 1 above.
+
+Running 2 invocations in parallel is optimal because the component has two loops
+which can be executed at the same time for two different component invocations. These
+loops are marked as L1 and L2 in the code. While one component invocation is
+executing in loop L2, the next component invocation can start executing in loop L1.
+This overlap leads to the improvement in throughput. Increasing the value of
+concurrency further will not be helpful.
+
+Note that the loop can be optimized further to improve fMAX. To learn how, please
+look at the tutorial on how to optimize array operations, located at:
+  tutorials/best_practices/parallelize_array_operation/
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

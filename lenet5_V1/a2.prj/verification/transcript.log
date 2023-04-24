@@ -1,0 +1,7 @@
+# 
+# do tb/simulation/msim_run.tcl
+# Model Technology ModelSim ALTERA STARTER EDITION vsim 10.5b Simulator 2016.10 Oct  5 2016
+# ** Error: Model Technology ModelSim - Intel FPGA Edition vmap 10.5b Lib Mapping Utility 2016.10 Oct  5 2016
+# vmap work_lib ./libraries/work/ 
+# child killed: interrupt
+# Executing ONERROR command at macro ./tb/simulation/msim_run.tcl line 13

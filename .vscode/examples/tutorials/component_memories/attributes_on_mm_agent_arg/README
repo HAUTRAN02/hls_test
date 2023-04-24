@@ -1,0 +1,85 @@
+This tutorial demonstrates how you can apply memory attributes on Avalon
+Memory Mapped Slave Arguments in HLS.
+
+For more information about memory attributes, see Table "Intel HLS Compiler
+Component Memory Attributes" in the Intel HLS Compiler Reference Manual.
+
+In this tutorial, we define a component called "sum" that takes in a Memory
+Mapped Slave Argument called "mmBuffer". Component "sum" computes the sum of
+all elements in "mmBuffer" and returns it. In addition, it also does the 
+following operation:
+  
+  mmBuffer[i] = mmBuffer[i] + mmBuffer[i+1] + mmBuffer[i+2] + mmBuffer[i+3];
+
+on all indices i that are multiples of 4, i.e. mmBuffer[0] is replaced with
+the value of "mmBuffer[0] + mmBuffer[1] + mmBuffer[2] +mmBuffer[3]",
+mmBuffer[4] is replaced with the value of "mmBuffer[4] + mmBuffer[5] +
+mmBuffer[6] +mmBuffer[7]", and so on.
+
+Run the tutorial as described at the end of this document.
+
+1. Applying banking on HLS Slave memory Argument
+================================================
+
+  The first version (part_1_banking.cpp) applies the hls_numbanks(4) attribute to
+  request 4 memory banks for "mmBuffer". Since the bank-selection bits are not
+  specified, the compiler determines the banks selection bits based on the
+  access pattern to avoid arbitration. In this case, the compiler puts
+  mmBuffer[i+K], where i is a multiple of 4 and 0 <= K <= 3, into memory bank
+  K so that they can be read simultaneously.
+
+  The use of hls_bankwidth(4) ensures the data width of the memory matches the
+  data type. The purpose is to fully constraint the width and depth of the
+  memory. So far we have constrainted the total amount of memory using
+  hls_avalon_slave_memory_argument(BUFFER_SIZE), and since there are 4 banks
+  the amount of memory per bank is fixed. If we want e.g. 256 bytes per bank, it
+  could be implemented as 32 words of 8 bytes, or 64 words of 4 bytes. Using
+  hls_bankwidth(4) forces the latter option.
+
+  Open the high-level design report (part_1_banking.prj/reports/report.html),
+  and go to the Function Memory Viewer (System Viewers > Function Memory
+  Viewer). In the Function Memory List pane, click "mmBuffer" under function
+  "sum". In the Function Memory Viewer pane, you can see that "mmBuffer" has 4
+  banks. Memory bank 'K' has one read port to access data from array element
+  "mmBuffer[i+K]". Since we only write to indices which are multiples of 4,
+  the store only goes to bank 0. The compiler also generates external accesses
+  for read and writes that are connected to all banks, which is used by the
+  testbench for reading and writing data to the slave memory.
+
+2. Applying coalescing on HLS Slave memory Argument
+===================================================
+
+  The second version (part_2_coalescing.cpp) applies the attributes
+  hls_numbanks(1) and hls_bankwidth(16) to request a single 16 bytes wide
+  memory bank for "mmBuffer". In this case, the compiler puts array
+  elements mmBuffer[i], mmBuffer[i+1], mmBuffer[i+2] and mmBuffer[i+3], where
+  i is a multiple of 4, into a single memory word.
+
+  Open the high-level design report
+  (part_2_coalescing.prj/reports/report.html), and go to the Function Memory
+  Viewer (System Viewers > Function Memory Viewer). In the Function Memory
+  List pane, click "mmBuffer" under function "sum". In the Function Memory
+  Viewer pane, you can see that "mmBuffer" now has only 1 bank, and it is 16
+  bytes (128 bits) wide. The memory system has only 1 read (because a single
+  memory word contains all four required array elements) and 1 write. Similar
+  to part 1, the compiler generates external access for read and writes.
+
+Summary
+=======
+
+You can apply memory attributes to your Memory Mapped Slave Arguments in HLS
+to control their memory implementation type (hls_memory_impl), memory bank
+configuration (hls_singlepump, hls_doublepump, hls_max_replicates) and memory
+geometry (hls_numbanks, hls_bankbits and hls_bankwidth). The following memory
+attributes are not supported for slave memories:
+ - hls_register
+ - hls_merge
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

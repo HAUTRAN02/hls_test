@@ -1,0 +1,71 @@
+{
+  "functionNameMapping":
+  {
+    "name":"Synthesized Function Name Mapping"
+    , "columns":
+    ["User-defined Function Name", "Mapped Function Name"]
+    , "children":
+    [
+      {
+        "name":"void __cdecl pred(float *, float *, float *, float *, float *, float *, float *, float *, float *, float *, float *, float *)"
+        , "data":
+        ["pred"]
+        , "debug":
+        [
+          [
+            {
+              "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+              , "line":244
+            }
+          ]
+        ]
+      }
+    ]
+  }
+  , "estimatedResources":
+  {
+    "name":"Estimated Resource Usage"
+    , "columns":
+    ["Function Name", "ALUTs ", "FFs  ", "RAMs ", "DSPs ", "MLABs"]
+    , "children":
+    [
+      {
+        "name":"pred"
+        , "data":
+        [50695, 89047, 537, 56.5, 817]
+        , "debug":
+        [
+          [
+            {
+              "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+              , "line":244
+            }
+          ]
+        ]
+      }
+      , {
+        "name":"Total"
+        , "classes":
+        ["summary-highlight", "nohover"]
+        , "data":
+        [50695, 89047, 537, 56, 817]
+        , "data_percent":
+        [46.2664, 40.634, 104.475, 50.8929]
+      }
+      , {
+        "name":"Available"
+        , "classes":
+        ["summary-highlight", "nohover"]
+        , "data":
+        [109572, 219144, 514, 112, 0]
+      }
+    ]
+  }
+  , "compileWarnings":
+  {
+    "name":"Compile Warnings"
+    , "children":
+    [
+    ]
+  }
+}

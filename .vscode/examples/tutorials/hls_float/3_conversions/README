@@ -1,0 +1,116 @@
+This tutorial demonstrates when conversions appear in designs with
+hls_float types and how to leverage different conversion modes to generate
+compile-type constants using various hls_float types.
+
+In normal floating-point applications, floating-point literals are represented
+as compile time constants and implemented as tie-offs (wires that directly
+connects to Gnd/Vcc) in RTL. This allows the construction of a constant to 
+use no hardware resource in the FPGA flow. However, for hls_float, types with 
+non-standard exponent and mantissa widths cannot be trivially converted from 
+C++ native float or double literals. As a result, the construction of an
+hls_float type is not always free of hardware resource and sometimes logic 
+for intermediate conversion is required to round the native floating-point 
+constant to hls_float.
+
+It is important to understand when the intermediate conversions can occur. 
+Conversion not only happens when you are explicitly casting numbers, it can 
+also happen when you perform arithmetic operations on hls_float types with 
+different precisions, since the operation needs to unify the types of the 
+operands by promoting the less "dominant" types (types that have lower 
+representable range). This is demonstrated in "part1_hls_float_convert.cpp".
+
+You can find the usages of conversion in both the area report and the graph 
+viewer. The name of the rounding block is called "fpga.vpfp.cast".
+
+There are a few ways to generate compile-time hls_float constants that do not 
+require any hardware implementation:
+
+  1. Initializing hls_float<8,23> from float or hls_float<11,52> from double
+     is just a direct bitwise copy(wires in RTL), so if the input float/double 
+     is a compile-time constant, the constructed hls_float is also a compile-
+     time constant. You may want to extend these two types instead of the
+     native float and double type if you want to use hls_float specific 
+     floating-point arithmetic controls (i.e. explicit binary operation 
+     presented in 2_explicit_arithmetic)
+
+  2. Converting from a constant to another hls_float that has rounding mode 
+     "FP_Round::ZERO" also results in a compile time constant. This rounding
+     mode is also respected in a binary operation when promotion rounding is
+     required. This is demonstrated in "part2_hls_float_rzero.cpp"
+
+  3. The "convert_to" method of an hls_float returns itself rounded to 
+     a different type, it accepts a rounding mode as either
+     accurate/area-intensive RNE (rounds to nearest, tie breaks to even) or 
+     accurate/area-intensive RZERO (truncate towards zero). When using RZERO,
+     the compiler will also be able to convert a constant at compile time. 
+     This conversion bypasses the original rounding mode of the hls_float type. 
+     It is demonstrated in "part3_convert_to_func.cpp"
+
+Run the tutorial as described below.
+
+  For this tutorial, run " make " to compile all 3 designs in the current directory.
+  The designs implement exactly the same math formula. For each design, open the
+  corresponding reports in "part1_hls_float_convert.prj", "part2_hls_float_rzero.prj"
+  and part3_convert_to_func.prj (located under reports/report.html).
+
+1. Conversion with RNE
+========================================
+
+  Navigate to the "System Viewer" -> Graph Viewer" and open the view for
+  "Cluster 1" on the left pane. You should see the conversion functions
+  mentioned in the comments of the source code as "vpfp.cast" nodes in the graph. 
+  Count the number of "vpfp.cast" nodes in part 1, you should observe that
+  it contains 4 casts, two of which comes from converting literal types to
+  hls_float.
+
+2. Conversion with RZERO
+========================================
+
+  Navigate to the "System Viewer" -> Graph Viewer" and open the report for
+  "Cluster 1" on the left pane. You should also see the conversion functions
+  mentioned in the comment of the source code as "vpfp.cast" nodes.
+  Count the number of "vpfp.cast" nodes in part 2, you should observe 
+  that it now only contains two cast nodes. Also note that one of the cast 
+  in part 2 is represented as a combination of shift, select, and and operations.
+  The two conversion from literal types are eliminated at compile time.
+
+  The elimination of the conversion block is also reflected in the "Area Analysis ->
+  Area Analysis of System" page. You should observe the initial area cost reported 
+  for constructing the hls_float in part 1 is no longer present, resulting in an overall
+  area reduction of the system.
+
+2. Conversion with the convert_to function 
+===========================================
+
+  Navigate to the "System Viewer" -> Graph Viewer" and open the report for
+  "Cluster 1" on the left pane. You should see the conversion functions
+  mentioned in the comment of the source code as "vpfp.cast" nodes.
+  Count the number of "vpfp.cast" nodes in part 3, you should also observe 
+  that it only contains two casts. The two conversion from literal types are 
+  eliminated at compile time.
+  The elimination of the conversion block is also reflected in the "Area Analysis ->
+  Area Analysis of System" page. You should observe the initial area cost reported 
+  for constructing the hls_float in part 1 is no longer present, resulting in an overall
+  area reduction of the system.
+
+Note:
+  1. When assigning the result of the conver_to function to another hls_float,
+     if the left hand side of the assignment has different exponent or mantissa 
+     widths than the ones specified in the "convert_to" function on the right hand
+     side, another conversion can occur, so please avoid this. 
+ 
+  2. If your code performs computations on constant/literal native floating-point 
+     values, the compiler can sometimes combine them at compile time and save area. 
+     This is a compiler optimization technique called 'constant folding' or 
+     'constant propagation'. Please note that this optimization does not work for 
+     hls_float even when the operands are constant. You should compute your 
+     constant arithmetics in native types or pre-compute by hand. 
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

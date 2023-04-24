@@ -1,0 +1,73 @@
+This tutorial demonstrates how your application would benefit from hls_float 
+by changing the underlying type from double to hls_float<11, 44> (reduced double).
+
+You should consider migrating to hls_float types when you have precision
+requirements that differ from native float and double types, including both the
+range (number of exponent bits) and precision (number of mantissa bits) metrics. 
+
+You can easily convert your existing designs that use native floating-point 
+types to use hls_float: simply switch the original type. For math functions, 
+hls_float has the "ihc_" prefix, you can simply switch your math functions 
+accordingly, e.g. "sin(x)" should be changed to "ihc_sin(x)" for hls_float.
+
+After the migration, you can use the area report to examine the area improvement 
+of your design. In general, the line structure of the area report does not 
+change. For example, instead of seeing a "X bit floating-point multiply" on the 
+old design, the source line for the changed design would show "fpga.vpfp.mul". 
+You should confirm that the area used for the operation has indeed decreased
+from a Quartus compile. You should also make sure that the result of your 
+design still meets your accuracy expectations through simulation.
+
+A very common example is an HLS design that uses double precision types.
+Double precision operations cannot be placed into a single hardened DSP 
+block like single-precision operations, so double precision operations 
+are significantly more area intensive and uses more hardware resource
+Moreover, float only has 23 bits of mantissa but double has 52, this could
+be an overkill for applications that only seek a sweet spot in between.
+Additionally, the mandatory subnormal support in double type is also area 
+intensive and being able to turn it off can be great for area if the 
+application does not consider very small subnormal numbers.
+
+There are two parts in this tutorial.
+Run the tutorial as described at the end of this document.
+
+1. Implementing floating-point designs with native double type
+==================================================================
+  Part 1 implements a simple polynomial approximation of the sine function. 
+  The type we use to implement this is double. To compile the design, run 
+  "make part1_native_type " in the current directory.
+
+  After you have successfully compiled the design, open the report under 
+  "part1_native_type.prj/reports/report.html" and navigate to the "Area Analysis->
+  Area Analysis of System" page to examine the area usage of the system, pay
+  attention to the resource utilization of the double precision add/mult/div 
+  operations as we will compare the numbers to those generated in part 2
+
+2. Implementing floating-point designs with hls_float<11,44>
+================================================================
+
+  part 2 only differs from part 1 in the type definition at the beginning of the file. 
+  This is because hls_float is designed to fully blend in with native C++ types 
+  for syntax and semantic. To compile the design, run " make part2_reduce_double " 
+  in the current directory.
+
+  After you have successfully compiled the design, open the report under
+  "part2_reduce_double.prj/reports/report.html" and navigate to the same "Area 
+  Analysis of System " page, compare the resource utilizations of each binary
+  operation, you should observe an area reduction up to 30 %.
+
+  Open the "Throughput Analysis > Verification Statistics" page, you should observe
+  around 15% percent latency reduction when using the hls_float<11,44> type.
+
+  You should also note that simulations indicate that the values computed for both 
+  designs are the same. This indicates that our original precision expectation 
+  is still satisfied.
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

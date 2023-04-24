@@ -1,0 +1,205 @@
+This tutorial introduces how to interact with volatile slave memories while the
+component is running.
+
+A non-volatile slave memory cannot be accessed while the component is active. A
+volatile slave enables concurrent access of the memory by the slave port and
+component logic, which enables design patterns not otherwise possible.
+
+This tutorial shows how to use a volatile slave memory to implement a dynamic
+CSR scheme, which enables a remote master to control a running component.
+Tutorial "mm_agents_double_buffering" (located at
+<quartus_installdir>/hls/examples/tutorials/interfaces/) shows how to use
+volatile slave memory to implement a double buffering scheme.
+
+Since the external master operates asynchronously to the component invocation,
+the volatile slave must be simulated using a Verilog testbench. Before you start
+this tutorial, you should be familiar with Verilog testbenches and using
+Platform Designer with the Intel HLS Compiler. If you are not, review the
+following tutorials before continuing with this tutorial:
+  - <quartus_installdir>/hls/examples/tutorials/usability/platform_designer_stitching
+  - <quartus_installdir>/hls/examples/tutorials/usability/platform_designer_2xclock
+
+This tutorial is divided into three parts, which are best observed in order. 
+
+
+Design 1.a: part_1_enqueue_nonvolatile.cpp
+==========================================
+ 
+  This design invokes a component with a non-volatile slave memory through
+  direct function calls and enqueue calls in a C++ testbench. The
+  "poll_memory" component polls its slave memory in a while loop and
+  terminates when the memory's values are changed. A Verilog testbench
+  (part_1_tb.sv) demonstrates that attempting concurrent access produces
+  undefined behavior with non-volatile slaves. The hls_doublepump attribute is
+  used throughout the tutorial to show how to implement double pumped slaves in
+  Platform Designer and not for optimality reasons.
+
+  Observations:
+
+  1) In the C++ testbench, the direct call to the component must be invoked
+  multiple times with different operands and values each time. The testbench
+  must wait on a blocking call to the component after every invocation.
+
+  2)  Open part_1_enqueue_nonvolatile.prj/reports/reports.html and click "System
+  Viewers" > "Function Memory Viewer". Observe how no accesses are sharing ports
+  via arbitration.
+
+  3) Enqueue calls do not provide any advantage in this scenario since changing
+  contents of a non-volatile slave memory during runtime results in undefined
+  behavior. Hence, the enqueued calls must be serialized to avoid disrupting the
+  memory contents; resulting in a similar run time as direct calls.
+
+  4) You can investigate the waveforms by running the following command to
+  launch ModelSim: "vsim
+  simulations/part_1_enqueue_nonvolatile.prj/verification/vsim.wlf". Observe the
+  similarity between direct and enqueue calls in regards to the timing of the
+  "start" and "done" signals.
+
+  5) In the waveforms, all read and write requests are done when the component
+  is not running and are inactive during run time.
+
+
+Design 1.b: part_1_tb.sv
+========================
+ 
+  This design illustrates the fundamentals of accessing a slave memory in real
+  time using a Verilog testbench. 
+
+  Observations:
+
+  1) The Verilog testbench attempts to issue a write during component runtime,
+  but fails to see any results of that write due to the slave being
+  non-volatile. You can investigate the waveforms at simulations/part1.wlf by
+  running the following command to launch ModelSim: "vsim
+  simulations/part1.wlf".
+
+  2) vsim1.log, which is the log file for the simulation, should have "FAILED"
+  at the end of the run, since the write is never made.
+
+  This configuration highlights the current shortcomings of using non-volatile
+  slaves since they do not permit concurrent accesses and as a result, increase
+  runtime by introducing more waiting time on component invocations.
+
+
+Design 2.a: part_2_enqueue_volatile.cpp
+=======================================
+
+  This design shows the methods of invoking a component with a volatile slave
+  memory through the use of direct function calls and enqueue calls in a C++
+  testbench. In a direct call, the component (having volatile slaves) has to be
+  invoked multiple times with different operands and values each time. The
+  testbench (written in C++) must wait on a blocking call to the component after
+  every invocation. Using enqueue calls, however, does not provide any advantage
+  in this scenario since the enqueue call structure does not provide the
+  flexibility of changing memory contents during runtime.
+
+  Observations:
+
+  1) Open part_2_enqueue_volatile.prj/reports/reports.html and click "System
+  Viewers" >"Function Memory Viewer". Observe how no accesses are sharing ports
+  via arbitration. Declaring slaves as volatile does not sacrifice the stall
+  freeness of this design.
+
+  2) Hover your mouse over the rectangular loads and stores (which represent
+  slave accesses) and record the numbers specified by "latency". This is the
+  number of cycles taken by each load or store to complete. Keep that number in
+  mind because it is of utmost importance when designing a testbench as
+  discussed in the next section.
+
+  3) You can investigate the waveforms by running the following command to
+  launch ModelSim: "vsim part_2_enqueue_volatile.prj/verification/part2.wlf".
+  Observe the similarity between direct and enqueue calls in regards to the
+  timing of the "start" and "done" signals.
+
+  4) In the waveforms, all read and write requests are done when the component
+  is not running and are inactive during run time.
+
+  This configuration highlights the current shortcomings of using C++
+  testbenches with volatile slaves in regards to execution time since the caller
+  must wait on the component to terminate to alter the contents of the slave
+  memory. This motivates the need for using a Verilog testbench which can offer
+  true concurrency and more flexibility.
+
+
+Design 2.b: part_2_tb.sv
+========================
+
+  This design illustrates the fundamentals of accessing a volatile slave memory
+  in real time using a Verilog testbench. The "poll_memory_volatile" component
+  polls its slave memory in a while loop and terminates when the memory's values
+  are changed by the Verilog testbench "part_2_tb.sv".
+
+  Observations:
+
+  1) In "part_2_tb.sv", three important signals are used to issue writes to
+  memory. The "avs_a_address" signal specifies which element to access in array
+  "a", the "avs_a_write" signal indicates a write operation  to the specified
+  address and the "avs_a_writedata" signal specifies the value to be written.
+
+  2) The testbench deduces that the component has reacted to the memory change
+  when the "return_valid" signal is asserted by the component.
+
+  3) You can investigate the waveforms at simulations/part2.wlf by running the
+  following command to launch ModelSim: "vsim simulations/part2.wlf". Observe:
+    a. The number of clock cycles taken after asserting the "avs_a_write" signal
+    until the "return_valid" signal is asserted is the sum of the number of
+    cycles needed to write the value (store latency we got from reports in the
+    previous section) and the number of cycles needed by the component to read
+    the written data and process them in the while loop.
+
+  5) Compare the waveforms of simulations/part2.wlf to that of
+  simulations/part1.wlf and observe how the "return_valid" signal is never
+  asserted in part 1 since the write never makes it in during run time.
+
+
+Design 3: part_3_CSR_volatile.cpp
+=================================
+
+  Having understood the basics of the dynamics of Verilog testbenches and slave
+  memories, we will move on to a more sophisticated design. The last two designs
+  were meant as a proof of concept, while this design is more suited for real
+  life applications. This design acts like a CSR slave using the slave memory as
+  its status register. You can specify operations and data values for the
+  component during its execution. This design offers a more flexible version of
+  the CSR slave with a customizable layout and size.
+
+  The component awaits instruction from the testbench through the slave memory.
+  By specifying an operation, operand and asserting the "valueReady" signal, the
+  testbench uses the component as a real time CSR and retrieves the output after
+  a few clock cycles.
+
+  Observations:
+
+  1) Open part_3_CSR_volatile.prj/reports/reports.html and click "System
+  Viewers" > "Function Memory Viewer". Observe how a stall free configuration is
+  created with internal and external accesses sharing different ports.
+
+  2) Hover your mouse over the rectangular loads and stores (which represent
+  slave accesses) and record the numbers specified by "latency". This is the
+  number of cycles taken by each load or store to complete. Keep that number in
+  mind because it is of utmost importance when designing a testbench as
+  discussed in the next section.
+
+  3) Observe how the testbench at "part_3_tb.sv" is split into two sections that
+  each request a different operation from the component on different values.
+  After each request, the testbench checks if the correct value was returned in
+  memory at "result", as well as the assertion of the "resultReady" signal.
+
+  4) You can investigate the waveforms at "simulations/part3.wlf" by running the
+  following command to launch ModelSim: "vsim simulations/par3.wlf". Observe:
+    a. The component starts executing when the "call_stall" signal is
+    de-asserted and the "call_valid" is asserted, which happens after a few
+    clock cycles. This delay is needed for initializing the component.
+    b. In the waveform, observe that the number of cycles taken to produce data on
+    "avs_a_readdata" after asserting the "avs_a_read" signal is equal to the
+    value specified by "Read Latency" in Platform Designer.
+    c. "avs_a_write" is asserted for the same number of cycles as the "store latency"
+    value we obtained from reports.
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"

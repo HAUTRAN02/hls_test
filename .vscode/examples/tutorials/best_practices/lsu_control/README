@@ -1,0 +1,114 @@
+At any given load/store site, the HLS compiler lets you control the type of
+load-store unit (LSU) that accesses variable-latency mm_host interfaces.
+This type of control is not available for fixed latency mm_host interfaces.
+
+The control is provided by two functions: load() and store(), which are static
+member functions of the class ihc::lsu defined in HLS/hls.h. This class is
+templated on two parameters:
+1. "style<>" which can be BURST_COALESCED or PIPELINED. This parameter allows
+   you to select between the burst-coalesced and the pipelined LSUs.  The
+   burst-coalesced LSU is the default LSU chosen by the compiler for a
+   variable-latency mm_host interface. This type of LSU is most useful when
+   the LSU is expected to process many load/store requests to memory words that
+   access consecutive memory locations. When accessing consecutive memory
+   locations, the burst-coalesced LSU attempts to dynamically coalesce the
+   requests into large bursts to utilize the memory bandwidth more efficiently.
+   On the other hand, the pipelined LSU consumes significantly less area, but
+   processes the load/store requests individually without any coalescing. This
+   type of LSU should be selected in cases where the designs is tight on area
+   or when the accesses to the mm_host interface are not necessarily
+   consecutive.
+
+2. "static_coalescing<>" which can be true or false. With this parameter, you
+   can allow or prevent the given load/store site from being statically
+   coalesced with other loads/stores. Static-coalescing is usually beneficial
+   because it reduces the total number of LSUs in the designs. However, there
+   are cases where static-coalescing leads to unaligned accesses, which may be
+   undesirable.
+
+Run the Makefile, and for each of the [ProjectFolder] directories specified
+below, navigate to the high-level design report (located in
+[ProjectFolder]/reports/report.html) in the following order:
+
+1. part_1_coalescing_enabled.prj
+   There are two loads from a variable-latency mm_host interface that access
+   consecutive addresses and are both predicated. There is one final store to
+   the second mm_host interfaces.
+
+   a. Open the high-level design report and navigate to "Summary".
+      Observation: In the "Compiler Warnings" section, there is a message
+      saying "Load uses a Burst-coalesced non-aligned LSU".
+
+   b. Navigate to System Viewer > Graph Viewer, and click "dut_fpga" in the
+      left pane. 
+      Observation: There is only one load of width 64 bits, which is of type
+      "Burst-coalesced non-aligned".
+      Explanation: the compiler has decided to coalesce the two 32-bit loads
+      into one 64-bit load. However, this change in load size resulted in a
+      non-aligned LSU which generally has a lower throughput than its aligned
+      counterpart. 
+
+   c. Navigate to to Throughput Analysis > Verification Statistics and make a
+      note of the latency numbers. We are going to compare them to the latency
+      numbers of parts 2 and 3.
+
+   d. Navigate back to "Summary" and look at the "Estimated Resource Usage".
+      Make a note of the total number of RAMs, ALUTs, and FFs used. We are
+      going to compare them to the total number of RAMs, ALUTs, and FFs in
+      parts 2 and 3.
+
+
+2. part_2_coalescing_disabled.prj
+   This design uses the ihc::lsu::load(.) function to disable the
+   static-coalescing observed in part 1. 
+
+   a. Open the high-level design report and navigate to "Summary".
+      Observation: the compiler warning observed in part 1 is gone.
+
+   b. Navigate to System Viewer > Graph Viewer, and click "dut_fpga" in the
+      left pane. 
+      Observation: There are now two load of width 32 bits. The loads use
+      aligned LSUs.
+      Explanation: static-coalescing is disabled leading to two separate LSUs
+      that are aligned. 
+
+   c. Navigate to to Throughput Analysis > Verification Statistics
+      Observation: The latency is lower than the one reported in part 1.
+      Explanation: aligned LSUs are generally more efficient than unaligned
+      LSUs.
+
+   d. Navigate back to "Summary" and look at the "Estimated Resource Usage".
+      Observation: The design is using larger numbers of RAMs, ALUTs, and FFs
+      than part 1.
+      Explanation: the burst-coalesced LSUs are quite area-intensive. We will
+      address that issue in part 3.
+
+3. part_3_pipelined_lsu.cpp
+   This design uses the ihc::lsu::load(.) and the ihc::lsu::store(.) functions
+   to disable static-coalescing AND to force a pipelined LSU implementation
+   instead of a burst-coalesced LSU. 
+   a. Open the high-level design report and navigate to System Viewer > Graph
+      Viewer, and click "dut_fpga" in the left pane. 
+      Observation: There are now two loads of width 32 bits. The loads use
+      aligned LSUs of type "Pipelined". There is also one store of width 32
+      bits. The store uses an aligned LSU of type "Pipelined".
+    
+   b. Navigate to to Throughput Analysis > Verification Statistics
+      Observation: The latency is lower than the one reported in parts 2.
+      Explanation: The burst-coalesced LSU fails to take advantage of the data
+      access patterns, and so, the pipelined LSU ends up performing better.
+
+   c. Navigate to "Summary" and look at the "Estimated Resource Usage".
+      Observation: The design uses a much smaller number of RAMs, ALUTs, and
+      FFs than parts 1 and 2. 
+      Explanation: the pipelined LSUs are much more area-efficient than the
+      burst-coalesced LSUs.
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

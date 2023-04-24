@@ -1,0 +1,82 @@
+This tutorial demonstrates how you can use C++ language features to enable
+efficient initialization of read-only variables.
+
+Run the tutorial as described at the end of this document.
+
+The naive approach
+==================
+
+In this tutorial, a class FibonacciSequence is used to represent a Fibonacci
+sequence. This class is initialized by providing the first two elements of the
+sequence to a constructor that computes the remaining elements of the sequence.
+
+If the initial values of the sequence are known at compile time, none of the
+constructor logic needs to be synthesized: the compiler should be able to
+compute the entire sequence at compile time. This tutorial explores a mechanism
+provided by the C++ language to enforce compile-time initialization without
+having to rely on traditional compiler optimizations.
+
+The tutorial is split into two parts: part 1 (part1_naive_init.cpp) describes
+how the class FibonacciSequence would be implemented and used naively, leading
+to sub-optimal designs. Part 2 (part2_constexpr_init.cpp) explores the use of
+the C++ keyword constexpr to generate an efficient design with minimal code
+changes.
+
+The naive approach
+==================
+
+Open part1_naive_init.cpp and observe the declaration of the variable
+fib_sequence. The programmer's intention here is to express that:
+
+  1- The variable only needs to be initialized once, thus the static
+  keyword is used.
+  2- The variable contents never change once it is initialized, thus
+  the const keyword is used.
+
+Open the high-level design report (part1_naive_init.prj/reports/report.html),
+and go to the Function Memory Viewer (System Viewers > Function Memory Viewer).
+In the Function Memory List pane, expand function "fpga_compute_fib". You can
+see that there is a single memory called "fib_sequence" and that it has both
+store and load ports. The store port exists because the memory contents are
+being initialized at run-time.
+
+Enforcing compile-time initialization of a variable
+===================================================
+
+Open part2_constexpr_init.cpp and observe the declaration of the variable
+fib_sequence. The code identical to that of part 1, with two exceptions:
+
+  1- The constructor of FibonacciSequence is declared as constexpr, indicating
+  that the constructor can be evaluated at compile-time if invoked with
+  compile-time known constants.
+
+  2- The variable fib_sequence is declared as constexpr, indiciating that it
+  *must* be initialized at compile-time. Note that the constructor is invoked
+  with compile-time known constants.
+
+The resulting effect is fib_sequence is initialized at compile-time and a
+compilation error is issued if the initialization of fib_sequence cannot be
+performed at compile-time. Refer to C++ language reference for scenarios where
+constexpr cannot be used.
+
+Open the high-level design report (part2_constexpr_init.prj/reports/report.html),
+and go to the Function Memory Viewer (System Viewers > Function Memory
+Viewer). In the Function Memory List pane, expand function
+"fpga_compute_fib". You can see that there is a single memory called
+"fib_sequence" and that it has no store ports.
+
+Summary
+=======
+
+Using C++ language features, you can write efficient initialization of memory
+systems by executing the initialization code at compile time. This is
+accomplished with the use of constexpr variables and functions.
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

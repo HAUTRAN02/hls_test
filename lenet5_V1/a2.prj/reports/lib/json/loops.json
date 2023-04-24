@@ -1,0 +1,1994 @@
+{
+  "columns":
+  ["", "Pipelined", "II", "Speculated iterations", "Details"]
+  , "children":
+  [
+    {
+      "name":"Component: pred"
+      , "data":
+      ["", "", ""]
+      , "debug":
+      [
+        [
+          {
+            "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+            , "line":244
+          }
+        ]
+      ]
+      , "details":
+      [
+        {
+          "type":"brief"
+          , "text":"Task function"
+        }
+        , {
+          "type":"text"
+          , "text":"Task function"
+        }
+        , {
+          "type":"text"
+          , "text":"Fmax bottlenck blocks: pred.B2, pred.B3, pred.B4, pred.B8, pred.B9, pred.B10, pred.B14, pred.B15, pred.B16, pred.B18, pred.B26, pred.B27, pred.B28, pred.B32, pred.B36, pred.B40, pred.B46"
+        }
+        , {
+          "type":"text"
+          , "text":"Use the %L report to view more details"
+          , "links":
+          [
+            {
+              "view":"Fmax II Report"
+            }
+          ]
+        }
+        , {
+          "type":"text"
+          , "text":"See %L for more information"
+          , "links":
+          [
+            {
+              "guide":"Reference Manual : Component"
+              , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462820640727"
+            }
+          ]
+        }
+      ]
+      , "children":
+      [
+        {
+          "name":"pred.B1.start"
+          , "data":
+          ["Yes", ">=1", "n/a"]
+          , "debug":
+          [
+            [
+              {
+                "filename":"Component invocation"
+                , "line":0
+              }
+            ]
+          ]
+          , "details":
+          [
+            {
+              "type":"brief"
+              , "text":" "
+            }
+            , {
+              "type":"text"
+              , "text":"Stallable instruction: n/a"
+            }
+            , {
+              "type":"text"
+              , "text":"Maximum concurrent iterations: 1 is the default for component invocation loop"
+            }
+            , {
+              "type":"text"
+              , "text":"See %L for more information"
+              , "links":
+              [
+                {
+                  "guide":"Reference Manual : Loops in Components"
+                  , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                }
+              ]
+            }
+          ]
+          , "children":
+          [
+            {
+              "name":"Fused loop pred.B26"
+              , "data":
+              ["Yes", ">=1", "0"]
+              , "debug":
+              [
+                [
+                  {
+                    "filename":"Multiple Locations"
+                    , "line":0
+                  }
+                ]
+              ]
+              , "details":
+              [
+                {
+                  "type":"brief"
+                  , "text":" "
+                }
+                , {
+                  "type":"text"
+                  , "text":"Stallable instruction: n/a"
+                }
+                , {
+                  "type":"text"
+                  , "text":"Maximum concurrent iterations: Capacity of loop"
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"Use the %L viewer to estimate capacity"
+                      , "links":
+                      [
+                        {
+                          "view":"Fmax II Report"
+                        }
+                      ]
+                    }
+                  ]
+                }
+                , {
+                  "type":"text"
+                  , "text":"See %L for more information"
+                  , "links":
+                  [
+                    {
+                      "guide":"Reference Manual : Loops in Components"
+                      , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                    }
+                  ]
+                }
+              ]
+              , "children":
+              [
+                {
+                  "name":"Fused subloop"
+                  , "data":
+                  ["n/a", "n/a", "n/a"]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"lib5.cpp"
+                        , "line":126
+                      }
+                    ]
+                  ]
+                  , "children":
+                  [
+                  ]
+                }
+                , {
+                  "name":"Fused subloop"
+                  , "data":
+                  ["n/a", "n/a", "n/a"]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"lib5.cpp"
+                        , "line":144
+                      }
+                    ]
+                  ]
+                  , "children":
+                  [
+                  ]
+                }
+                , {
+                  "name":"Fused loop pred.B27"
+                  , "data":
+                  ["Yes", ">=1", "0"]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"Multiple Locations"
+                        , "line":0
+                      }
+                    ]
+                  ]
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"Original parent is at line: 144"
+                    }
+                    , {
+                      "type":"brief"
+                      , "text":" "
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"Stallable instruction: n/a"
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"Maximum concurrent iterations: Capacity of loop"
+                      , "details":
+                      [
+                        {
+                          "type":"text"
+                          , "text":"Use the %L viewer to estimate capacity"
+                          , "links":
+                          [
+                            {
+                              "view":"Fmax II Report"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"See %L for more information"
+                      , "links":
+                      [
+                        {
+                          "guide":"Reference Manual : Loops in Components"
+                          , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                        }
+                      ]
+                    }
+                  ]
+                  , "children":
+                  [
+                    {
+                      "name":"Fused subloop"
+                      , "data":
+                      ["n/a", "n/a", "n/a"]
+                      , "debug":
+                      [
+                        [
+                          {
+                            "filename":"lib5.cpp"
+                            , "line":128
+                          }
+                        ]
+                      ]
+                      , "children":
+                      [
+                      ]
+                    }
+                    , {
+                      "name":"Fused subloop"
+                      , "data":
+                      ["n/a", "n/a", "n/a"]
+                      , "debug":
+                      [
+                        [
+                          {
+                            "filename":"lib5.cpp"
+                            , "line":146
+                          }
+                        ]
+                      ]
+                      , "children":
+                      [
+                      ]
+                    }
+                    , {
+                      "name":"Fused loop pred.B28"
+                      , "data":
+                      ["Yes", "1", "1"]
+                      , "debug":
+                      [
+                        [
+                          {
+                            "filename":"Multiple Locations"
+                            , "line":0
+                          }
+                        ]
+                      ]
+                      , "details":
+                      [
+                        {
+                          "type":"text"
+                          , "text":"Original parent is at line: 146"
+                        }
+                        , {
+                          "type":"brief"
+                          , "text":" "
+                        }
+                        , {
+                          "type":"text"
+                          , "text":"Stallable instruction: None"
+                        }
+                        , {
+                          "type":"text"
+                          , "text":"Maximum concurrent iterations: Capacity of loop"
+                          , "details":
+                          [
+                            {
+                              "type":"text"
+                              , "text":"Use the %L viewer to estimate capacity"
+                              , "links":
+                              [
+                                {
+                                  "view":"Fmax II Report"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                        , {
+                          "type":"text"
+                          , "text":"See %L for more information"
+                          , "links":
+                          [
+                            {
+                              "guide":"Reference Manual : Loops in Components"
+                              , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                            }
+                          ]
+                        }
+                      ]
+                      , "children":
+                      [
+                        {
+                          "name":"Fused subloop"
+                          , "data":
+                          ["n/a", "n/a", "n/a"]
+                          , "debug":
+                          [
+                            [
+                              {
+                                "filename":"lib5.cpp"
+                                , "line":130
+                              }
+                            ]
+                          ]
+                          , "children":
+                          [
+                          ]
+                        }
+                        , {
+                          "name":"Fused subloop"
+                          , "data":
+                          ["n/a", "n/a", "n/a"]
+                          , "debug":
+                          [
+                            [
+                              {
+                                "filename":"lib5.cpp"
+                                , "line":148
+                              }
+                            ]
+                          ]
+                          , "children":
+                          [
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+            , {
+              "name":"Fused loop pred.B2"
+              , "data":
+              ["Yes", ">=1", "0"]
+              , "debug":
+              [
+                [
+                  {
+                    "filename":"Multiple Locations"
+                    , "line":0
+                  }
+                ]
+              ]
+              , "details":
+              [
+                {
+                  "type":"brief"
+                  , "text":" "
+                }
+                , {
+                  "type":"text"
+                  , "text":"Stallable instruction: n/a"
+                }
+                , {
+                  "type":"text"
+                  , "text":"Maximum concurrent iterations: Capacity of loop"
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"Use the %L viewer to estimate capacity"
+                      , "links":
+                      [
+                        {
+                          "view":"Fmax II Report"
+                        }
+                      ]
+                    }
+                  ]
+                }
+                , {
+                  "type":"text"
+                  , "text":"See %L for more information"
+                  , "links":
+                  [
+                    {
+                      "guide":"Reference Manual : Loops in Components"
+                      , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                    }
+                  ]
+                }
+              ]
+              , "children":
+              [
+                {
+                  "name":"Fused subloop"
+                  , "data":
+                  ["n/a", "n/a", "n/a"]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"lib5.cpp"
+                        , "line":20
+                      }
+                    ]
+                  ]
+                  , "children":
+                  [
+                  ]
+                }
+                , {
+                  "name":"Fused subloop"
+                  , "data":
+                  ["n/a", "n/a", "n/a"]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"lib5.cpp"
+                        , "line":44
+                      }
+                    ]
+                  ]
+                  , "children":
+                  [
+                  ]
+                }
+                , {
+                  "name":"Fused loop pred.B3"
+                  , "data":
+                  ["Yes", ">=1", "0"]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"Multiple Locations"
+                        , "line":0
+                      }
+                    ]
+                  ]
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"Original parent is at line: 44"
+                    }
+                    , {
+                      "type":"brief"
+                      , "text":" "
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"Stallable instruction: n/a"
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"Maximum concurrent iterations: Capacity of loop"
+                      , "details":
+                      [
+                        {
+                          "type":"text"
+                          , "text":"Use the %L viewer to estimate capacity"
+                          , "links":
+                          [
+                            {
+                              "view":"Fmax II Report"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"See %L for more information"
+                      , "links":
+                      [
+                        {
+                          "guide":"Reference Manual : Loops in Components"
+                          , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                        }
+                      ]
+                    }
+                  ]
+                  , "children":
+                  [
+                    {
+                      "name":"Fused subloop"
+                      , "data":
+                      ["n/a", "n/a", "n/a"]
+                      , "debug":
+                      [
+                        [
+                          {
+                            "filename":"lib5.cpp"
+                            , "line":22
+                          }
+                        ]
+                      ]
+                      , "children":
+                      [
+                      ]
+                    }
+                    , {
+                      "name":"Fused subloop"
+                      , "data":
+                      ["n/a", "n/a", "n/a"]
+                      , "debug":
+                      [
+                        [
+                          {
+                            "filename":"lib5.cpp"
+                            , "line":46
+                          }
+                        ]
+                      ]
+                      , "children":
+                      [
+                      ]
+                    }
+                    , {
+                      "name":"Fused loop pred.B4"
+                      , "data":
+                      ["Yes", "1", "1"]
+                      , "debug":
+                      [
+                        [
+                          {
+                            "filename":"Multiple Locations"
+                            , "line":0
+                          }
+                        ]
+                      ]
+                      , "details":
+                      [
+                        {
+                          "type":"text"
+                          , "text":"Original parent is at line: 46"
+                        }
+                        , {
+                          "type":"brief"
+                          , "text":" "
+                        }
+                        , {
+                          "type":"text"
+                          , "text":"Stallable instruction: None"
+                        }
+                        , {
+                          "type":"text"
+                          , "text":"Maximum concurrent iterations: Capacity of loop"
+                          , "details":
+                          [
+                            {
+                              "type":"text"
+                              , "text":"Use the %L viewer to estimate capacity"
+                              , "links":
+                              [
+                                {
+                                  "view":"Fmax II Report"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                        , {
+                          "type":"text"
+                          , "text":"See %L for more information"
+                          , "links":
+                          [
+                            {
+                              "guide":"Reference Manual : Loops in Components"
+                              , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                            }
+                          ]
+                        }
+                      ]
+                      , "children":
+                      [
+                        {
+                          "name":"Fused subloop"
+                          , "data":
+                          ["n/a", "n/a", "n/a"]
+                          , "debug":
+                          [
+                            [
+                              {
+                                "filename":"lib5.cpp"
+                                , "line":24
+                              }
+                            ]
+                          ]
+                          , "children":
+                          [
+                          ]
+                        }
+                        , {
+                          "name":"Fused subloop"
+                          , "data":
+                          ["n/a", "n/a", "n/a"]
+                          , "debug":
+                          [
+                            [
+                              {
+                                "filename":"lib5.cpp"
+                                , "line":48
+                              }
+                            ]
+                          ]
+                          , "children":
+                          [
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+            , {
+              "name":"pred.B8"
+              , "data":
+              ["Yes", ">=1", "0"]
+              , "debug":
+              [
+                [
+                  {
+                    "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                    , "line":59
+                  }
+                ]
+              ]
+              , "details":
+              [
+                {
+                  "type":"brief"
+                  , "text":" "
+                }
+                , {
+                  "type":"text"
+                  , "text":"Stallable instruction: n/a"
+                }
+                , {
+                  "type":"text"
+                  , "text":"Maximum concurrent iterations: Capacity of loop"
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"Use the %L viewer to estimate capacity"
+                      , "links":
+                      [
+                        {
+                          "view":"Fmax II Report"
+                        }
+                      ]
+                    }
+                  ]
+                }
+                , {
+                  "type":"text"
+                  , "text":"See %L for more information"
+                  , "links":
+                  [
+                    {
+                      "guide":"Reference Manual : Loops in Components"
+                      , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                    }
+                  ]
+                }
+              ]
+              , "children":
+              [
+                {
+                  "name":"pred.B9"
+                  , "data":
+                  ["Yes", ">=1", "0"]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                        , "line":61
+                      }
+                    ]
+                  ]
+                  , "details":
+                  [
+                    {
+                      "type":"brief"
+                      , "text":" "
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"Stallable instruction: n/a"
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"Maximum concurrent iterations: Capacity of loop"
+                      , "details":
+                      [
+                        {
+                          "type":"text"
+                          , "text":"Use the %L viewer to estimate capacity"
+                          , "links":
+                          [
+                            {
+                              "view":"Fmax II Report"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"See %L for more information"
+                      , "links":
+                      [
+                        {
+                          "guide":"Reference Manual : Loops in Components"
+                          , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                        }
+                      ]
+                    }
+                  ]
+                  , "children":
+                  [
+                    {
+                      "name":"pred.B10"
+                      , "data":
+                      ["Yes", "1", "1"]
+                      , "debug":
+                      [
+                        [
+                          {
+                            "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                            , "line":63
+                          }
+                        ]
+                      ]
+                      , "details":
+                      [
+                        {
+                          "type":"brief"
+                          , "text":" "
+                        }
+                        , {
+                          "type":"text"
+                          , "text":"Stallable instruction: None"
+                        }
+                        , {
+                          "type":"text"
+                          , "text":"Maximum concurrent iterations: Capacity of loop"
+                          , "details":
+                          [
+                            {
+                              "type":"text"
+                              , "text":"Use the %L viewer to estimate capacity"
+                              , "links":
+                              [
+                                {
+                                  "view":"Fmax II Report"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                        , {
+                          "type":"text"
+                          , "text":"See %L for more information"
+                          , "links":
+                          [
+                            {
+                              "guide":"Reference Manual : Loops in Components"
+                              , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                            }
+                          ]
+                        }
+                      ]
+                      , "children":
+                      [
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+            , {
+              "name":"Fused loop pred.B32"
+              , "data":
+              ["Yes", ">=1", "0"]
+              , "debug":
+              [
+                [
+                  {
+                    "filename":"Multiple Locations"
+                    , "line":0
+                  }
+                ]
+              ]
+              , "details":
+              [
+                {
+                  "type":"brief"
+                  , "text":" "
+                }
+                , {
+                  "type":"text"
+                  , "text":"Stallable instruction: n/a"
+                }
+                , {
+                  "type":"text"
+                  , "text":"Maximum concurrent iterations: Capacity of loop"
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"Use the %L viewer to estimate capacity"
+                      , "links":
+                      [
+                        {
+                          "view":"Fmax II Report"
+                        }
+                      ]
+                    }
+                  ]
+                }
+                , {
+                  "type":"text"
+                  , "text":"See %L for more information"
+                  , "links":
+                  [
+                    {
+                      "guide":"Reference Manual : Loops in Components"
+                      , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                    }
+                  ]
+                }
+              ]
+              , "children":
+              [
+                {
+                  "name":"Fused subloop"
+                  , "data":
+                  ["n/a", "n/a", "n/a"]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"lib5.cpp"
+                        , "line":163
+                      }
+                    ]
+                  ]
+                  , "children":
+                  [
+                  ]
+                }
+                , {
+                  "name":"Fused subloop"
+                  , "data":
+                  ["n/a", "n/a", "n/a"]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"lib5.cpp"
+                        , "line":179
+                      }
+                    ]
+                  ]
+                  , "children":
+                  [
+                  ]
+                }
+                , {
+                  "name":"pred.B33"
+                  , "data":
+                  ["Yes", "23", "1"]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                        , "line":165
+                      }
+                    ]
+                  ]
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"Original parent is at line: 179"
+                    }
+                    , {
+                      "type":"brief"
+                      , "text":"Data dependency"
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"Most critical loop feedback path during scheduling:"
+                      , "details":
+                      [
+                        {
+                          "type":"text"
+                          , "text":"21.00 clock cycles 32-bit Floating-point Add Operation (%L)"
+                          , "links":
+                          [
+                            {
+                              "filename":"Unknown location"
+                              , "line":"0"
+                            }
+                          ]
+                        }
+                        , {
+                          "type":"text"
+                          , "text":"1.00 clock cycle 32-bit Select Operation (%L > %L)"
+                          , "links":
+                          [
+                            {
+                              "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1/lib5.cpp"
+                              , "line":"272"
+                            }
+                            , {
+                              "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                              , "line":"168"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"Stallable instruction: None"
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"Maximum concurrent iterations: Capacity of loop"
+                      , "details":
+                      [
+                        {
+                          "type":"text"
+                          , "text":"Use the %L viewer to estimate capacity"
+                          , "links":
+                          [
+                            {
+                              "view":"Fmax II Report"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"See %L for more information"
+                      , "links":
+                      [
+                        {
+                          "guide":"Reference Manual : Loops in Components"
+                          , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                        }
+                      ]
+                    }
+                  ]
+                  , "children":
+                  [
+                  ]
+                }
+              ]
+            }
+            , {
+              "name":"pred.B40"
+              , "data":
+              ["Yes", ">=1", "0"]
+              , "debug":
+              [
+                [
+                  {
+                    "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                    , "line":219
+                  }
+                ]
+              ]
+              , "details":
+              [
+                {
+                  "type":"brief"
+                  , "text":"Serial exe: Data dependency"
+                }
+                , {
+                  "type":"text"
+                  , "text":"Iteration executed serially across pred.B41. Only a single loop iteration will execute inside this region due to data dependency on variable(s):"
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"o_fc3 (%L)"
+                      , "links":
+                      [
+                        {
+                          "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                          , "line":"262"
+                        }
+                      ]
+                    }
+                  ]
+                }
+                , {
+                  "type":"text"
+                  , "text":"Stallable instruction: n/a"
+                }
+                , {
+                  "type":"text"
+                  , "text":"Maximum concurrent iterations: Capacity of loop"
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"Use the %L viewer to estimate capacity"
+                      , "links":
+                      [
+                        {
+                          "view":"Fmax II Report"
+                        }
+                      ]
+                    }
+                  ]
+                }
+                , {
+                  "type":"text"
+                  , "text":"See %L for more information"
+                  , "links":
+                  [
+                    {
+                      "guide":"Reference Manual : Loops in Components"
+                      , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                    }
+                  ]
+                }
+              ]
+              , "children":
+              [
+                {
+                  "name":"pred.B41"
+                  , "data":
+                  ["Yes", "23", "1"]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                        , "line":221
+                      }
+                    ]
+                  ]
+                  , "details":
+                  [
+                    {
+                      "type":"brief"
+                      , "text":"Data dependency"
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"Most critical loop feedback path during scheduling:"
+                      , "details":
+                      [
+                        {
+                          "type":"text"
+                          , "text":"21.00 clock cycles 32-bit Floating-point Add Operation (%L)"
+                          , "links":
+                          [
+                            {
+                              "filename":"Unknown location"
+                              , "line":"0"
+                            }
+                          ]
+                        }
+                        , {
+                          "type":"text"
+                          , "text":"1.00 clock cycle 32-bit Select Operation (%L > %L)"
+                          , "links":
+                          [
+                            {
+                              "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1/lib5.cpp"
+                              , "line":"276"
+                            }
+                            , {
+                              "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                              , "line":"224"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"Stallable instruction: None"
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"Maximum concurrent iterations: Capacity of loop"
+                      , "details":
+                      [
+                        {
+                          "type":"text"
+                          , "text":"Use the %L viewer to estimate capacity"
+                          , "links":
+                          [
+                            {
+                              "view":"Fmax II Report"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"See %L for more information"
+                      , "links":
+                      [
+                        {
+                          "guide":"Reference Manual : Loops in Components"
+                          , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                        }
+                      ]
+                    }
+                  ]
+                  , "children":
+                  [
+                  ]
+                }
+              ]
+            }
+            , {
+              "name":"Fused loop pred.B36"
+              , "data":
+              ["Yes", ">=1", "0"]
+              , "debug":
+              [
+                [
+                  {
+                    "filename":"Multiple Locations"
+                    , "line":0
+                  }
+                ]
+              ]
+              , "details":
+              [
+                {
+                  "type":"brief"
+                  , "text":" "
+                }
+                , {
+                  "type":"text"
+                  , "text":"Stallable instruction: n/a"
+                }
+                , {
+                  "type":"text"
+                  , "text":"Maximum concurrent iterations: Capacity of loop"
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"Use the %L viewer to estimate capacity"
+                      , "links":
+                      [
+                        {
+                          "view":"Fmax II Report"
+                        }
+                      ]
+                    }
+                  ]
+                }
+                , {
+                  "type":"text"
+                  , "text":"See %L for more information"
+                  , "links":
+                  [
+                    {
+                      "guide":"Reference Manual : Loops in Components"
+                      , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                    }
+                  ]
+                }
+              ]
+              , "children":
+              [
+                {
+                  "name":"Fused subloop"
+                  , "data":
+                  ["n/a", "n/a", "n/a"]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"lib5.cpp"
+                        , "line":191
+                      }
+                    ]
+                  ]
+                  , "children":
+                  [
+                  ]
+                }
+                , {
+                  "name":"Fused subloop"
+                  , "data":
+                  ["n/a", "n/a", "n/a"]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"lib5.cpp"
+                        , "line":207
+                      }
+                    ]
+                  ]
+                  , "children":
+                  [
+                  ]
+                }
+                , {
+                  "name":"pred.B37"
+                  , "data":
+                  ["Yes", "23", "1"]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                        , "line":193
+                      }
+                    ]
+                  ]
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"Original parent is at line: 207"
+                    }
+                    , {
+                      "type":"brief"
+                      , "text":"Data dependency"
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"Most critical loop feedback path during scheduling:"
+                      , "details":
+                      [
+                        {
+                          "type":"text"
+                          , "text":"21.00 clock cycles 32-bit Floating-point Add Operation (%L)"
+                          , "links":
+                          [
+                            {
+                              "filename":"Unknown location"
+                              , "line":"0"
+                            }
+                          ]
+                        }
+                        , {
+                          "type":"text"
+                          , "text":"1.00 clock cycle 32-bit Select Operation (%L > %L)"
+                          , "links":
+                          [
+                            {
+                              "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1/lib5.cpp"
+                              , "line":"274"
+                            }
+                            , {
+                              "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                              , "line":"196"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"Stallable instruction: None"
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"Maximum concurrent iterations: Capacity of loop"
+                      , "details":
+                      [
+                        {
+                          "type":"text"
+                          , "text":"Use the %L viewer to estimate capacity"
+                          , "links":
+                          [
+                            {
+                              "view":"Fmax II Report"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"See %L for more information"
+                      , "links":
+                      [
+                        {
+                          "guide":"Reference Manual : Loops in Components"
+                          , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                        }
+                      ]
+                    }
+                  ]
+                  , "children":
+                  [
+                  ]
+                }
+              ]
+            }
+            , {
+              "name":"pred.B45"
+              , "data":
+              ["Yes", "49", "3"]
+              , "debug":
+              [
+                [
+                  {
+                    "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                    , "line":236
+                  }
+                ]
+              ]
+              , "details":
+              [
+                {
+                  "type":"brief"
+                  , "text":"Data dependency"
+                }
+                , {
+                  "type":"text"
+                  , "text":"Most critical loop feedback path during scheduling:"
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"38.00 clock cycles 64-bit Floating-point Add Operation (%L > %L)"
+                      , "links":
+                      [
+                        {
+                          "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1/lib5.cpp"
+                          , "line":"277"
+                        }
+                        , {
+                          "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                          , "line":"237"
+                        }
+                      ]
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"4.00 clock cycles 64-bit to 32-bit Floating-point Truncation Operation (%L > %L)"
+                      , "links":
+                      [
+                        {
+                          "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1/lib5.cpp"
+                          , "line":"277"
+                        }
+                        , {
+                          "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                          , "line":"237"
+                        }
+                      ]
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"3.00 clock cycles 32-bit to 64-bit Floating-point Extension Operation (%L > %L)"
+                      , "links":
+                      [
+                        {
+                          "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1/lib5.cpp"
+                          , "line":"277"
+                        }
+                        , {
+                          "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                          , "line":"236"
+                        }
+                      ]
+                    }
+                  ]
+                }
+                , {
+                  "type":"text"
+                  , "text":"Stallable instruction: None"
+                }
+                , {
+                  "type":"text"
+                  , "text":"Maximum concurrent iterations: Capacity of loop"
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"Use the %L viewer to estimate capacity"
+                      , "links":
+                      [
+                        {
+                          "view":"Fmax II Report"
+                        }
+                      ]
+                    }
+                  ]
+                }
+                , {
+                  "type":"text"
+                  , "text":"See %L for more information"
+                  , "links":
+                  [
+                    {
+                      "guide":"Reference Manual : Loops in Components"
+                      , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                    }
+                  ]
+                }
+              ]
+              , "children":
+              [
+              ]
+            }
+            , {
+              "name":"pred.B46"
+              , "data":
+              ["Yes", "1", "3"]
+              , "debug":
+              [
+                [
+                  {
+                    "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                    , "line":239
+                  }
+                ]
+              ]
+              , "details":
+              [
+                {
+                  "type":"brief"
+                  , "text":" "
+                }
+                , {
+                  "type":"text"
+                  , "text":"Stallable instruction: None"
+                }
+                , {
+                  "type":"text"
+                  , "text":"Maximum concurrent iterations: Capacity of loop"
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"Use the %L viewer to estimate capacity"
+                      , "links":
+                      [
+                        {
+                          "view":"Fmax II Report"
+                        }
+                      ]
+                    }
+                  ]
+                }
+                , {
+                  "type":"text"
+                  , "text":"See %L for more information"
+                  , "links":
+                  [
+                    {
+                      "guide":"Reference Manual : Loops in Components"
+                      , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                    }
+                  ]
+                }
+              ]
+              , "children":
+              [
+              ]
+            }
+            , {
+              "name":"Fused loop pred.B14"
+              , "data":
+              ["Yes", ">=1", "0"]
+              , "debug":
+              [
+                [
+                  {
+                    "filename":"Multiple Locations"
+                    , "line":0
+                  }
+                ]
+              ]
+              , "details":
+              [
+                {
+                  "type":"brief"
+                  , "text":" "
+                }
+                , {
+                  "type":"text"
+                  , "text":"Stallable instruction: n/a"
+                }
+                , {
+                  "type":"text"
+                  , "text":"Maximum concurrent iterations: Capacity of loop"
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"Use the %L viewer to estimate capacity"
+                      , "links":
+                      [
+                        {
+                          "view":"Fmax II Report"
+                        }
+                      ]
+                    }
+                  ]
+                }
+                , {
+                  "type":"text"
+                  , "text":"See %L for more information"
+                  , "links":
+                  [
+                    {
+                      "guide":"Reference Manual : Loops in Components"
+                      , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                    }
+                  ]
+                }
+              ]
+              , "children":
+              [
+                {
+                  "name":"Fused subloop"
+                  , "data":
+                  ["n/a", "n/a", "n/a"]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"lib5.cpp"
+                        , "line":79
+                      }
+                    ]
+                  ]
+                  , "children":
+                  [
+                  ]
+                }
+                , {
+                  "name":"Fused subloop"
+                  , "data":
+                  ["n/a", "n/a", "n/a"]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"lib5.cpp"
+                        , "line":108
+                      }
+                    ]
+                  ]
+                  , "children":
+                  [
+                  ]
+                }
+                , {
+                  "name":"Fused loop pred.B15"
+                  , "data":
+                  ["Yes", ">=1", "0"]
+                  , "debug":
+                  [
+                    [
+                      {
+                        "filename":"Multiple Locations"
+                        , "line":0
+                      }
+                    ]
+                  ]
+                  , "details":
+                  [
+                    {
+                      "type":"text"
+                      , "text":"Original parent is at line: 108"
+                    }
+                    , {
+                      "type":"brief"
+                      , "text":" "
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"Stallable instruction: n/a"
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"Maximum concurrent iterations: Capacity of loop"
+                      , "details":
+                      [
+                        {
+                          "type":"text"
+                          , "text":"Use the %L viewer to estimate capacity"
+                          , "links":
+                          [
+                            {
+                              "view":"Fmax II Report"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                    , {
+                      "type":"text"
+                      , "text":"See %L for more information"
+                      , "links":
+                      [
+                        {
+                          "guide":"Reference Manual : Loops in Components"
+                          , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                        }
+                      ]
+                    }
+                  ]
+                  , "children":
+                  [
+                    {
+                      "name":"Fused subloop"
+                      , "data":
+                      ["n/a", "n/a", "n/a"]
+                      , "debug":
+                      [
+                        [
+                          {
+                            "filename":"lib5.cpp"
+                            , "line":81
+                          }
+                        ]
+                      ]
+                      , "children":
+                      [
+                      ]
+                    }
+                    , {
+                      "name":"Fused subloop"
+                      , "data":
+                      ["n/a", "n/a", "n/a"]
+                      , "debug":
+                      [
+                        [
+                          {
+                            "filename":"lib5.cpp"
+                            , "line":110
+                          }
+                        ]
+                      ]
+                      , "children":
+                      [
+                      ]
+                    }
+                    , {
+                      "name":"Fused loop pred.B16"
+                      , "data":
+                      ["Yes", ">=1", "0"]
+                      , "debug":
+                      [
+                        [
+                          {
+                            "filename":"Multiple Locations"
+                            , "line":0
+                          }
+                        ]
+                      ]
+                      , "details":
+                      [
+                        {
+                          "type":"text"
+                          , "text":"Original parent is at line: 110"
+                        }
+                        , {
+                          "type":"brief"
+                          , "text":" "
+                        }
+                        , {
+                          "type":"text"
+                          , "text":"Stallable instruction: n/a"
+                        }
+                        , {
+                          "type":"text"
+                          , "text":"Maximum concurrent iterations: Capacity of loop"
+                          , "details":
+                          [
+                            {
+                              "type":"text"
+                              , "text":"Use the %L viewer to estimate capacity"
+                              , "links":
+                              [
+                                {
+                                  "view":"Fmax II Report"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                        , {
+                          "type":"text"
+                          , "text":"See %L for more information"
+                          , "links":
+                          [
+                            {
+                              "guide":"Reference Manual : Loops in Components"
+                              , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                            }
+                          ]
+                        }
+                      ]
+                      , "children":
+                      [
+                        {
+                          "name":"Fused subloop"
+                          , "data":
+                          ["n/a", "n/a", "n/a"]
+                          , "debug":
+                          [
+                            [
+                              {
+                                "filename":"lib5.cpp"
+                                , "line":83
+                              }
+                            ]
+                          ]
+                          , "children":
+                          [
+                          ]
+                        }
+                        , {
+                          "name":"Fused subloop"
+                          , "data":
+                          ["n/a", "n/a", "n/a"]
+                          , "debug":
+                          [
+                            [
+                              {
+                                "filename":"lib5.cpp"
+                                , "line":112
+                              }
+                            ]
+                          ]
+                          , "children":
+                          [
+                          ]
+                        }
+                        , {
+                          "name":"pred.B17"
+                          , "data":
+                          ["No", "n/a", "n/a"]
+                          , "debug":
+                          [
+                            [
+                              {
+                                "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                                , "line":85
+                              }
+                            ]
+                          ]
+                          , "details":
+                          [
+                            {
+                              "type":"text"
+                              , "text":"Original parent is at line: 112"
+                            }
+                            , {
+                              "type":"brief"
+                              , "text":"Loop unpipelined"
+                            }
+                            , {
+                              "type":"text"
+                              , "text":"Pipelinable middle loop not pipelined to allow interleaving iterations of outer loop into inner loop"
+                            }
+                            , {
+                              "type":"text"
+                              , "text":"Stallable instruction: n/a"
+                            }
+                            , {
+                              "type":"text"
+                              , "text":"Maximum concurrent iterations: 1 due to not being pipelined"
+                            }
+                            , {
+                              "type":"text"
+                              , "text":"See %L for more information"
+                              , "links":
+                              [
+                                {
+                                  "guide":"Reference Manual : Loops in Components"
+                                  , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                                }
+                              ]
+                            }
+                          ]
+                          , "children":
+                          [
+                            {
+                              "name":"pred.B18"
+                              , "data":
+                              ["Yes", ">=1", "0"]
+                              , "debug":
+                              [
+                                [
+                                  {
+                                    "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                                    , "line":87
+                                  }
+                                ]
+                              ]
+                              , "details":
+                              [
+                                {
+                                  "type":"brief"
+                                  , "text":" "
+                                }
+                                , {
+                                  "type":"text"
+                                  , "text":"Stallable instruction: n/a"
+                                }
+                                , {
+                                  "type":"text"
+                                  , "text":"Maximum concurrent iterations: Capacity of loop"
+                                  , "details":
+                                  [
+                                    {
+                                      "type":"text"
+                                      , "text":"Use the %L viewer to estimate capacity"
+                                      , "links":
+                                      [
+                                        {
+                                          "view":"Fmax II Report"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                                , {
+                                  "type":"text"
+                                  , "text":"See %L for more information"
+                                  , "links":
+                                  [
+                                    {
+                                      "guide":"Reference Manual : Loops in Components"
+                                      , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                                    }
+                                  ]
+                                }
+                              ]
+                              , "children":
+                              [
+                                {
+                                  "name":"pred.B19"
+                                  , "data":
+                                  ["Yes", "23", "1"]
+                                  , "debug":
+                                  [
+                                    [
+                                      {
+                                        "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                                        , "line":89
+                                      }
+                                    ]
+                                  ]
+                                  , "details":
+                                  [
+                                    {
+                                      "type":"brief"
+                                      , "text":"Data dependency"
+                                    }
+                                    , {
+                                      "type":"text"
+                                      , "text":"Most critical loop feedback path during scheduling:"
+                                      , "details":
+                                      [
+                                        {
+                                          "type":"text"
+                                          , "text":"21.00 clock cycles 32-bit Floating-point Add Operation (%L)"
+                                          , "links":
+                                          [
+                                            {
+                                              "filename":"Unknown location"
+                                              , "line":"0"
+                                            }
+                                          ]
+                                        }
+                                        , {
+                                          "type":"text"
+                                          , "text":"1.00 clock cycle 32-bit Select Operation (%L > %L)"
+                                          , "links":
+                                          [
+                                            {
+                                              "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1/lib5.cpp"
+                                              , "line":"268"
+                                            }
+                                            , {
+                                              "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                                              , "line":"92"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                    , {
+                                      "type":"text"
+                                      , "text":"Stallable instruction: None"
+                                    }
+                                    , {
+                                      "type":"text"
+                                      , "text":"Maximum concurrent iterations: Capacity of loop"
+                                      , "details":
+                                      [
+                                        {
+                                          "type":"text"
+                                          , "text":"Use the %L viewer to estimate capacity"
+                                          , "links":
+                                          [
+                                            {
+                                              "view":"Fmax II Report"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                    , {
+                                      "type":"text"
+                                      , "text":"See %L for more information"
+                                      , "links":
+                                      [
+                                        {
+                                          "guide":"Reference Manual : Loops in Components"
+                                          , "link":"https://www.intel.com/content/www/us/en/programmable/documentation/ewa1462824960255.html#ewa1462826976357"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                  , "children":
+                                  [
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

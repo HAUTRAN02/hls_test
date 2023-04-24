@@ -1,0 +1,54 @@
+Tutorials for Component Memories
+================================
+
+This directory contains tutorials that demonstrate how to use memory attributes
+to control your component memory and optimize area and/or throughput.
+
+We recommend that you go through the tutorials in the following order:
+  
+  1. Memory Implementation
+     Force your memory to be implemented in registers, LUTs, MLABs or
+     Block RAMs.
+     Attributes:
+      - hls_register
+      - hls_memory
+      - hls_memory_impl("type"), type can be "MLAB" or "BLOCK_RAM"
+
+  2. Memory Bank Configuration
+     Control the number of read/write ports of each memory bank.
+     Attributes:
+      - hls_singlepump
+      - hls_doublepump
+      - hls_max_replicates(N)
+      - hls_simple_dual_port_memory
+
+  3. Memory Geometry
+     Split your memory into banks and control the depth/width of each bank.
+     Attributes:
+     - hls_numbanks(N)
+     - hls_bankbits(b0, b1, ...)
+     - hls_bankwidth(N)
+
+  4. Memory Merging
+     Merge multiple memories in a depth-wise or width-wise manner.
+     Attribute:
+     - hls_merge("key", "direction"), "direction" can be "width" or "depth" 
+
+  5. Static Variable Initialization
+     Control initialization of static variables.
+     Attributes:
+     - hls_init_on_reset
+     - hls_init_on_powerup 
+
+  6. Exceptions 
+     Notes on applying the memory attributes to struct data members and
+     constants.
+
+  7. Attributes on MM Slave Arguments
+     Notes on applying the memory attributes to MM Slave arguments.
+
+You can find more information about these memory attributes in our official
+documentation:
+  - Intel HLS Compiler Reference Manual
+  - Intel HLS Compiler Best Practices Guide
+

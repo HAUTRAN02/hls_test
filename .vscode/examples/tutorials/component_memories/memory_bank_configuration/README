@@ -1,0 +1,164 @@
+This tutorial demonstrates how you can use memory attributes to control the
+number of load/store ports of each memory bank and optimize your component
+area usage or throughput.
+
+For more information about memory attributes, see Table "Intel HLS Compiler
+Component Memory Attributes" in the Intel HLS Compiler Reference Manual.
+
+By default, each memory bank contains one embedded memory IP core that
+provides one physical port for store and one physical port for load. The
+compiler uses a combination of the following methods to generate enough load
+and store ports to  support multiple concurrent accesses to each memory bank
+whenever possible:
+
+  - Replication
+    Replication increases the number of available load ports by packing
+    multiple embedded memory IP cores in a single memory bank. Each memory IP
+    core is referred  as a replicate and has the exact same content as the
+    other replicates. This means that any stores  to the memory bank has to
+    go to all the replicates. This method always consumes more area.
+
+  - Double pumping
+    Double pumped memories are clocked at twice the operating frequency of
+    your component to double the number of load/store ports because each port
+    can be accessed twice in each component clock cycle. In effect, it
+    increases the number of physical ports for each replicate from 2 to 4.
+    This method might reduce your component fMAX and thereby hurt throughput.
+    The logic to enable double-pumping also increases the latency of each
+    access to the memory. 
+
+  - True Dual-Port mode and Simple Dual-Port mode
+    In True Dual-Port mode, each physical port can be both stored to and
+    loaded from. In Simple Dual-Port mode, each physical port is exclusively
+    either a load or a store, but not both. While the True Dual-Port mode
+    provides more flexibility, the maximum data width supported is reduced
+    by half as compared to Simple Dual-Port mode. For more information, see
+    "Use Simple Dual-Port Memories" in the Intel Stratix 10 High-Performance
+    Design Handbook at the following URL:
+    https://www.intel.com/content/www/us/en/programmable/documentation/jbr1444752564689.html#mta1458776244994
+
+Use the following memory attributes to override or control the optimizations
+described earlier:
+  
+  - hls_max_replicates(N)
+    Limit the maximum number of replicates for each memory bank to N.
+
+  - hls_singlepump/hls_doublepump
+    Force all memory banks and its replicates to be clocked at the same
+    frequency as the component (single-pumped) or clocked at the twice the
+    frequency of the component (double-pumped)
+  
+  - hls_simple_dual_port_memory
+    Force all physical ports in simple dual-port mode (i.e. each port will
+    either be used for a load or a store, but not both).
+
+You can use these memory attributes to trade area and throughput (increase
+throughput by consuming more area or decrease area by sacrificing throughput). 
+In most cases, you can achieve the following:
+  - Avoid arbitration by providing more load/store ports, which might consume
+    more area.
+  - Control or limit the area usage of the memory, which might force arbitration
+    and thus hurt throughput.
+
+In this tutorial, we define a component called "foo" with two arrays called 
+"one_store_three_loads" and "two_stores_two_loads". Each array gets its own
+memory system. When the component is called
+  - it initializes "one_store_three_loads", and then does 4 simultaneous
+    accesses to it consisting of 1 store and 3 loads.
+  - it initializes "two_stores_two_loads", and then does 4 simultaneous
+    accesses to it consisting of 2 stores and 2 loads.
+
+For all parts, both memories are forced to have only 1 bank. Also, each memory
+uses a store for initialization, which can share a port with any other access
+because it happens in a different basic block than then other accesses.
+
+Run the tutorial as described at the end of this document.
+
+1. Memory Replication
+=====================
+
+  In the first file (part_1_replication.cpp), both memories are forced to be
+  single pumped (hls_singlepump) and have at most 3 replicates
+  (hls_max_replicates(3)). Therefore, each memory bank can now support 3 
+  simultaneous load ports.
+
+  Open the high-level design report
+  (part_2_memory_coalescing.prj/reports/report.html), and go to the Function
+  Memory Viewer (System Viewers > Function Memory Viewer).
+
+  In the Function Memory List pane, click "one_store_three_loads" under function
+  "foo". In the Function Memory Viewer pane, you can see that it has one port
+  for store and three ports for load. The five simultaneous accesses to this
+  memory are not arbitrated. To see the number of replicates created, click on
+  the label "Bank 0"  under "one_store_three_loads" in the Function Memory List
+  pane. You can now see in the Function Memory Viewer pane that "Bank 0"
+  contains three replicates, and the store goes to all the replicates.
+
+  If you click "two_stores_two_loads" under function "foo" in the Function
+  Memory List pane, you can see that the five simultaneous accesses to this
+  memory are also not arbitrated. The compiler schedules the simultaneous
+  stores in different cycles to share the only available store port. To see
+  the number of replicates created, click on the label "Bank 0"  under
+  "two_stores_two_loads" in the Function Memory List pane. You can now see in
+  the Function Memory Viewer pane that "Bank 0" contains two replicates, and
+  the stores go to all the replicates.
+
+2. Double Pumping
+=================
+
+  In the file (part_2_double_pump.cpp), both memories are double pumped
+  (hls_doublepump) and have 1 replicate (hls_max_replicates(1)). Therefore, each
+  memory has 4 ports in total for loads and stores.
+
+  Open the high-level design report
+  (part_3_double_pump.prj/reports/report.html), and go to the Function Memory
+  Viewer (System Viewers > Function Memory Viewer).
+
+  In the Function Memory List pane, click "one_store_three_loads" under
+  function "foo". In the Function Memory Viewer pane, you can see that it has
+  one bank and four ports for load/store. The four simultaneous accesses to
+  this memory are not arbitrated. By clocking the memory at twice the frequency
+  of the component, we were able to achieve a stall free memory using only one
+  replicate. A similar observation can be made for the memory
+  "two_stores_two_loads".
+
+3. Simple Dual Port Mode
+========================
+
+  In the file (part_3_simple_dual_port.cpp), both memories are double pumped
+  (hls_doublepump) and have 1 replicate (hls_max_replicates(1)). Additionally,
+  both memories are forced to be in simple dual-port mode. Therefore, each
+  memory is forced to have a maximum 2 load ports and a maximum of 2 store
+  ports.
+
+  Open the high-level design report
+  (part_3_simple_dual_port.prj/reports/report.html), and go to the Function
+  Memory Viewer (System Viewers > Function Memory Viewer).
+
+  In the Function Memory List pane, click "one_store_three_loads" under
+  function "foo". In the Function Memory Viewer pane, you can see that the
+  compiler connects 2 loads to one memory port and remaining load to the other
+  memory port to satisfy the constraints imposed by the simple dual-port
+  attribute. 
+
+  If you click "two_stores_two_loads" under function "foo", you will see that
+  each load gets its own port (there are only 2 loads) and all the stores share
+  a single store port. Since the number of required load and store ports are
+  less than the constraints imposed by the simple dual-port attribute, it
+  doesn't do anything in this case.
+  
+Summary
+=======
+
+Using the above attributes, you can add extra accesses without arbitration by:
+  - Replication (loads only)
+  - Double pumping the memory
+
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"

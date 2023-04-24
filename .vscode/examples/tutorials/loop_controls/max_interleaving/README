@@ -1,0 +1,75 @@
+This tutorial demonstrates a method to reduce the area utilization of a loop
+that meets the following conditions:
+    - The loop has an II > 1.
+    - The loop is contained in a pipelined loop.
+    - The loop execution is serialized across the invocations of the pipelined
+      loop.
+
+
+For a loop with an II > 1, contained inside a pipelined loop, and with an
+execution count that does not vary for all iterations of the containing loop,
+the compiler produces hardware that allows the loop to interleave
+invocations of the containing loop.
+
+That is, although a new iteration cannot be issued into the
+pipeline on every cycle, an iteration from a different invocation of the loop
+(corresponding to a *different* iteration of the containing loop) can be issued.
+Interleaving allows the generated design to have a high occupancy despite a high
+II, which improves throughput.
+
+In a nest of pipelined loops, pipelined iterations of a loop may be serialized
+by the compiler across an inner loop if the inner loop imposes a data dependency
+on the containing loop.
+For example:
+
+L1: for (int i = 0; i < N; i++) {
+  L2: for (int j = 0; j < N; j++) {
+        sum += A[i][j];
+  }
+  sum += B[i];
+}
+
+In this loop nest, pipelined iterations of L1 are serialized across L2 due to a
+data dependency on the variable 'sum'. The compilation report for the above code
+snippet details this information in the "Loops analysis" view, in the Details
+pane for loop L1:
+Iteration executed serially across unoptimized.B4. Only a single loop iteration
+will execute inside this region due to data dependency on variable(s):
+    sum (test.cl: 7)
+
+For such scenarios, the generation of a loop datapath that supports interleaving
+iterations of the containing pipelined loop yields little to no benefit in
+throughput. The generated loop datapath restricts the inner loop to be executed
+by one invocation at a time. Manually restricting or disabling the amount of
+interleaving on the inner loop reduces the area overhead imposed by a
+datapath generated to handle interleaved invocations. Mark a loop with the
+max_interleaving pragma to limit the number of interleaved invocations
+supported by the generated loop datapath.
+
+Open the report for part_1_basic.cpp with the original loop nest, in the following
+location:
+    part_1_basic.prj/reports/report.html
+Navigate to the "Area Analysis" view of the report and observe the resource
+utilization for the 'transform' kernel variables. Note the depth (replication
+factor) of the register variables belonging to the inner loop, being equal to
+the loop's II, or the maximum number of interleaved iterations supported by the
+datapath. Also, note the number of MLABs used to implement the 'accum' variable
+and the feedback path of the inner loop.
+
+Open the report for part_2_restricted_interleaving.cpp with the loop nest
+annotated with the max_interleaving pragma, in the following location:
+    part_2_restricted_interleaving.prj/reports/report.html
+Navigate to the "Area Analysis" view of the report and observe the resource
+utilization for the 'transform' kernel variables. Observe that the depth
+(replication factor) of the inner loop's register variables is equal to 1,
+reducing the design's overall ALUT and FF resources. The number of MLABs for
+the overall design is also reduced by ~1.25x. 
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

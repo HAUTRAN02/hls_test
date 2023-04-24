@@ -1,0 +1,106 @@
+This tutorial demonstrates how to use the explicit versions of hls_float binary
+operators to perform floating-point arithmetic operations based on your need.
+
+In normal C++ applications, the basic binary operations have little
+expressiveness. On the contrary, FPGAs implement these operations using 
+configurable logic, so you can improve your design's QoR by fine-tuning the 
+floating-point operations since they are usually area and latency intensive.
+
+You can fine-tune the floating-point arithmetic operations when you are 
+multiplying numbers with different precisions and/or outputting the
+result of the multiply with a different precision. You may also want to
+fine-tune arithmetic operations when you are not concerned about the accuracy of 
+the operation, or when you expect your values to easily fall into the subnormal 
+range and you do not wish to flush them to zero when that happens.
+
+To address these use cases, hls_float provides an explicit version of binary 
+operators using template functions. The explicit operators provide 3 more main 
+features in addition to basic binary operators.
+
+   1. Allow inputs and outputs with different precisions in the multiplication.
+
+   2. Tweak the area and accuracy trade off of the binary operations. The binary
+      operations has high accuracy by default and produces results that is 
+      0.5 ULP off from the most correct result. Users can override the default
+      to choose an implementation with less area but also less precision(1 ULP)
+
+   3. Turn on/off subnormal support in the binary operations. 
+      To save area, subnormal support in the binary operators are default to auto,
+      this means it would be off unless there is direct harden DSP support for it.
+      Users can turn it on when the computation is expected to produce values
+      close to 0, with some additional area.
+
+The general form of explicit operations are as follows:
+
+for addition, subtraction and division:
+  Syntax:
+    hls_float<E, M>::add/sub/div<AccuracyOption, SubnormalOption>(op1, op2)
+  Usage:
+    - rounds op1 and op2 to the specified E (exponent) and M (mantissa) widths
+    - implements the operation with the provided accuracy and subnormal options.
+    - returns the result with type hls_float<E, M>
+
+for multiplication:
+  Syntax:
+    hls_float<E, M>::mul<AccuracyOption, SubnormalOption>(op1, op2)
+  Usage:
+    - leaves op1 and op2 intact
+    - implements the operation with the provided accuracy and subnormal options.
+    - returns the result with type hls_float<E, M>
+
+AccuracyOption is optional and can be one of the ENUMs below:
+  ihc::fp_config::FP_Accuracy::HIGH
+  ihc::fp_config::FP_Accuracy::LOW
+
+SubnormalOption is optional can be one of the ENUMs below:
+  ihc::fp_config::FP_Subnormal::ON
+  ihc::fp_config::FP_Subnormal::OFF
+
+Both ENUMs need to be compile time constants
+you must specify AccuracyOption if you want to specify SubnormalOption.
+
+After fine-tuning the operations, the overall structure of the area report
+would remain the same, but for each of the fine-tuned operation, you should
+see an area reduction on the same line if you have chosen to use the low 
+accuracy variant of the operation, or an area increase if you decide to 
+enable subnormal support on an operation.
+
+The tutorial is split into two parts.
+
+1. Implementing floating-point operations with overloaded operators
+========================================
+
+  The first part demonstrates a design that uses hls_float with arithmetic 
+  operators to compute the quadratic formula.
+  Run "make part1_operator" to compile the first part of the design. 
+  
+  After you have successfully compiled the design, open 
+  "part1_operator.prj/reports/report.html " and open the Area Analysis page.
+  Make sure you understand the resource utilization from each operation as we
+  will compare the data to the second part of the tutorial.
+
+2. Implementing floating-point operations with explicit functions
+========================================  
+
+  The second part implements the same design but with the explicit template 
+  operations with more considerate tweaking. Please refer to the comments
+  in the code to understand the fine-tuning justifications and syntax. Run 
+  "make part2_explicit" to compile the second part of the design.
+
+  After you have successfully compiled the design, open
+  "part2_explicit.prj/reports/report.html " and compare the "Area Analysis"
+  page from part 1. You should observe a decrease in area of the multiplier
+  in the calculation of "b*b - 4*a*c" at their corresponding line numbers.
+  You should also observe a significant area estimation reduction of the 
+  divider from changing it to the low accuracy mode in the report.
+  Also notice the area increase of the subtraction on line 20 of part 1
+  and line 42 of part 2 as we enable the subnormal support.
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

@@ -1,0 +1,34 @@
+This tutorial demonstrates how to remove a loop-carried dependency to improve
+the performance of an FPGA component. In the component 'unoptimized' in the file
+part_1_loop_carried_dependency.cpp, a sum is computed over two loops.  The inner loop
+sums over the 'A' data and the outer loop over the 'B' data. Since the value 'sum'
+is updated in both loops, this introduces a 'loop carried dependency' that prevents
+the outer loop from being pipelined, reducing performance.
+
+The component 'optimized' in part_2_no_loop_carried_dependency.cpp uses an independent
+variable 'sum2' that is not updated in the outer loop. The independent variable allows
+the outer loop to be pipelined, improving performance.
+
+After running the tutorial, look at the reports to see the effects of rewriting the
+program.
+
+Open the report for the unoptimized code, located here:
+    part_1_loop_carried_dependency.prj/reports/report.html
+Navigate to the "Loops analysis" view of the report and observe that the loop in
+block B2 is not pipelined due to a Loop-carried dependency.  The II of the loop is
+"n/a". The maximum concurrent iterations of the loop is 1, as it is not pipelined.
+
+Open the report for the optimized code, located here:
+    part_2_no_loop_carried_dependency.prj/reports/report.html
+Navigate to the "Loops analysis" view of the report and observe the loop in block B2
+is now pipelined with an II of ">=1".  The II is ">=1" because the load from memory
+will take more than 1 cycle.  The maximum concurrent iterations of the loop
+is now the capacity of the loop, improving the performance.
+
+This tutorial requires the following tools to be installed:
+  - i++
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"

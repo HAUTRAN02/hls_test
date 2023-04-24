@@ -1,0 +1,41 @@
+There are two tutorials related to speculated iterations, review them in the 
+following order:
+	1. tutorials/loop_controls/speculated_iterations
+	2. tutorials/loop_controls/small_speculated_iterations
+
+Extra speculated iterations may introduce some overhead, because a new 
+invocation of a loop may not begin until all speculated iterations of its 
+previous invocation have completed. 
+
+In cases where a loop body with low latency is expected to be frequently 
+invoked (for example, a loop with a short trip count) use the pragma to reduce 
+the number of speculated iterations. 
+
+Using the pragma can reduce this overhead, but choosing a pragma value that is
+too low may increase the II (due to not having enough time to evaluate the exit 
+condition).
+
+The tutorial runs the design twice:
+	1. With the compiler-determined number of speculated iterations on 
+	component `myDotProd`
+	2. With `#pragma speculated_iterations 0` on component `myDotProd`
+
+To see the improvement between designs, open the High-Level Design Reports: 
+	- part_1_specIter.prj/reports/report.html 
+	- part_2_noSpecIter.prj/reports/report.html
+
+Navigate to Throughput Analysis > Loops Analysis, find component "myDotProd". 
+Observe in the report for part_1_specIter.prj, the compiler-determined number of
+speculated iterations is 1. In the report for part_2_noSpecIter.prj, the number
+of speculated iterations is 0 after we turned it off.
+
+Navigate to Throughput Analysis > Verification Statistics in both reports. 
+Observe that the latency was decreased in part_2_noSpecIter.prj
+
+This tutorial requires the following tools to be installed: 
+	- Intel HLS Compiler
+	- ModelSim
+
+To run this tutorial: 
+	- On Linux run "make" 
+	- On Windows run "build"

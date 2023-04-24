@@ -1,0 +1,27 @@
+This HLS design sorts a small array of numbers that are passed by value using a
+naive comparison-sort to compare all numbers to all other numbers.
+
+To compile and simulate on Linux, use
+
+make tutorial-fpga
+./tutorial-fpga
+
+To compile and simulate on Windows, use
+
+build.bat
+tutorial-fpga.exe
+
+To compile and emulate on Linux, use
+
+make tutorial-fpga DEVICE=x86-64
+./tutorial-fpga
+
+To compile and emulate on Windows, use
+
+build.bat default x86-64
+tutorial-fpga.exe
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - Platform Designer
+  - Intel Quartus Prime Pro Edition

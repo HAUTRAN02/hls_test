@@ -1,0 +1,122 @@
+This tutorial demonstrates the impact of using --daz and --rounding flags.
+These flags are associated with native double-precision floating-point
+operations. These flags should only be used if the application can tolerate
+small differences in floating-point results.
+
+Flag --daz disables subnormal support in double-precision floating-point
+operations, including add, mult, div, exp, trigonometric operations, and fused
+sincos. It saves area by rounding subnormal numbers to zero.
+
+Flag --rounding=<ieee|faithful> controls rounding scheme of double-precision
+adders, multipliers, and dividers. By default (not setting this flag) adders
+and multipliers use IEEE-754 RNE rounding (0.5 ULP), and dividers use faithful
+rounding (1 ULP). --rounding=ieee makes all three operations using IEEE-754 RNE
+rounding, and --rounding=faithful makes all three operations using faithful
+rounding. Please refer to HLS Reference Manual to see the explanation of two
+rounding schemes.
+
+The following table shows all math functions affected by any of these flags and
+their default settings. N/A indicates field doesn't apply to that function.
+
+| Function        | Subnormal Support | Rounding Scheme       |
+|-----------------|-------------------|-----------------------|
+| + (double)      | On                | IEEE-754 RNE Rounding |
+| - (double)      | On                | IEEE-754 RNE Rounding |
+| * (double)      | On                | IEEE-754 RNE Rounding |
+| / (double)      | On                | Faithful              |
+| / (single)      | N/A               | Faithful              |
+| sqrt   (double) | On                | N/A                   |
+| floor  (double) | On                | N/A                   |
+| ceil   (double) | On                | N/A                   |
+| cbrt   (double) | On                | N/A                   |
+| rsqrt  (double) | On                | N/A                   |
+| hypot  (double) | On                | N/A                   |
+| modf   (double) | On                | N/A                   |
+| exp    (double) | On                | N/A                   |
+| expm1  (double) | On                | N/A                   |
+| exp2   (double) | On                | N/A                   |
+| exp10  (double) | On                | N/A                   |
+| log    (double) | On                | N/A                   |
+| log1p  (double) | On                | N/A                   |
+| log2   (double) | On                | N/A                   |
+| log10  (double) | On                | N/A                   |
+| powr   (double) | On                | N/A                   |
+| pown   (double) | On                | N/A                   |
+| sin    (double) | On                | N/A                   |
+| cos    (double) | On                | N/A                   |
+| tan    (double) | On                | N/A                   |
+| sinpi  (double) | On                | N/A                   |
+| cospi  (double) | On                | N/A                   |
+| tanpi  (double) | On                | N/A                   |
+| asin   (double) | On                | N/A                   |
+| acos   (double) | On                | N/A                   |
+| atan   (double) | On                | N/A                   |
+| atan2  (double) | On                | N/A                   |
+| asinpi (double) | On                | N/A                   |
+| acospi (double) | On                | N/A                   |
+| atanpi (double) | On                | N/A                   |
+| sincos (double) | On                | N/A                   |
+
+-------------------------------------------------------------------------------
+part_1_default: baseline
+-------------------------------------------------------------------------------
+The first part of the tutorial serves as the baseline and is compiled without
+any special floating-point flags. This part will be a good reference point to
+compare following parts. This tutorial will compile the same source file for
+all four parts in this tutorial, but with different command line flags. Refer
+to the Graph Viewer in the report of part_1_default, observe details section of
+each floating-point operation nodes. You can find that all double-precision
+operations have subnormal support; double adder and double multiplier are using
+IEEE-754 RNE rounding and double divider is using faithful rounding.
+
+-------------------------------------------------------------------------------
+part_2_disable_subnormal: --daz
+-------------------------------------------------------------------------------
+In part_2 we use --daz command line flag to disable subnormal support. Refer to
+the Quartus resource utilization table on Summary page in the reports of
+part_1_default and part_2_disable_subnormal to see the impact of --daz flag on
+reducing ALMs and FFs usage. Double divider in part_2 uses one more DSP than in
+part_1 because some calculations done by ALMs and FFs in part_1 are implemented
+by DSP in part_2. Also look at the details section of each double-precision
+operation nodes in Graph Viewer and confirm that subnormal support is disabled.
+Note that by comparing Quartus resource utilization of single-precision divider
+in part_1 and part_2, and looking into details section of single-precision
+divider in Graph Viewer, you can verify that single-precision operation is not
+affected by --daz flag. 
+
+-------------------------------------------------------------------------------
+part_3_faithful_rounding: --rounding=faithful
+-------------------------------------------------------------------------------
+In part_3 we use --rounding=faithful command line flag instead of --daz. The
+effect of using faithful rounding is not as much as disabling subnormal in
+part_2. Refer to the Quartus resource utilization table on the Summary page in
+the reports of part_1_default and part_3_faithful_rounding. Observe that
+resource usage of double adder is slightly reduced, and resource usage of
+double multiplier almost remains the same. Also look at details section of
+double adder and double multiplier in Graph Viewer to confirm their rounding
+scheme has been changed to faithful rounding. Note that double divider hasn't
+changed comparing with part_1 because divider uses faithful rounding as
+default.
+
+-------------------------------------------------------------------------------
+part_4_subnormal_and_rounding: --daz --rounding=faithful
+-------------------------------------------------------------------------------
+The greatest benefit from using --daz and --rounding=faithful flags comes when
+they are combined, so we use them together in part_4. By referring to the
+Quartus resource utilization table on Summary page in the reports of
+part_1_default, part_2_disable_subnormal, and part_4_subnormal_and_rounding,
+observe that combining two flags saves more area than a single --daz. The most
+notable improvement is double multiplier in part_4 uses one less DSP than in
+part_1 and part_2. 
+
+For more information on this flag and pragma, please refer to the Intel HLS
+Compiler documentation.
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

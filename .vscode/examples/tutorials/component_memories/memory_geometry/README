@@ -1,0 +1,181 @@
+This tutorial demonstrates how you can use memory attributes to control the
+geometry of your on-chip memory and optimize your component area usage and/or
+throughput. 
+
+For more information about these memory attributes, see Table "Intel HLS
+Compiler Component Memory Attributes" in the Intel HLS Compiler Reference
+Manual.
+
+The contents of a local memory can be partitioned into one or more banks, such
+that each bank contains a subset of data contained within the local memory.
+The compiler will try to create a minimum-area stall-free memory system. If a
+different area/performance trade-off is desired, or the compiler's heuristic
+fails to find a stall-free configuration, the user can override the compiler
+selected parameters for geometry using memory attributes. The compiler
+provides the following memory attributes for splitting each on-chip memory
+into multiple banks and for controlling the width of each bank (depth is a
+function of the width and the memory size):
+
+  - hls_numbanks(N)
+    Split the memory into N banks.
+
+  - hls_bankbits(b, b+1 ..., b+(N-1))
+    Split the memory into 2^N banks by using bits 'b' to 'b+(N-1)' of the
+    element address as bank-selection bits. Bank-selection bits are 0 based. 
+    The remaining bits are used to address a memory word within a bank. For
+    more information on how to specify bank-bits for a local memory, visit:
+    https://www.intel.com/content/www/us/en/programmable/documentation/nml1505158467345.html#ccw1479135033107
+
+  - hls_bankwidth(N)
+    Force the width of each memory bank to be N bytes.
+
+In this tutorial, we define a component called "foo" which contains a 3
+dimensional array "a[DIM_SIZE][DIM_SIZE][DIM_SIZE]", where DIM_SIZE is 4. Each
+time the component is called (":" means all indices in bounds):
+  - it stores "wdata" to "a[:][waddr&(DIM_SIZE-1)][:]"
+  - loads from "a[:][raddr&(DIM_SIZE-1)][:]".
+
+Variables "waddr", "raddr" and "wdata" are passed as arguments. Note that the
+bitwise And (&) with "DIM_SIZE-1" masks the indices for the second dimension, 
+and ensures that they do not go out of bounds as long as DIM_SIZE is a power
+of 2. For consistency across all parts, each memory bank for "a" is forced to
+have only 2 ports for reads and writes.
+
+Run the tutorial as described at the end of this document.
+
+1. Memory Coalescing
+====================
+
+  In the first part (part_1_memory_coalescing.cpp), we force the memory system
+  to have a single bank (hls_numbanks(1)) and we use the hls_bankwidth attribute
+  to coalesce the elements in the third dimension of "a" so that array
+  elements "a[i][j][:]" (i, j in 0 to DIM_SIZE-1) can be read/written with a
+  single access.
+
+  Open the high-level design report
+  (part_1_memory_coalescing.prj/reports/report.html), and go to the Function
+  Memory Viewer (System Viewers > Function Memory Viewer). In the Function
+  Memory List pane, click "a" under function "foo". In the Function Memory
+  Viewer pane, you can see that "a" has one bank with eight arbitrated
+  accesses (4 loads and 4 stores), with an additional stall-free store used
+  for initialization. In the details pane, you can see that Bank width (word
+  size) is reported to be 128 bits, which confirms that the requested width
+  was implemented by the compiler.
+
+  If coalescing is disabled by using hls_bankwidth(sizeof(int)), the total
+  number of loads/stores increases roughly by a factor of DIM_SIZE because
+  loads/stores to the DIM_SIZE elements in the lowest dimension will require
+  separate accesses. Note that the arbitrated loads/stores can hurt 
+  throughput, area, and fMAX.
+
+2. Automatic Memory Splitting
+=============================
+
+  In this version (part_2_memory_splitting_auto.cpp), in addition to memory
+  coalescing, we use the hls_numbanks(DIM_SIZE) attribute to split memory "a"
+  into DIM_SIZE (i.e. 4) banks. Since the bank-selection bits are not
+  specified, the compiler tries to find the banks bits that can avoid
+  arbitration.
+
+  Open the high-level design report
+  (part_2_memory_splitting_auto.prj/reports/report.html), and go to the
+  Function Memory Viewer (System Viewers > Function Memory Viewer). In the
+  Function Memory List pane, click "a" under function "foo". In the Function
+  Memory Viewer pane, you can see that "a" has 4 banks. The number of loads
+  and stores are still the same, 4 loads and 5 stores (1 store is used for
+  initialization), but they are all stall-free. This happens because the
+  compiler, based on the access pattern of the loads and stores, was able to
+  partition the data into banks in such a way that all loads and stores
+  (except the store used for initialization) can now get their data from only
+  1 bank.
+
+3. Manual Memory Splitting
+=============================
+
+  In this version (part_3_memory_splitting_manual.cpp), in addition to memory
+  coalescing, we use the hls_bankbits(4,5) attribute to split memory "a" into
+  DIM_SIZE (i.e. 4) banks.
+
+  Recall that bank-selection bits specified in
+  hls_bankbits attribute are 0 based. Let b0, b1, b2, b3, b4 and b5 represent
+  the element address bits (we need 6 bits to address 64 elements in "a").
+  Then, hls_bankbits(4,5) implies using b4 and b5 as bank-selection bits. This
+  means that elements in "a" with  element addresses having the same value for
+  bits b4 and b5 will end up in the same bank. With this change, the 4
+  coalesced loads from "a[:][raddr][:]" now load data from 4 different banks;
+  "a[0][raddr][:]" from bank 0, "a[1][raddr][:]" from bank 1, "a[2][raddr][:]"
+  from bank 2, and "a[3][raddr][:]" from bank 3. Same is true for the
+  coalesced stores.
+
+  Open the high-level design report
+  (part_3_memory_splitting_manual.prj/reports/report.html), and go to the
+  Function Memory Viewer (System Viewers > Function Memory Viewer). In the
+  Function Memory List pane, click "a" under function "foo". In the Function
+  Memory Viewer pane, you can see that "a" has 4 banks, and each bank has only
+  1 load and 1 store (plus the initialization store that goes to all banks).
+  
+  In the details pane, if you look at the 'Address bit information' field, you
+  can see that it reports the bank-bits as b6 and b7, instead of b4 and b5.
+  This happens because the address bits reported here are based on byte
+  addresses, not element addresses. Because every element of "a" is 4 bytes in
+  size, bits b4 and b5 in element address bits are the same as bits b6 and b7
+  in byte addressing.
+
+  Below is a diagram of the array's contents spread across the four banks
+  for part 2 and part 3 (each line represents a separate memory word):
+
+             | a[0][0][0], a[0][0][1], a[0][0][2], a[0][0][3]
+      bank 0 | a[0][1][0], a[0][1][1], a[0][1][2], a[0][1][3]
+             | a[0][2][0], a[0][2][1], a[0][2][2], a[0][2][3]
+             | a[0][3][0], a[0][3][1], a[0][3][2], a[0][3][3]
+
+             | a[1][0][0], a[1][0][1], a[1][0][2], a[1][0][3]
+      bank 1 | a[1][1][0], a[1][1][1], a[1][1][2], a[1][1][3]
+             | a[1][2][0], a[1][2][1], a[1][2][2], a[1][2][3]
+             | a[1][3][0], a[1][3][1], a[1][3][2], a[1][3][3]
+
+             | a[2][0][0], a[2][0][1], a[2][0][2], a[2][0][3]
+      bank 2 | a[2][1][0], a[2][1][1], a[2][1][2], a[2][1][3]
+             | a[2][2][0], a[2][2][1], a[2][2][2], a[2][2][3]
+             | a[2][3][0], a[2][3][1], a[2][3][2], a[2][3][3]
+
+             | a[3][0][0], a[3][0][1], a[3][0][2], a[3][0][3]
+      bank 3 | a[3][1][0], a[3][1][1], a[3][1][2], a[3][1][3]
+             | a[3][2][0], a[3][2][1], a[3][2][2], a[3][2][3]
+             | a[3][3][0], a[3][3][1], a[3][3][2], a[3][3][3]
+
+Summary
+=======
+
+Use the attributes mentioned in this tutorial to reduce the total number of
+arbitrated loads/stores of each memory bank by doing the following:
+  - Coalescing contiguous accesses using hls_bankwidth(N)
+  - Splitting simultaneous non-contiguous accesses into different banks, using
+    either hls_numbanks(N) or by manually specifying the bits to bank on
+    using hls_bankbits(b, b+1 ..., b+(N-1)).
+
+The access pattern for a memory determines whether its suitable to perform
+memory coalescing or banking to get a stall-free memory system. Assume an
+array of N elements, where we access K > 1 elements at a time. For simplicity,
+assume both N and K to be a power of 2.
+
+If the K elements being accessed are contiguous and non-overlapping, as in if
+the array is divided into N/K parts, and a given read/write accesses element(s)
+from within a part, then coalescing can generate a stall-free memory system
+with K array elements fitting in one memory word, accessed using 1 read and 1
+write.
+
+On the other hand, if the K elements being accessed are either not contiguous,
+or are contiguous but overlapping, then banking K ways can generate a stall
+free memory system with K reads and K writes, if the reads and writes
+access different memory banks.
+
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

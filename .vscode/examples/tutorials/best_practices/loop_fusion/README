@@ -1,0 +1,44 @@
+Loop fusion is a compiler transformation in which adjacent loops are merged into
+a single loop over the same index range. This transformation is typically
+applied to reduce loop overhead and improve run-time performance. Loop control
+structures represent a significant area overhead on designs produced by the HLS
+compiler. Fusing two loops into one loop reduces the number of required loop
+control structures, which reduced overhead.
+
+Moreover, fusing outer loops can introduce concurrency where there was
+previously none. Combining the bodies of two adjacent loops Lj and Lk forms a
+single loop Lf with a body that spans the bodies of Lj and Lk. The combined loop
+body creates an opportunity for operations that are independent across a given
+iteration of Lj and Lk to execute concurrently. In effect, the two loops now
+execute as one, in a lockstep fashion, giving latency improvements.
+
+The C++ program in this tutorial, fuse_ready, consists of two adjacent loops
+that perform some computation.
+
+This tutorial demonstrates the benefit of loop fusion. It runs this simple
+design twice: 
+	1. with loop fusion off
+	2. with loop fusion on
+
+To see the improvement between designs, open the High-Level Design Reports: 
+	- part_1_no_fusion.prj/reports/report.html 
+	- part_2_loop_fusion.prj/reports/report.html
+
+Navigate to Loops Analysis under Throughput Analysis. Look at the Loop List
+panel, notice that the two loops got fused into one in part_2_loop_fusion.prj.
+Navigate to Area Analysis of System under Area Analysis. Compare the estimated
+resource utilization and notice the resource savings in the design with loop
+fusion on.
+
+Navigate to Verification Statistics under Throughput Analysis. Compare the
+latency of the two designs and notice latency was reduced significantly in the
+design with loop fusion on.
+
+This tutorial requires the following tools to be installed: 
+	- Intel(R) High Level Synthesis (HLS) Compiler
+	- ModelSim
+
+To run this tutorial: 
+	- On Linux run "make" 
+	- On Windows run "build"
+

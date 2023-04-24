@@ -1,0 +1,50 @@
+This tutorial demonstrates a method to reduce the II of a loop that 
+includes a floating point accumulator, or other reduction operation 
+that cannot be computed at high speed in a single clock cycle.
+
+The approach can be applied to loops where a loop-carried value can be 
+broken up in a way that allows each individual value to only be accessed 
+every N iterations, for some N>1.
+
+Each iteration of the loop adds a new value to the previous iteration's sum.
+Since floating point arithmetic typically takes several cycles, achieving
+II=1 at high fMAX is not possible.
+
+By breaking the sum value into N partial sums, each one can compute the partial
+sum for iterations i%N == k, for each k from 0 to N-1. The N partial sums are
+implemented using the shift register pattern shown in the shift_register tutorial.
+
+Since each partial sum is only updated every N cycles, it is possible to reduce
+II by a factor of N. The partial sums can be added and used in the loop without
+affecting II, as long as the resulting sum is not carried to the next loop iteration.
+
+Note that since floating point operations are non-associative, the result of
+running the modified code may differ slightly from the original. The testbench
+uses an error threshold to ensure that both results agree to within 1e-6.
+
+Open the report for part_1_naive.cpp with the original loop , in the following
+location:
+    part_1_naive.prj/reports/report.html
+Navigate to the "Loops analysis" view of the report and observe that the
+reported II of the B3 block is 12 due to a data dependency.
+
+Open the report for part_2_shift_register.cpp with the transformed accumulator,
+in the following location:
+    part_2_shift_register.prj/reports/report.html
+Navigate to the "Loops analysis" view of the report and observe that the reported II
+of B3 is now 1.
+Notice that the II for this block is now 1.
+
+Also notice in the report summary that the resource utilization (in particular, ALUTs
+and FFs) is significantly higher in the optimized design. This is a consequence
+of the extra resources required to implement the shift register, and to recompute
+the final sum from the partial results.
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

@@ -1,0 +1,137 @@
+
+This tutorial demonstrates a method for describing triangular loop patterns
+with dependencies. In these loop patterns, the compiler may be forced to
+increase the II of a loop to fulfill the dependency requirements. This 
+tutorial shows how to transform the loop nest so that the dependency is
+fulfilled without incurring the II penalty.
+
+The following simple loop nest is used for demonstration:
+
+  for (int x = 0; x < n; x++) {
+    for (int y = x + 1; y < n; y++) {
+      local_buf[y] = local_buf[y] + 
+                     somethingcomplicated(local_buf[x]);
+    }
+  }
+
+Each iteration of the outer x loop reads from a single element of the
+local_buf array when the iteration calls somethingcomplicated(local_buf[x]). 
+Each outer loop iteration also performs a read-modify-write on each element 
+of local_buf from y=x+1 to y=n-1. The following table shows the read 
+and read-modify-write patterns for this loop nest when n=10.
+
+    y=0 1 2 3 4 5 6 7 8 9  
+==========================
+x=0   o x x x x x x x x x 
+x=1     o x x x x x x x x
+x=2       o x x x x x x x
+x=3         o x x x x x x
+x=4           o x x x x x
+x=5             o x x x x
+x=6               o x x x
+x=7                 o x x
+x=8                   o x
+x=9                     
+
+Legend: read="o", read-modify-write="x"
+
+As an example, this table shows that in outer loop iteration (x=0), the
+program reads local_buf[x=0] and reads, modifies, and writes the values 
+from local_buf[y=1] through local_buf[y=9]. This pattern of memory accesses 
+results in a loop-carried dependency across the outer loop iterations. For 
+example, the read at x=2 depends on the value that was written at (x=1,y=2). 
+
+Note that as x grows larger, the number of y iterations becomes progressively 
+smaller. In the worst case x=7 outer loop iteration, the program writes to 
+local_buf[y=8] in the first y iteration, and then have only one intervening y 
+iteration (y=9) before the value must be read at (x=8,y=8). To accommodate the 
+latency of the loop body in this worst case, the compiler must increase the II 
+of the inner y loop.
+
+To overcome this II increase, coalesce the loop nest into a single loop, with
+"dummy" iterations such that the iteration distance for the loop-carried dependency 
+described above is a constant M. The value of M should be approximately the II
+of the original inner loop (since this is the number of cycles needed to
+fulfill the dependency). You might need to experiment to find the minimum M
+needed to achieve II=1, since the latency of the new loop will also provide
+time for the dependency to be fulfilled, reducing the required M.
+
+This change in the loop nest also requires the use of the compiler hint 
+#pragma ivdep safelen(M). The table below shows what this looks like for M=6.
+
+    y=0 1 2 3 4 5 6 7 8 9 
+==========================
+x=0   o x x x x x x x x x   
+x=1     o x x x x x x x x   
+x=2       o x x x x x x x   
+x=3         o x x x x x x   
+x=4           o x x x x x   
+x=5           - o x x x x   
+x=6           - - o x x x   
+x=7           - - - o x x   
+x=8           - - - - o x   
+x=9          
+              <---M=6--->
+
+Legend: read="o", read-modify-write="x", dummy iteration="-"
+
+This loop nest is represented as a single "i" loop in part_2_opt.cpp,
+which has been created by coalescing the "i" and "j" loops in part_1_naive.cpp,
+and with the x and y induction variables explicitly incremented within this new loop.
+The bound on the i loop can be calculated by calculating the total number of
+"-", "o", and "x" iterations in the table. One way to do this is to think of
+the iterations as consisting of the following two triangles of "real" and
+"dummy" iterations.
+
+
+    y=0 1 2 3 4 5 6 7 8 9                     y=0 1 2 3 4 5 6 7 8 9
+=========================                 =========================
+x=0   o x x x x x x x x x                 x=0
+x=1     o x x x x x x x x                 x=1
+x=2       o x x x x x x x                 x=2
+x=3         o x x x x x x                 x=3
+x=4           o x x x x x       +         x=4
+x=5             o x x x x                 x=5           -
+x=6               o x x x                 x=6           - -
+x=7                 o x x                 x=7           - - -
+x=8                   o x                 x=8           - - - -
+x=9 
+                                                        <(M-2)>  
+                                                        <---M=6--->
+
+The number of iterations on the left is 10+9+8+7+6+5+4+3+2 = 54. The formula for a
+descending series from n is n*(n+1)/2. Since we don't have an iteration at
+(x=9,y=9), we subtract 1 from this formula, i.e., n*(n+1)/2 - 1. In our example where
+n=10, this formula gives 10*11/2 - 1 = 54 as before.
+
+The dummy iterations on the right are equal to 4+3+2+1 = 10. The largest number
+in this series is M-2. Using the same formula for a descending series and substituting
+M-2, we get (M-2)*(M-1)/2. For our specific example of M=6, this is 4*5/2 = 10 as above.
+
+The bound on the i loop is sum of these two values: (n-M)*(n-M+1)/2 + M*(n-1).
+Computation inside the loop is guarded by the conditional y > x.
+
+After running the tutorial, you can look at the reports to see the effects of
+writing the triangular loop in this way. 
+
+Open the report for part_1_naive.cpp with the original loop nest, in the following
+location:
+    part_1_naive.prj/reports/report.html
+Navigate to the "Loops analysis" view of the report and observe that the
+reported II of the B7 block is 54 due to a memory dependency.
+
+Open the report for part_2_opt.cpp with the transformed loop nest,
+in the following location:
+    part_2_opt.prj/reports/report.html
+Navigate to the "Loops analysis" view of the report and observe the reported II
+of B5 (the block name has changed since the loop nest has now been coalesced).  
+Notice that the II for this block is now 1.  
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

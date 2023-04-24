@@ -1,0 +1,62 @@
+A bottleneck in a loop is one or more loop-carried dependencies that cause the 
+loop to have either an II greater than one, or a lower fMAX to achieve II of 
+one. By default, the compiler finds the fMAX-II combination that provides the 
+best fMAX-to-II ratio.
+
+The Intel HLS Compiler also provides an attribute and pragma to set your 
+desired fMAX and II values:
+    - Use the "hls_scheduler_target_fmax_mhz" attribute (or the "--clock <fMAX>
+      MHz" i++ command option) to specify a desired fMAX. When you specify the 
+      fMAX, the compiler schedules the design at that specified fMAX value with
+      minimal achievable II.
+    - Use the "ii" pragma to specify a desired II. When you specify II, the 
+      compiler lowers fMAX until it achieves the specified II.
+
+Note: The schedule target fMAX determines the pipelining effort during 
+compilation. 
+Compile to hardware using the --quartus-compile flag to get an accurate fMAX 
+estimate.
+
+The C++ program in this tutorial, bottlenecked_loop, contains two loops. The 
+first is short running but has a bottleneck due to a loop-carried dependency. 
+The second is long running. 
+
+Because the compiler optimizes for II, by default, the first loop is scheduled
+with II of 1, and fMAX is lowered as a result. Since the first loop has a small 
+number of iterations, a higher II is a reasonable tradeoff to allow a higher 
+overall fMAX for the entire kernel. 
+
+This tutorial uses two methods to direct the compiler to prioritize a high fMAX
+over a low II.
+
+This tutorial demonstates the tradeoff between fMAX and II. It runs this simple
+design three times: 
+	1) Without directives for fMAX or II: Compiler schedules for highest 
+	   fMAX-to-II ratio
+	2) With the fMAX directive: Compiler schedules for minimal achievable 
+	   II given the specified fMAX (passing in the argument "--clock 
+	   <fMAX>MHz" will achieve the same result)
+	3) With the II directive: Compiler schedules for this specified II
+
+To see the difference between designs, open the High-Level Design Reports: 
+	- part_1_no_directives.prj/reports/report.html 
+	- part_2_fmax_directive.prj/reports/report.html
+	- part_3_ii_directive.prj/reports/report.html
+
+In the High-Level Design Reports, go to Throughput Analysis > Loops Analysis. 
+Look at the two loops, the first being the short-running loop with loop-carried
+dependencies, and the second being the long-running loop:
+    1) First loop (non-critical loop)
+        - In Part 1, the II is 1, and the scheduled fMAX is 93.
+        - In Part 2, the II is 3 as a result of forcing fMAX to 240MHz. 
+        - In Part 3, the II is 3 as a result of relaxing II to 3. 
+    2) Second loop (critical loop)
+        - In all parts, the II is 1 and the scheduled fMAX is 240MHz
+
+This tutorial requires the following tools to be installed: 
+	- Intel HLS Compiler
+	- ModelSim
+
+To run this tutorial: 
+	- On Linux run "make" 
+	- On Windows run "build"

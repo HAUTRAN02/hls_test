@@ -1,0 +1,111 @@
+This tutorial demonstrates a method to improve the fMAX when performing parallel
+arithmetic operations on an array.
+
+Before studying this tutorial, please view the tutorial located here:
+  tutorials/best_practices/optimize_ii_using_hls_register
+
+1. part_1_single_add.cpp:
+-------------------------
+Observe the code snippet below:
+    for (int i=0; i<N; i++) {
+        // ... other code here ...
+        accumulators[key]+=value;
+    }
+
+Open the report at the location:
+  part_1_single_add.prj/reports/report.html
+On the "Summary" page, click on "Clock Frequency Summary" tab and note the value of
+fMAX. Next, click on "Throughput Analysis" and go to "fMAX II Report", observe that
+the scheduled fMAX is limited for the block "design_v1.B3". 
+
+Next, click on "System Viewers" and select "Graph Viewer". Click on "Cluster 2" under
+the heading "design_v1.B3" on the left hand pane. Zoom in around the center of the
+generated graph and locate the "add" node. Click on the "add" node to highlight its
+input and output nodes.
+
+Since the array index which is to be accessed in each loop iteration is not known
+statically at compile time, the compiler generates a multiplexer to address all array
+locations. This will appear on the graph as "case" nodes. Next, the compiler will
+generate a single "add" node to perform the addition and a demultiplexer to write
+the value back to the correct array element. The demultiplexer will appear as
+multiple "select" nodes on the graph. All of these operations are on the loop carried
+feedback path and hence they will limit the fMAX that can be achieved.
+
+The structure will be similar to the one depicted below for a KEY_RANGE of size 8:
+accumulators  [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 ]
+                \   |   |   |   |   |   |   /
+                 \  \   \   |   |   /   /  /
+                  \  \   \  \   /  /   /  /
+                   \  \   \  | |  /   /  /
+                    \  \   | | | |   /  /
+                     \  \  | | | |  /  /
+                      \  | | | | | |  /
+                      _|_|_|_|_|_|_|_|_
+                      \_______________/
+                              |
+                            ( + )
+                       _______|_______
+                      /_______________\
+                       / | | | | | | \
+                      /  / | | | | \  \
+                     /  /  | | | |  \  \
+                    /  /   | | | |   \  \
+                   /  /   /  | |  \   \  \
+                  /  /   /  /   \  \   \  \
+                 /  /   /   |   |   \   \  \
+                /   |   |   |   |   |   |   \
+accumulators  [ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 ]
+
+
+2. part_2_replicated_adds.cpp:
+------------------------------
+We will rewrite the line:
+	
+	accumulators[key]+=value 
+
+to:
+
+	#pragma unroll KEY_RANGE 
+	for (int j=0; j<KEY_RANGE; j++) { 
+	    If (j==key) accumulators[j]+=value; 
+	} 
+
+The component in file part_2_replicated_adds.cpp, reflects this change.
+
+Open the report at the location:
+  part_2_replicated_adds.cpp/reports/report.html
+and observe the improvement in fMAX on the "Summary" page. Go to the "Graph Viewer"
+again and observe that no "case" nodes are present in "Cluster 2" under
+"design_v2.B3".
+
+The re-written code tells the compiler that we want to generate a separate "add" node
+for each element of the accumulators array. The unroll pragma ensures that the array
+index accessed by each iteration is known statically at compile time. The "if"
+statement ensures functionality by updating the element only when the index matches
+the key. As a result, the compiler no longer generates the "case" nodes to determine
+which array element it needs to read from. This, in turn, simplifies the loop
+feedback path and resolves the fMAX bottleneck.
+
+The structure will be similar to the one depicted below for a KEY_RANGE of size 8:
+accumulators  [  0  |  1  |  2  |  3  |  4  |  5  |  6  |  7  ]
+                | |   | |   | |   | |   | |   | |   | |   | |  
+               (+)|  (+)|  (+)|  (+)|  (+)|  (+)|  (+)|  (+)|  
+               _|_|_ _|_|_ _|_|_ _|_|_ _|_|_ _|_|_ _|_|_ _|_|_ 
+               \___/ \___/ \___/ \___/ \___/ \___/ \___/ \___/ 
+                 |     |     |     |     |     |     |     |   
+accumulators  [  0  |  1  |  2  |  3  |  4  |  5  |  6  |  7  ]
+
+
+Note that the component in part_2_replicated_adds.cpp can be further optimized to
+boost fMAX. To learn how, please look at the tutorial on how to reduce cluster exit
+FIFO width. The tutorial is located at:
+  tutorials/best_practices/reduce_exit_fifo_width
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

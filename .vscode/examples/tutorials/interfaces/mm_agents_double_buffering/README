@@ -1,0 +1,109 @@
+This tutorial highlights the application of volatile slave memory and the use of
+read-only/write-only attributes through a design example that uses double
+buffering. The core design used in the three parts of this tutorial relies on
+the component accessing different halves of the slave memory each invocation.
+
+If non-volatile slave memories are used, the testbench has to wait for the
+component to finish execution to alter the inactive half of the memory. Using
+volatile memories reduces the total runtime by half, since the testbench can
+modify the contents of the slave memory while the component is running. Adding
+read-only/write-only attributes simplifies the design by removing unnecessary
+connections, which reduces port assignments and improves QoR.
+
+Before you start this tutorial, you should be familiar with volatile slave memories 
+and using testbenches and Platform Designer with the Intel HLS Compiler. If not, please
+review the following tutorials before moving on:
+  - <quartus_installdir>/hls/examples/tutorials/usability/platform_designer_stitching
+  - <quartus_installdir>/hls/examples/tutorials/interface/mm_agents_CSR_volatile
+
+
+Design 1: part1.cpp
+===================
+  In this design, the component can be invoked to operate on any of the two
+  halves of the slave memory using the "db" bool argument. The component
+  calculates the sum of the requested half without accessing the rest of the
+  memory. The C++ testbench does not access the memory during component runtime.
+
+  Observations:
+
+  1) Open part1.prj/reports/reports.html and click "System Viewers" >
+  "Function Memory Viewer". Observe how the slave load and internal load
+  instructions share one port, while the slave store uses the other port.
+  This results in a stall free configuration. Non-volatile slaves
+  can share ports with internal accesses because their mutual exclusivity is
+  guaranteed.
+
+  2) In the report file, click "Area Analysis" > "Area Analysis of System".
+  Observe that one RAM is needed for this design.
+
+  3) You can investigate the waveforms at part1.prj/vsim.wlf by running the
+  following command to launch ModelSim:
+
+  vsim part1.prj/vsim.wlf
+
+  Observe how the testbench has to wait for the component to issue a "done"
+  signal before populating the slave memory again. This waiting results in more
+  run time because of the extra clock cycles needed to refill the array.
+
+
+Design 2: part2.cpp
+===================
+  In this design, we introduce the volatile keyword to the slave memory. This
+  allows the Verilog testbench to update the contents of the memory while the
+  component is active. This reduces the total runtime through double buffering.
+
+  Observations:
+
+  1) Open part2.prj/reports/reports.html and click "System Viewers" > "Function
+  Memory Viewer". Observe how one port is shared between the external slave
+  accesses, while the second port is used by the component, resulting in a
+  stall-free configuration. Volatile slaves can not share ports with internal
+  accesses.
+
+  2) In the report file, click "Area Analysis" > "Area Analysis of System".
+  Observe that two RAMs are needed for this design. In true dual port mode, an
+  M20K in its shallowest configuration (512 integers deep) is reduced to half
+  its memory capacity.
+
+  3) You can investigate the waveforms at simulations/part2.wlf by running the
+  following command to launch ModelSim:
+
+  vsim simulations/part2.wlf
+
+  Observe how the testbench is able to alter the contents of the slave memory
+  during runtime. The component is immediately invoked after it asserts
+  "return_valid", which reduces runtime.
+
+  4) In "part2_tb.sv", notice how the memory starts being filled as soon as the
+  component is invoked. Also, the testbench checks the "returndata_data" signal
+  to verify that the correct numbers were passed to the component.
+
+
+Design 3: part3.cpp
+===================
+  In this design, we introduce the hls_writeonly attribute to the slave memory
+  since the testbench does not issue any reads. The testbench used for this part
+  is identical to that of part2.cpp with the exception of declaring read
+  signals.
+
+  Observations:
+
+  1) Open part3.prj/reports/reports.html and click "System Viewers" >
+  "Function Memory Viewer". Observe how each port has only one access attached
+  to it since the load access is stripped off.
+
+  2) In the report file, click "Area Analysis" > "Area Analysis of System".
+  Observe that only one RAM is needed for this design because the memory is not
+  in true dual port mode anymore.
+
+  3) In "part3_tb.sv", notice how the "avs_a_read" and "avs_a_readdata" signals
+  are no longer used and are not connected to the component.
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+ 
+To run this tutorial:
+  - On Linux, run "make"
+  - On Windows, run "build"
+

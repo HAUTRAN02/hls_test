@@ -1,0 +1,36 @@
+This design example demonstrates the usage of ac_fixed constructor where higher
+QoR can be achieved by choosing which datatypes your component uses to
+represent data.
+
+The HLS compiler consumes significant FPGA resources to convert double precision
+(and single precision) floating-point values to ac_fixed values. You can see
+this in the area report: the ctor_from_double component consumes a
+double-precision floating point value and performs a fixed-point operation on
+it:
+component ac_fixed<20, 10, true, AC_RND, AC_SAT> ctor_from_double(double d){
+  // calling double constructor
+  ac_fixed<20, 10, true, AC_RND, AC_SAT> t(d);
+  //literal double value for constructor is optimized in HLS i++ compiler
+  ac_fixed<20, 10, true, AC_RND, AC_SAT> offset(0.5);
+  return t + offset;
+}
+This consumes far more area than an identical component which does not have to do
+this conversion:
+component ac_fixed<20, 10, true, AC_RND, AC_SAT> ctor_from_ac_fixed(ac_fixed<20,
+10, true, AC_RND, AC_SAT> d){
+  // calling ac_fixed constructor
+  ac_fixed<20, 10, true, AC_RND, AC_SAT> t(d);
+  //literal double value for constructor is optimized in HLS i++ compiler
+  ac_fixed<20, 10, true, AC_RND, AC_SAT> offset(0.5);
+  return t + offset;
+}
+
+You can view the QoR result in tutorial-fpga.prj/reports/report.html.
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"

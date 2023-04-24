@@ -77,7 +77,7 @@ int main()
     for (j = 0; j < 120; j++)
     {
       fscanf(fp, "%f ", &(temp));
-      w_fc2[120 * i + j] = temp;
+      w_fc2[120 * i + j] = (fixed_9_2_t) temp;
     }
   }
   fclose(fp);
@@ -178,5 +178,6 @@ int main()
     printf("Predicted label: %d\n", index);
     printf(" label: %d\n", target[i]);
     printf("Prediction: %d/%d\n", acc, i + 1);
+    printf("sizeof( %d )", sizeof(fixed_9_2_t));
   }
 }

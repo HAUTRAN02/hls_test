@@ -1,0 +1,87 @@
+This tutorial demonstrates how to merge memories in a width-wise manner and when
+this could be beneficial. Further information can be found at 
+https://www.intel.com/content/www/us/en/programmable/documentation/nml1505158467345.html#xfy1508937381235
+ 
+The following figure shows an example of how width-wise merge works:
+    
+  block RAM            block RAM                      block RAM
+  +------+             +------+                    +------+------+
+  |      |             |      |                    |      |      |
+  |      |             |      |                    |      |      |
+  | mem1 | 256-words   | mem2 | 256-words     =>   | mem1 | mem2 | 256-words
+  |      |             |      |                    |      |      |
+  |      |             |      |                    |      |      |
+  +------+             +------+                    +------+------+
+  16-bits              16-bits                         32-bits
+
+The memories being merged width-wise can have different depths, in which case
+the depth of the resulting memory system will be the largest depth of the
+merged memories. For example, if arrays "short a[128]" and "short a[256]" are
+being merged width-wise, the compiler will implicitly increase the depth of
+the first array to 256 elements before merging. Also, there is no constraint
+on the number of memories that can be merged.
+
+In this tutorial, we define a component called "lock_step_read_write", 
+that contains two arrays "a[ARR_SIZE]" and "b[ARR_SIZE]" that have one
+lock-step load and one lock-step store.
+ 
+Run the tutorial as described at the end of this document.
+
+1. Without merging
+==================
+ 
+  In the first version (part_1_no_merge.cpp), the two arrays "a[ARR_SIZE]" and
+  "b[ARR_SIZE]" are not merged.
+ 
+  Open the high-level design report (part_1_no_merge.prj/reports/report.html),
+  and go to the Function Memory Viewer (System Viewers > Function Memory
+  Viewer). In the Function Memory List pane, you can see two memory systems
+  "a" and "b" that are generated for the two arrays defined in the component,
+  respectively. Click "a", in the Function Memory Viewer pane, you can see
+  that it has one load and two stores (one of the stores is used for
+  initialization). The same can be observed for "b".
+ 
+  Go to Area Analysis of System (Area Analysis > Area Analysis of System) and
+  click "Expand All". Under function "lock_step_read_write", you can see that
+  both variable "a" and variable "b" use one RAM each.
+ 
+  In the Summary page, you can see that this component uses 2 RAMs in total.
+ 
+2. Merge the two arrays using hls_merge
+=======================================
+ 
+  In the second version (part_2_merged.cpp), the two arrays "a[ARR_SIZE]" and
+  "b[ARR_SIZE]" are merged width-wise using the hls_merge attribute.
+ 
+  Open the high-level design report (part_2_merged.prj/reports/report.html), and
+  go to the Function Memory Viewer (System Viewers > Function Memory Viewer).
+  In the Function Memory List pane, you can see that there is only one memory
+  system called "b,a". Click "b,a", you can see that it has one load and one
+  store. The lock-step loads and stores of "a" and "b" are merged.
+ 
+  Go to Area Analysis of System (Area Analysis > Area Analysis of System) and
+  click "Expand All". Under function "lock_step_read_write", you can see that
+  variable "b" uses one RAM. However variable "a" uses no RAMs because it is
+  merged with "b".
+ 
+  In the Summary page, you can see that this component uses 1 RAM (for both "a"
+  and "b"). 
+
+Summary
+=======
+When your component has multiple memories in the same scope and their accesses
+are in a lock-step manner (repeatedly from the same array index), merging
+these memories can also merge the loads/stores to the memories due to their
+lock-step access pattern, which usually results in better resource utilization
+without sacrificing  performance. If your design is area-sensitive, you can
+also merge memories that don't access in lock-step manner for better area
+usage, although it may cause a degradation in performance.
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+ 
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

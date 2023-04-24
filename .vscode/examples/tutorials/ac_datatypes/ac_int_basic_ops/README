@@ -1,0 +1,25 @@
+This design example demonstrates various use cases of ac_int to achieve a
+higher QoR.
+
+"Block Viewer" and "Cluster Viewer" help you investigate opportunities for
+optimizing the datapath.  For example, compare the shift_left and the
+effcnt_left_shift component in the "Cluster Viewer". The compiler needs to
+generate extra logic to deal with the signedness of the b operand. 
+
+You can also check the bit width of an operation by clicking on the corresponding
+node and looking at the Details pane in the "Block Viewer" and "Cluster Viewer"
+in the report located at reports/report.html in the project directory.  
+
+For more information, see "Arbitrary Precision Math Support" in the Intel High
+Level Synthesis Compiler Reference Manual.
+This example includes the reference "ac_fixed" (ref/acl_fixed.h) header so that
+you can compile this example both with the Intel HLS Compiler and a
+platform-native compiler, for example, g++ (Linux) and Visual Studio (Windows).
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim-SE
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"

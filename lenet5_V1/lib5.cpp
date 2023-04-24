@@ -251,23 +251,24 @@ void softmax(fixed_9_2_t *input11,
   for (i = 0; i < 10; i++)
   {
     temp = exp_fixed(input11[i]);
-    output11[i] = fabs(temp.to_double() / (sum.to_double() * 1.0f));
+    // output11[i] = fabs(temp.to_double() / (sum.to_double() * 1.0f));
+    output11[i] = temp;
   }
 
 }
 
-component void pred(hls_avalon_agent_memory_argument(28 * 28 * sizeof(fixed_9_2_t))  fixed_9_2_t *image,
-                    hls_avalon_agent_memory_argument(6 * sizeof(fixed_9_2_t)) fixed_9_2_t *w_conv1,
-                    hls_avalon_agent_memory_argument(6 * sizeof(fixed_9_2_t)) fixed_9_2_t *b_conv1,
-                    hls_avalon_agent_memory_argument(16 * 6 * 5 * 5 * sizeof(int)) fixed_9_2_t *w_conv2,
-                    hls_avalon_agent_memory_argument(16 * sizeof(fixed_9_2_t)) fixed_9_2_t *b_conv2,
-                    hls_avalon_agent_memory_argument(120 * 400 * sizeof(fixed_9_2_t)) fixed_9_2_t *w_fc1,
-                    hls_avalon_agent_memory_argument(120 * sizeof(fixed_9_2_t)) fixed_9_2_t *b_fc1,
-                    hls_avalon_agent_memory_argument(84 * 120 * sizeof(fixed_9_2_t)) fixed_9_2_t *w_fc2,
-                    hls_avalon_agent_memory_argument(84 * sizeof(fixed_9_2_t)) fixed_9_2_t *b_fc2,
-                    hls_avalon_agent_memory_argument(10 * 84 * sizeof(fixed_9_2_t)) fixed_9_2_t *w_fc3,
-                    hls_avalon_agent_memory_argument(10 * sizeof(fixed_9_2_t)) fixed_9_2_t *b_fc3,
-                    hls_avalon_agent_memory_argument(10 * sizeof(fixed_9_2_t)) fixed_9_2_t *probs)
+component void pred(hls_avalon_agent_memory_argument(28 * 28 * sizeof(2))  fixed_9_2_t *image,
+                    hls_avalon_agent_memory_argument(6 * sizeof(2)) fixed_9_2_t *w_conv1,
+                    hls_avalon_agent_memory_argument(6 * sizeof(2)) fixed_9_2_t *b_conv1,
+                    hls_avalon_agent_memory_argument(16 * 6 * 5 * 5 * sizeof(2)) fixed_9_2_t *w_conv2,
+                    hls_avalon_agent_memory_argument(16 * sizeof(2)) fixed_9_2_t *b_conv2,
+                    hls_avalon_agent_memory_argument(120 * 400 * sizeof(2)) fixed_9_2_t *w_fc1,
+                    hls_avalon_agent_memory_argument(120 * sizeof(4)) fixed_9_2_t *b_fc1,
+                    hls_avalon_agent_memory_argument(84 * 120 * sizeof(2)) fixed_9_2_t *w_fc2,
+                    hls_avalon_agent_memory_argument(84 * sizeof(2)) fixed_9_2_t *b_fc2,
+                    hls_avalon_agent_memory_argument(10 * 84 * sizeof(2)) fixed_9_2_t *w_fc3,
+                    hls_avalon_agent_memory_argument(10 * sizeof(2)) fixed_9_2_t *b_fc3,
+                    hls_avalon_agent_memory_argument(10 * sizeof(2)) fixed_9_2_t *probs)
 {
   fixed_9_2_t o_conv1[6 * 28 * 28], o_relu1[6 * 28 * 28], o_avgpooling1[6 * 14 * 14];
   fixed_9_2_t o_conv2[16 * 10 * 10], o_relu2[16 * 10 * 10], o_avgpooling2[16 * 5 * 5];

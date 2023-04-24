@@ -1,0 +1,185 @@
+This tutorial shows you how to use launch and collect capacity to deal with 
+unexpectedly low throughput for designs that use a system of tasks and the 
+ihc_hls_enqueue function. 
+
+The design used in this tutorial is a simple design with a single path as 
+shown in the following diagram.
+
+            + Input
+            |      +----------launch<firstTask>(inputFloat)
+            |      |     +--- launch<secondTask>()      
+            |      |     |
+  +---------v------v--+  |
+  |     firstTask     |  |
+  |   <some latency>  |  |
+  +--+------+---------+  |
+     |      |            |
++----+      |      +-----+
+|           |      |
+| +---------v------v--+
+| |     secondTask    |
+| +--+------+---------+
+|    |      |
+|    |      |
+|    |      |
+|    |      v Output
+|    |
+|    +------------------------collect<secondTask()
++-----------------------------collect<firstTask>()
+
+For a detailed explanation of stalls that can be produced by the use of the
+launch and collect functions, refer to the Intel HLS Compiler Reference Manual.
+
+This tutorial uses the ihc_hls_enqueue function, please review the tutorial
+under usability/enqueue_call to understand this function.
+
+Section: part_1.cpp
+
+The code in part_1.cpp demonstrates a component with no added launch/collect
+capacity.
+
+1) Run the tutorial.
+2) Open the High-Level Design Reports at part_1.prj/reports/report.html.
+3) Navigate to "Throughput Analysis" > "Verification Statistics".
+4) Click the "topLevel" row and view the "Component throughput" that appears
+in the details box, This value is very low, as expected.
+5) Navigate to "System Viewers" > "Schedule Viewer"
+6) Click the "topLevel" item in the "Schedule List" and view the "RD" and "WR"
+actions scheduled in the first few cycles.
+7) For each "RD" and "WR" click on the blue hyperlink in the same row and view
+what lines they correspond to in code, identify which ones correspond to the
+launches and collects in the code.
+8) View on which cycles the launches and collects are scheduled using the
+schedule to the right, they will be scheduled all on the same cycles as
+expected.
+
+This low throughput is a result of inadequate launch and collect capacity being
+added to the system. 
+
+When you encounter a similar issue, ask yourself the following questions:
+
+A) Do any tasks spend cycles stalled waiting for input data to reach them?
+
+  If true, these tasks require launch capacity equal to the number of cycles it
+  takes input data to reach the task.
+
+  Adding launch capacity allows stalled tasks to enqueue their start signals 
+  which allows the launch to complete, therefore allowing all other tasks
+  launching that cycle to complete their launches.
+
+  In part_1.cpp, the firstTask function has some latency. The secondTask function
+  depends on data from the firstTask function, so the secondTask function stalls
+  until data from the firstTask function reaches it. 
+  
+  It takes a number of cycles equal to the latency of the firstTask fucntion
+  for the data to reach the secondTask function.
+  
+  Take the following steps to determine the amount of launch capacity to add to
+  the secondTask function:
+
+    1) Open the report at part_1.prj/reports/report.html.
+    2) Navigate to "Throughput Analysis" -> "Loop Analysis".
+    3) Click "Task: firstTask".
+    4) In the table that pops up, read the value in the "Latency" column for the
+       "firstTask.B1.start" row.
+       
+      This value is the latency of firstTask and is the amount of launch 
+      capacity to add to the secondTask function.
+
+B) Do any tasks finish their first execution before the slowest task (that is,
+the task that produces its initial return signal last) in the design finishes
+its first execution? 
+
+  If true, the tasks that finish before the slowest task in the design finishes
+  require additional collect capacity. The additional capacity to add is equal to
+  the number of cycles between when the task produces its first return signal and
+  when the slowest task in the design produces its first return signal. 
+
+  When you add collect capacity, tasks can enqueue their return signals. The
+  enqueuing of the return signal consumes it from the task, therefore allowing the
+  task to produce more return signals without stalling.
+
+  The design in part_1.cpp has some latency. The firstTask function produces its
+  first return signal and then stalls for a number of cycles equal to the latency
+  of the secondTask function until the return signal is consumed by the top-level
+  component.
+  
+  Take the following steps to determine the amount of collect capacity to add to
+  the firstTask function:
+
+    1) Open the report at part_1.prj/reports/report.html.
+    2) Navigate to "Throughput Analysis" -> "Loop Analysis".
+    3) Click "Task: secondTask".
+    4) In the table that pops up read the value in the "Latency" column for the
+       "secondTask.B1.start" row.
+    
+      This value is the latency of secondTask and is the amount of collect capacity
+      that needs to be added to firstTask.
+
+Section: part_2.cpp
+
+The code in part_2.cpp reimplements the code in part_1.cpp but with the 
+necessary capacity added.
+
+1) Open the High-Level Design Reports at part_2.prj/reports/report.html.
+2) Navigate to "Throughput Analysis" > "Verification Statistics".
+3) Click the "topLevel" row and view the "Component throughput" that appears
+in the details box, this value will now be 1 as is ideal.
+
+For more complex designs, asking the earlier questions might not be sufficient to
+determine where and how much launch and collect capacity you need to add to your 
+design. For complex designs, examine the waveforms for your component to 
+identify stalls and then identify other tasks that are causing the stall to 
+occur. After you have identified the tasks causing the stall, use their latencies
+as found in the High-Level Design Reports to determing how much capacity you 
+need to added.
+
+Section: part_3.cpp
+
+The code in part_3.cpp reimplements the code in part_1.cpp but uses the
+launch_always_run function to launch and collect tasks.
+
+The launch_always_run function removes the need for launch/collect capacity by
+launching each task in an always running state.  However, launches on the same
+cycle are no longer synchronized, so if a task is stalled, it does not prevent
+other tasks scheduled to launch on the same cycle from starting. Using the
+launch_always_run function also removes return signals (and therefore their need
+for consumption by the top-level component) from tasks so that they  produce
+only data. 
+
+Designs that use the launch_always_run function are controlled only by data 
+dependencies introduced by streams between tasks. 
+
+For the design in this tutorial, using the launch_always_run function removes 
+the need for capacity because when the secondTask function waits for data from
+the firstTask function, it does not prevent the firstTask function from 
+starting.
+
+If all necessary control for your design can be achieved using only data
+dependencies, using the launch_always_run function is recommended because it
+allows for maximum throughput without requiring area used by buffers that are
+introduced by launch and collect capacity.
+
+The top-level component no longer waits to collect values from the tasks. It
+launches all tasks then asserts its done signal and exits. This behavior can 
+cause the simulation to exit before the the tasks have finished processing all 
+data. Use the ihc_hls_set_component_wait_cycle function to force the simulation 
+to wait enough cycles to let the tasks finish before exiting.
+
+For details about the ihc_hls_set_component_wait_cycle function, refer to the 
+Intel HLS Compiler Reference Manual.
+
+Using the launch_always_run function introduces the following limitations:
+i) All tasks must receive all input and produce all input to streams, therefore
+no runtime arguments can be passed.
+ii) The done signal from the top-level component no longer accurately
+communicates when the design has finished running. 
+iii) Some task names are to not propagated to the High-Level Design Reports or 
+waveforms.
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"

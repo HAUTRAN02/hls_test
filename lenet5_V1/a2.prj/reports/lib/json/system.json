@@ -1,0 +1,116 @@
+{
+  "nodes":
+  [
+    {
+      "name":"pred"
+      , "id":1196814920
+      , "type":"component"
+      , "children":
+      [
+        {
+          "name":"Stream Read"
+          , "id":1197438880
+          , "details":
+          [
+            {
+              "type":"table"
+              , "Basic Block":"pred.B1.start"
+              , "Width":"1 bit"
+              , "Depth":"0"
+              , "Stall-free":"No"
+              , "Latency":"0"
+            }
+          ]
+          , "debug":
+          [
+            [
+              {
+                "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                , "line":244
+              }
+            ]
+          ]
+          , "type":"inst"
+        }
+        , {
+          "name":"Stream Write"
+          , "id":1197520896
+          , "details":
+          [
+            {
+              "type":"table"
+              , "Basic Block":"pred.B47"
+              , "Width":"1 bit"
+              , "Depth":"0"
+              , "Stall-free":"No"
+              , "Latency":"0"
+            }
+          ]
+          , "debug":
+          [
+            [
+              {
+                "filename":"C:\\Users\\Admins\\Downloads\\examples\\mul\\lenet5_V1\\lib5.cpp"
+                , "line":278
+              }
+            ]
+          ]
+          , "type":"inst"
+        }
+      ]
+    }
+    , {
+      "name":"return.pred"
+      , "id":1196858816
+      , "details":
+      [
+        {
+          "type":"table"
+          , "Width":"1 bit"
+          , "Depth":"0"
+          , "Ready Latency":"0"
+          , "Bits per Symbol":"1 bit"
+          , "Uses Packets":"No"
+          , "Uses Ready":"Yes"
+          , "Uses Empty":"No"
+          , "First symbol in high order bits":"No"
+        }
+      ]
+      , "type":"stream"
+    }
+    , {
+      "name":"call.pred"
+      , "id":1196860352
+      , "details":
+      [
+        {
+          "type":"table"
+          , "Width":"1 bit"
+          , "Depth":"0"
+          , "Ready Latency":"0"
+          , "Bits per Symbol":"1 bit"
+          , "Uses Packets":"No"
+          , "Uses Valid":"Yes"
+          , "Uses Empty":"No"
+          , "First symbol in high order bits":"No"
+        }
+      ]
+      , "type":"stream"
+    }
+  ]
+  , "links":
+  [
+    {
+      "from":1197520896
+      , "to":1196858816
+    }
+    , {
+      "from":1196860352
+      , "to":1197438880
+    }
+    , {
+      "from":1197438880
+      , "to":1197520896
+    }
+  ]
+}

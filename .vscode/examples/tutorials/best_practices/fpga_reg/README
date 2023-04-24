@@ -1,0 +1,157 @@
+This tutorial demonstrates how to use the hls_fpga_reg() function. This
+function is a power-user function than can help you micro-optimize fMAX and
+fan-out effects. If you are using Quartus Timing Analyzer to find fMAX
+bottlenecks, then you can use this function to help close timing.
+
+The hls_fpga_reg function has the following signature:
+  T hls_fpga_reg(T input)
+The result of the hls_fpga_reg() function must be stored for the register to
+actually be implemented in the RTL. For example:
+  x = set_value();
+  auto x_reg = hls_fpga_reg(x);
+  use_value(x_reg);
+With this source, the compiler guarantees that there will be at least one
+register between when x is set and when x_reg is used i.e. between
+set_value() and use_value(). You can apply it to any type of value. By
+default the compiler pipelines your design to achieve the targeted fMAX. By
+adding this function, you explicitly request that the compiler to place a
+register and have the compiler pipeline the surrounding datapath so that the
+RTL still does what the C++ source has expressed.
+
+1. part_1.prj
+  This design implements a simple vector dot product with a preadder. The
+  loop is unrolled so this component becomes a purely feed-forward datapath.
+  The coefficient array is implemented as a circular shift register and rotates
+  by one each time the function is called. The core computation occurring in
+  each invocation of the component is shown below. The diagram is shown
+  untimed but the compiler decides where to include the timing registers to
+  achieve the desired fMAX.
+
+                         mul
+                          |
+           ----------------------------------
+           |          |          |          |
+           |   1      |   2      |   3      |   4
+            \ /        \ /        \ /        \ /
+             +          +          +          +
+             |  c0      |  c1      |  c2      |  c3
+              \ /        \ /        \ /        \ /
+               x          x          x          x
+               |          |          |          |
+               ----\ /-----          ----\ /-----
+                    +                     +
+                    |                     |
+                    ----------\ /----------
+                               +
+                               |
+
+  You can see in the diagram above (and in the graph viewer) that the value
+  mul can have a fan-out (of up to 4 in this example) depending on how the
+  compiler chooses to pipeline the design. The fan-out can grow linearly with
+  N. Depending on how far apart on the chip Quartus places the different
+  iterations, this can have a large impact on the fMAX of your design. There
+  might also be a long chain of operations without a register stage on the
+  path from the multiplier to the last adder. These are the two potential
+  paths that we consider in this example (in part 2 and part 3 respectively).
+
+  Once the design is compiled, observe that we are able to achieve an fMAX of
+  ~300MHz. Keep in mind that the default target provided to the HLS compiler
+  is 240MHz and one way to try to improve the fMAX is to use the --clock flag
+  and set it to a higher value. Instead, in this design, we try to express
+  the exact datapath using the hls_fpga_reg() call. Also observe the structure of
+  cluster 1 in test.B1.start in the graph viewer. You will notice that it is
+  quite densely packed and all of the computation occurs within a shorter
+  number of cycles than what we will see in part_2 and part_3. You can also
+  use the schedule viewer to observe this.
+
+2. part_2_fpga_reg.prj
+  In part_2, we add an hls_fpga_reg() call for each iteration of the loop to the
+  input value `mul`. This call requests that the compiler implements a tapped
+  delay-line. This tapped delay-line makes each iteration of the loop take at
+  least one cycle since all of the computation must be deferred to after the
+  hls_fpga_reg() call (since the result is used in the preadder).
+
+          mul
+           |
+          reg
+           |---------reg
+           |          |---------reg
+           |   1      |          |---------reg
+            \ /       |   2      |          |
+             +         \ /       |   3      |
+             |  c0      +         \ /       |   4
+              \ /       |  c1      +         \ /
+               x         \ /       |  c2      +
+               |          x         \ /       |  c3
+               |          |          x         \ /
+               ----\ /-----          |          x
+                    +                |          |
+                    |                ----\ /-----
+                    |                     +
+                    |                     |
+                    ----------\ /----------
+                               +
+                               |
+
+  The fMAX/II report can be used to observe the differences in the latency of
+  the part_1 vs part_2. You can notice that there is a notable increase in
+  the latency of test.B1.start. It is approximately equal to the number of
+  register stages that we added (i.e. 4). However, it may not be exactly
+  equal since the compiler needs to pipeline only between these stages as
+  compared to having to pipeline the entire unrolled loop before. As such,
+  there can be subtle deviations from the achieved latency from what you may
+  otherwise expect. You will notice that part_2 is able to achieve an fMAX of
+  ~400MHz, which is significantly greater than part_1. By looking at the
+  graph viewer or the schedule viewer, we can see that the computation now
+  takes place over a longer period of time and the latency has grown for the
+  design. You can observe that each iteration of the unrolled loop occurs over
+  different cycles now. However, since this is a feed-forward datapath, we
+  can leverage pipeline parallelism to enqueue multiple iterations of the
+  function simultaneously which is then able to scale directly with fMAX.
+
+3. part_3_fpga_reg_2x.prj
+  In this version, we explicitly ask the compiler for a second register on the
+  path along the accumulator (just prior to the update of the `acc` value).
+  In part_2, the compiler would have pipelined this path so as to
+  honor the other hls_fpga_reg() call. By adding the additional
+  hls_fpga_reg() call, we force at least one register between each adder, and
+  can improve the fMAX further. This version has a minimal impact on the
+  component latency. In this particular example, there are no new registers,
+  but the compiler created a structure where the registers are placed where
+  the source code asked rather than where it thought was the best position.
+  This change affects the structure of the generated hardware as well. From
+  the graph viewer, notice that the structure of the adder tree has now
+  changed to form a registered chain.
+
+          mul
+           |
+          reg
+           |---------reg
+           |          |---------reg
+           |   1      |          |---------reg
+            \ /       |   2      |          |
+             +         \ /       |   3      |
+             |  c0      +         \ /       |   4
+              \ /       |  c1      +         \ /
+               x         \ /       |  c2      +
+               |          x         \ /       |  c3
+               |          |          x         \ /
+              reg-------\ /          |          x
+                         +           |          |
+                         |           |          |
+                        reg-------\ /           |
+                                   +            |
+                                   |            |
+                                  reg--------\ /
+                                              +
+                                              |
+                                             reg
+
+This tutorial requires the following tools to be installed:
+  - Intel(R) High Level Synthesis (HLS) Compiler
+  - ModelSim
+
+To run this tutorial:
+  - On Linux run "make"
+  - On Windows run "build"
+

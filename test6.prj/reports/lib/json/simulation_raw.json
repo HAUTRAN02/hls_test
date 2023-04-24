@@ -1,0 +1,7 @@
+{ "period":"1000000", "time":"124250000"  ,
+  "dut":{
+  "data":[{"start":20250000, "end":20250000, "enqueued":0}  ]}
+  ,
+  "dut.B1.start":{
+  "data":[{"start":4250000, "end":20250000, "enqueued":0}  ]}
+}

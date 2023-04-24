@@ -1,4 +1,0 @@
-# ** Error (suppressible): (vsim-19) Failed to access library 'folder/test6.prj/verification/transcript' at "folder/test6.prj/verification/transcript".
-# No such file or directory. (errno = ENOENT)
-# Error loading design
-# 

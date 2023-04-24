@@ -16,12 +16,13 @@ int main()
   int acc = 0;
   int mm, nn;
   float *datain;
+  fixed_9_2_t o_conv1[6 * 28 * 28];
   fixed_9_2_t image[28 * 28];
   fixed_9_2_t w_conv1[6];
-  fixed_9_2_t w_conv2[16*6*5*5];
-  fixed_9_2_t w_fc1[120*400];
-  fixed_9_2_t w_fc2[84*120];
-  fixed_9_2_t w_fc3[10*84];
+  fixed_9_2_t w_conv2[16 * 6 * 5 * 5];
+  fixed_9_2_t w_fc1[120 * 400];
+  fixed_9_2_t w_fc2[84 * 120];
+  fixed_9_2_t w_fc3[10 * 84];
   fixed_9_2_t b_conv1[6];
   fixed_9_2_t b_conv2[16];
   fixed_9_2_t b_fc1[120];
@@ -29,8 +30,6 @@ int main()
   fixed_9_2_t b_fc3[10];
   fixed_9_2_t probs[10];
   float temp;
-
- 
 
   FILE *fp;
   fp = fopen("C:/Users/Admins/Downloads/New folder/handwritten-digits-recognition-hls-main/data/weights/w_conv1.txt", "r");
@@ -77,7 +76,7 @@ int main()
     for (j = 0; j < 120; j++)
     {
       fscanf(fp, "%f ", &(temp));
-      w_fc2[120 * i + j] = (fixed_9_2_t) temp;
+      w_fc2[120 * i + j] = temp;
     }
   }
   fclose(fp);
@@ -149,16 +148,15 @@ int main()
   for (i = 0; i < LABEL_LEN * 28 * 28; i++)
     fscanf(fp, "%f ", &(dataset[i]));
   fclose(fp);
-  
-  
+
   for (i = 0; i < LABEL_LEN; i++)
   {
     datain = &dataset[i * 28 * 28];
     for (mm = 0; mm < 28; mm++)
       for (nn = 0; nn < 28; nn++)
-        {
+      {
         image[28 * mm + nn] = *(float *)&datain[28 * mm + nn];
-        }
+      }
 
     // conv1(image, w_conv1, b_conv1, o_conv1);
     pred(image, w_conv1, b_conv1, w_conv2, b_conv2, w_fc1, b_fc1, w_fc2, b_fc2, w_fc3, b_fc3, probs);
@@ -178,6 +176,5 @@ int main()
     printf("Predicted label: %d\n", index);
     printf(" label: %d\n", target[i]);
     printf("Prediction: %d/%d\n", acc, i + 1);
-    printf("sizeof( %d )", sizeof(fixed_9_2_t));
   }
 }

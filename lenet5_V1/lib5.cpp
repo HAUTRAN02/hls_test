@@ -244,31 +244,28 @@ void softmax(fixed_9_2_t *input11,
   fixed_9_2_t sum = 0;
   for (i = 0; i < 10; i++)
   {
-
     sum += exp_fixed(input11[i]);
   }
 
   for (i = 0; i < 10; i++)
   {
     temp = exp_fixed(input11[i]);
-    // output11[i] = fabs(temp.to_double() / (sum.to_double() * 1.0f));
-    output11[i] = temp;
+    output11[i] = fabs(temp.to_double() / (sum.to_double() * 1.0f));
   }
-
 }
 
-component void pred(hls_avalon_agent_memory_argument(28 * 28 * sizeof(2))  fixed_9_2_t *image,
-                    hls_avalon_agent_memory_argument(6 * sizeof(2)) fixed_9_2_t *w_conv1,
-                    hls_avalon_agent_memory_argument(6 * sizeof(2)) fixed_9_2_t *b_conv1,
-                    hls_avalon_agent_memory_argument(16 * 6 * 5 * 5 * sizeof(2)) fixed_9_2_t *w_conv2,
-                    hls_avalon_agent_memory_argument(16 * sizeof(2)) fixed_9_2_t *b_conv2,
-                    hls_avalon_agent_memory_argument(120 * 400 * sizeof(2)) fixed_9_2_t *w_fc1,
-                    hls_avalon_agent_memory_argument(120 * sizeof(4)) fixed_9_2_t *b_fc1,
-                    hls_avalon_agent_memory_argument(84 * 120 * sizeof(2)) fixed_9_2_t *w_fc2,
-                    hls_avalon_agent_memory_argument(84 * sizeof(2)) fixed_9_2_t *b_fc2,
-                    hls_avalon_agent_memory_argument(10 * 84 * sizeof(2)) fixed_9_2_t *w_fc3,
-                    hls_avalon_agent_memory_argument(10 * sizeof(2)) fixed_9_2_t *b_fc3,
-                    hls_avalon_agent_memory_argument(10 * sizeof(2)) fixed_9_2_t *probs)
+component void pred(hls_avalon_agent_memory_argument(IMG_SIZE)  fixed_9_2_t *image,
+                    hls_avalon_agent_memory_argument(W1_SIZE) fixed_9_2_t *w_conv1,
+                    hls_avalon_agent_memory_argument(B1_SIZE) fixed_9_2_t *b_conv1,
+                    hls_avalon_agent_memory_argument(W2_SIZE) fixed_9_2_t *w_conv2,
+                    hls_avalon_agent_memory_argument(B2_SIZE) fixed_9_2_t *b_conv2,
+                    hls_avalon_agent_memory_argument(FC1_SIZE) fixed_9_2_t *w_fc1,
+                    hls_avalon_agent_memory_argument(BFC1_SIZE) fixed_9_2_t *b_fc1,
+                    hls_avalon_agent_memory_argument(84 * 60 *3) fixed_9_2_t *w_fc2,
+                    hls_avalon_agent_memory_argument(BFC2_SIZE) fixed_9_2_t *b_fc2,
+                    hls_avalon_agent_memory_argument(FC3_SIZE) fixed_9_2_t *w_fc3,
+                    hls_avalon_agent_memory_argument(BFC3_SIZE) fixed_9_2_t *b_fc3,
+                    hls_avalon_agent_memory_argument(SOFT_MAX_SIZE) fixed_9_2_t *probs)
 {
   fixed_9_2_t o_conv1[6 * 28 * 28], o_relu1[6 * 28 * 28], o_avgpooling1[6 * 14 * 14];
   fixed_9_2_t o_conv2[16 * 10 * 10], o_relu2[16 * 10 * 10], o_avgpooling2[16 * 5 * 5];
@@ -292,3 +289,4 @@ component void pred(hls_avalon_agent_memory_argument(28 * 28 * sizeof(2))  fixed
   fc3(o_relu4, w_fc3, b_fc3, o_fc3);
   softmax(o_fc3, probs);
 }
+

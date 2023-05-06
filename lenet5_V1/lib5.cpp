@@ -56,7 +56,8 @@ void relu1(fixed_9_2_t *input1,
 }
 void avgpooling1(fixed_9_2_t *input1,
                  fixed_9_2_t *output1)
-{ int t1;
+{
+  int t1;
   int n_channel, i, j;
   fixed_9_2_t temp;
   for (n_channel = 0; n_channel < 6; n_channel++)
@@ -67,12 +68,11 @@ void avgpooling1(fixed_9_2_t *input1,
       {
         t1 = n_channel * 14 * 14 + 14 * (i / 2) + (j / 2);
         temp = (input1[n_channel * 28 * 28 + 28 * i + j] + input1[n_channel * 28 * 28 + (i + 1) * 28 + j] + input1[n_channel * 28 * 28 + i * 28 + (j + 1)] + input1[n_channel * 28 * 28 + (i + 1) * 28 + (j + 1)]);
-        output1[t1] = temp.to_double()  / (4.0f);
+        output1[t1] = temp.to_double() / (4.0f);
       }
     }
   }
 }
-
 
 void conv2(fixed_9_2_t *input2,
            fixed_9_2_t *kernel,
@@ -105,7 +105,6 @@ void conv2(fixed_9_2_t *input2,
   }
 }
 
-
 void relu2(fixed_9_2_t *input3,
            fixed_9_2_t *output3)
 {
@@ -122,12 +121,11 @@ void relu2(fixed_9_2_t *input3,
   }
 }
 
-
-
 void avgpooling2(fixed_9_2_t *input4,
                  fixed_9_2_t *output4)
 {
-  int n_channel, i, j;int t1;
+  int n_channel, i, j;
+  int t1;
   fixed_9_2_t temp;
   for (n_channel = 0; n_channel < 16; n_channel++)
   {
@@ -136,13 +134,12 @@ void avgpooling2(fixed_9_2_t *input4,
       for (j = 0; j < 10; j += 2)
       {
         t1 = n_channel * 5 * 5 + 5 * (i / 2) + (j / 2);
-        temp = (input4[n_channel * 10 * 10 + 10 * i + j] + input4[n_channel * 10 * 10 + 10 * (i + 1) + j] + input4[n_channel * 10 * 10 + i*10 + (j + 1)] + input4[n_channel * 10 * 10 + 10 * (i + 1) + j + 1]);
+        temp = (input4[n_channel * 10 * 10 + 10 * i + j] + input4[n_channel * 10 * 10 + 10 * (i + 1) + j] + input4[n_channel * 10 * 10 + i * 10 + (j + 1)] + input4[n_channel * 10 * 10 + 10 * (i + 1) + j + 1]);
         output4[t1] = temp.to_double() / (4.0f);
       }
     }
   }
 }
-
 
 void flatten(fixed_9_2_t *input5,
              fixed_9_2_t *output5)
@@ -254,39 +251,148 @@ void softmax(fixed_9_2_t *input11,
   }
 }
 
-component void pred(hls_avalon_agent_memory_argument(IMG_SIZE)  fixed_9_2_t *image,
-                    hls_avalon_agent_memory_argument(W1_SIZE) fixed_9_2_t *w_conv1,
-                    hls_avalon_agent_memory_argument(B1_SIZE) fixed_9_2_t *b_conv1,
-                    hls_avalon_agent_memory_argument(W2_SIZE) fixed_9_2_t *w_conv2,
-                    hls_avalon_agent_memory_argument(B2_SIZE) fixed_9_2_t *b_conv2,
-                    hls_avalon_agent_memory_argument(FC1_SIZE) fixed_9_2_t *w_fc1,
-                    hls_avalon_agent_memory_argument(BFC1_SIZE) fixed_9_2_t *b_fc1,
-                    hls_avalon_agent_memory_argument(84 * 60 *3) fixed_9_2_t *w_fc2,
-                    hls_avalon_agent_memory_argument(BFC2_SIZE) fixed_9_2_t *b_fc2,
-                    hls_avalon_agent_memory_argument(FC3_SIZE) fixed_9_2_t *w_fc3,
-                    hls_avalon_agent_memory_argument(BFC3_SIZE) fixed_9_2_t *b_fc3,
-                    hls_avalon_agent_memory_argument(SOFT_MAX_SIZE) fixed_9_2_t *probs)
+void getmax(fixed_9_2_t *input12, int *result,int position)
 {
-  fixed_9_2_t o_conv1[6 * 28 * 28], o_relu1[6 * 28 * 28], o_avgpooling1[6 * 14 * 14];
-  fixed_9_2_t o_conv2[16 * 10 * 10], o_relu2[16 * 10 * 10], o_avgpooling2[16 * 5 * 5];
-  fixed_9_2_t o_flatten[400];
-  fixed_9_2_t o_fc1[120], o_relu3[120];
-  fixed_9_2_t o_fc2[84], o_relu4[84];
-  fixed_9_2_t o_fc3[10];
-
-
-  conv1(image, w_conv1, b_conv1, o_conv1);
-  relu1(o_conv1, o_relu1);
-  avgpooling1(o_relu1, o_avgpooling1);
-  conv2(o_avgpooling1, w_conv2, b_conv2, o_conv2);
-  relu2(o_conv2, o_relu2);
-  avgpooling2(o_relu2, o_avgpooling2);
-  flatten(o_avgpooling2, o_flatten);
-  fc1(o_flatten, w_fc1, b_fc1, o_fc1);
-  relu3(o_fc1, o_relu3);
-  fc2(o_relu3, w_fc2, b_fc2, o_fc2);
-  relu4(o_fc2, o_relu4);
-  fc3(o_relu4, w_fc3, b_fc3, o_fc3);
-  softmax(o_fc3, probs);
+   result[position] = 0;
+  fixed_9_2_t max = input12[0];
+  for (int j = 1; j < 10; j++)
+  {
+    if (input12[j] > max)
+    {
+      result[position] = j;
+      max = input12[j];
+    }
+  }
 }
 
+component void pred(fixed_9_2_t *image,
+                    fixed_9_2_t *w_conv1,
+                    fixed_9_2_t *b_conv1,
+                    fixed_9_2_t *w_conv2,
+                    fixed_9_2_t *b_conv2,
+                    fixed_9_2_t *w_fc1,
+                    fixed_9_2_t *b_fc1,
+                    fixed_9_2_t *w_fc2,
+                    fixed_9_2_t *b_fc2,
+                    fixed_9_2_t *w_fc3,
+                    fixed_9_2_t *b_fc3,
+                    int *result)
+{
+  int i, j, k, m, n, index;
+  int mm, nn;
+  hls_memory_impl("MLAB") fixed_9_2_t o_conv1[6 * 28 * 28];
+  hls_memory_impl("MLAB") fixed_9_2_t o_relu1[6 * 28 * 28];
+  hls_memory_impl("MLAB") fixed_9_2_t o_avgpooling1[6 * 14 * 14];
+  hls_memory_impl("MLAB") fixed_9_2_t o_conv2[16 * 10 * 10];
+  hls_memory_impl("MLAB") fixed_9_2_t o_relu2[16 * 10 * 10];
+  hls_memory_impl("MLAB") fixed_9_2_t o_avgpooling2[16 * 5 * 5];
+  hls_memory_impl("MLAB") fixed_9_2_t o_flatten[400];
+  hls_memory_impl("MLAB") fixed_9_2_t o_fc1[120];
+  hls_memory_impl("MLAB") fixed_9_2_t o_relu3[120];
+  hls_memory_impl("MLAB") fixed_9_2_t o_fc2[84];
+  hls_memory_impl("MLAB") fixed_9_2_t o_relu4[84];
+  hls_memory_impl("MLAB") fixed_9_2_t o_fc3[10];
+
+  hls_memory_impl("MLAB") fixed_9_2_t image1[28 * 28];
+  hls_memory_impl("MLAB") fixed_9_2_t w_conv11[6];
+  hls_memory_impl("MLAB") fixed_9_2_t w_conv22[16 * 6 * 5 * 5];
+  hls_memory_impl("MLAB") fixed_9_2_t w_fc11[120 * 400];
+  hls_memory_impl("MLAB") fixed_9_2_t w_fc22[84 * 120];
+  hls_memory_impl("MLAB") fixed_9_2_t w_fc33[10 * 84];
+  hls_memory_impl("MLAB") fixed_9_2_t b_conv11[6];
+  hls_memory_impl("MLAB") fixed_9_2_t b_conv22[16];
+  hls_memory_impl("MLAB") fixed_9_2_t b_fc11[120];
+  hls_memory_impl("MLAB") fixed_9_2_t b_fc22[84];
+  hls_memory_impl("MLAB") fixed_9_2_t b_fc33[10];
+  hls_memory_impl("MLAB")  fixed_9_2_t probs[10];
+
+  for (int i = 0; i < 6; i++)
+  {
+
+    w_conv11[i] = w_conv1[i];
+  }
+  for (int i = 0; i < 6; i++)
+  {
+    b_conv11[i] = b_conv1[i];
+  }
+  for (i = 0; i < 16; i++)
+  {
+    for (j = 0; j < 6; j++)
+    {
+      for (m = 0; m < 5; m++)
+      {
+        for (n = 0; n < 5; n++)
+        {
+
+          w_conv22[6 * 5 * 5 * i + 5 * 5 * j + 5 * m + n] = w_conv2[6 * 5 * 5 * i + 5 * 5 * j + 5 * m + n];
+        }
+      }
+    }
+  }
+  for (i = 0; i < 120; i++)
+  {
+    for (j = 0; j < 400; j++)
+    {
+
+      w_fc11[400 * i + j] = w_fc1[400 * i + j];
+    }
+  }
+  for (i = 0; i < 84; i++)
+  {
+    for (j = 0; j < 120; j++)
+    {
+
+      w_fc22[120 * i + j] = w_fc2[120 * i + j];
+    }
+  }
+  for (i = 0; i < 10; i++)
+  {
+    for (j = 0; j < 84; j++)
+    {
+
+      w_fc33[84 * i + j] = w_fc3[84 * i + j];
+    }
+  }
+  for (i = 0; i < 16; i++)
+  {
+
+    b_conv22[i] = b_conv2[i];
+  }
+  for (i = 0; i < 120; i++)
+  {
+
+    b_fc11[i] = b_fc1[i];
+  }
+  for (i = 0; i < 84; i++)
+  {
+
+    b_fc22[i] = b_fc2[i];
+  }
+  for (i = 0; i < 10; i++)
+  {
+    b_fc33[i] = b_fc3[i];
+  }
+  for (int num_test = 0; num_test < LABEL_LEN; num_test++)
+  {
+    for (mm = 0; mm < 28; mm++)
+      for (nn = 0; nn < 28; nn++)
+      {
+        image1[28 * mm + nn] = image[28 * 28 * num_test + 28 * mm + nn];
+      }
+
+    conv1(image1, w_conv11, b_conv11, o_conv1);
+    relu1(o_conv1, o_relu1);
+    avgpooling1(o_relu1, o_avgpooling1);
+    conv2(o_avgpooling1, w_conv22, b_conv22, o_conv2);
+    relu2(o_conv2, o_relu2);
+    avgpooling2(o_relu2, o_avgpooling2);
+    flatten(o_avgpooling2, o_flatten);
+    fc1(o_flatten, w_fc11, b_fc11, o_fc1);
+    relu3(o_fc1, o_relu3);
+    fc2(o_relu3, w_fc22, b_fc22, o_fc2);
+    relu4(o_fc2, o_relu4);
+    fc3(o_relu4, w_fc33, b_fc33, o_fc3);
+    softmax(o_fc3, probs);
+    getmax(probs, result, num_test);
+  }
+}

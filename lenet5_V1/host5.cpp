@@ -11,7 +11,9 @@
 
 int main()
 {
-  float *dataset = (float *)malloc(LABEL_LEN * 28 * 28 * sizeof(float));
+  // float *dataset = (float *)malloc(LABEL_LEN * 28 * 28 * sizeof(float));
+  fixed_9_2_t dataset[LABEL_LEN * 28 * 28];
+  int test_value[LABEL_LEN];
   int i, j, k, m, n, index;
   int acc = 0;
   int mm, nn;
@@ -127,11 +129,7 @@ int main()
   fclose(fp);
 
   fp = fopen("C:/Users/Admins/Downloads/New folder/handwritten-digits-recognition-hls-main/data/weights/b_fc3.txt", "r");
-  for (i = 0; i < 10; i++)
-  {
-    fscanf(fp, "%f ", &(temp));
-    b_fc3[i] = temp;
-  }
+
 
   fclose(fp);
 
@@ -146,34 +144,39 @@ int main()
 
   fp = fopen("C:/Users/Admins/Downloads/New folder/handwritten-digits-recognition-hls-main/data/MNIST/mnist-test-image.txt", "r");
   for (i = 0; i < LABEL_LEN * 28 * 28; i++)
-    fscanf(fp, "%f ", &(dataset[i]));
+  {
+
+    fscanf(fp, "%f ", &(temp));
+    dataset[i] = temp;
+  }
   fclose(fp);
 
-  for (i = 0; i < LABEL_LEN; i++)
-  {
-    datain = &dataset[i * 28 * 28];
-    for (mm = 0; mm < 28; mm++)
-      for (nn = 0; nn < 28; nn++)
-      {
-        image[28 * mm + nn] = *(float *)&datain[28 * mm + nn];
-      }
+  
+    // datain = &dataset[i * 28 * 28];
+    // for (mm = 0; mm < 28; mm++)
+    //   for (nn = 0; nn < 28; nn++)
+    //   {
+    //     image[28 * mm + nn] = *(float *)&datain[28 * mm + nn];
+    //   }
 
     // conv1(image, w_conv1, b_conv1, o_conv1);
-    pred(image, w_conv1, b_conv1, w_conv2, b_conv2, w_fc1, b_fc1, w_fc2, b_fc2, w_fc3, b_fc3, probs);
-    int index = 0;
-    fixed_9_2_t max = probs[0];
-    for (j = 1; j < 10; j++)
-    {
-      if (probs[j] > max)
-      {
-        index = j;
-        max = probs[j];
-      }
-    }
-
-    if (index == target[i])
+    pred(dataset, w_conv1, b_conv1, w_conv2, b_conv2, w_fc1, b_fc1, w_fc2, b_fc2, w_fc3, b_fc3, test_value);
+      // pred(image, w_conv1, b_conv1,o_conv1);
+    // int index = 0;
+    // fixed_9_2_t max = probs[0];
+    // for (j = 1; j < 10; j++)
+    // {
+    //   if (probs[j] > max)
+    //   {
+    //     index = j;
+    //     max = probs[j];
+    //   }
+    // }
+for (i = 0; i < LABEL_LEN; i++)
+  {
+    if (test_value[i] == target[i])
       acc++;
-    printf("Predicted label: %d\n", index);
+    printf("Predicted label: %d\n", test_value[i]);
     printf(" label: %d\n", target[i]);
     printf("Prediction: %d/%d\n", acc, i + 1);
   }

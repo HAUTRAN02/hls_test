@@ -13,10 +13,10 @@
 #include "lib5.h"
 
 void conv1(
-    fixed_9_2_t *input0,
-    fixed_9_2_t *w_conv1,
-    fixed_9_2_t *b_conv1,
-    fixed_9_2_t *o_conv1)
+    float *input0,
+    float *w_conv1,
+    float *b_conv1,
+    float *o_conv1)
 {
   int channel, row, col, i, j;
   for (channel = 0; channel < 6; channel++)
@@ -39,8 +39,8 @@ void conv1(
     }
   }
 }
-void relu1(fixed_9_2_t *input1,
-           fixed_9_2_t *output1)
+void relu1(float *input1,
+           float *output1)
 {
   int i, j, k;
   for (k = 0; k < 6; k++)
@@ -54,12 +54,12 @@ void relu1(fixed_9_2_t *input1,
     }
   }
 }
-void avgpooling1(fixed_9_2_t *input1,
-                 fixed_9_2_t *output1)
+void avgpooling1(float *input1,
+                 float *output1)
 {
   int t1;
   int n_channel, i, j;
-  fixed_9_2_t temp;
+  float temp;
   for (n_channel = 0; n_channel < 6; n_channel++)
   {
     for (i = 0; i < 28; i += 2)
@@ -68,16 +68,16 @@ void avgpooling1(fixed_9_2_t *input1,
       {
         t1 = n_channel * 14 * 14 + 14 * (i / 2) + (j / 2);
         temp = (input1[n_channel * 28 * 28 + 28 * i + j] + input1[n_channel * 28 * 28 + (i + 1) * 28 + j] + input1[n_channel * 28 * 28 + i * 28 + (j + 1)] + input1[n_channel * 28 * 28 + (i + 1) * 28 + (j + 1)]);
-        output1[t1] = temp.to_double() / (4.0f);
+        output1[t1] = temp / (4.0f);
       }
     }
   }
 }
 
-void conv2(fixed_9_2_t *input2,
-           fixed_9_2_t *kernel,
-           fixed_9_2_t *bias,
-           fixed_9_2_t *output2)
+void conv2(float *input2,
+           float *kernel,
+           float *bias,
+           float *output2)
 {
   int channel, row, col;
   int i, j, k;
@@ -105,8 +105,8 @@ void conv2(fixed_9_2_t *input2,
   }
 }
 
-void relu2(fixed_9_2_t *input3,
-           fixed_9_2_t *output3)
+void relu2(float *input3,
+           float *output3)
 {
   int i, j, k;
   for (k = 0; k < 16; k++)
@@ -121,12 +121,12 @@ void relu2(fixed_9_2_t *input3,
   }
 }
 
-void avgpooling2(fixed_9_2_t *input4,
-                 fixed_9_2_t *output4)
+void avgpooling2(float *input4,
+                 float *output4)
 {
   int n_channel, i, j;
   int t1;
-  fixed_9_2_t temp;
+  float temp;
   for (n_channel = 0; n_channel < 16; n_channel++)
   {
     for (i = 0; i < 10; i += 2)
@@ -135,14 +135,14 @@ void avgpooling2(fixed_9_2_t *input4,
       {
         t1 = n_channel * 5 * 5 + 5 * (i / 2) + (j / 2);
         temp = (input4[n_channel * 10 * 10 + 10 * i + j] + input4[n_channel * 10 * 10 + 10 * (i + 1) + j] + input4[n_channel * 10 * 10 + i * 10 + (j + 1)] + input4[n_channel * 10 * 10 + 10 * (i + 1) + j + 1]);
-        output4[t1] = temp.to_double() / (4.0f);
+        output4[t1] = temp / (4.0f);
       }
     }
   }
 }
 
-void flatten(fixed_9_2_t *input5,
-             fixed_9_2_t *output5)
+void flatten(float *input5,
+             float *output5)
 {
   int i, j, k;
   int index = 0;
@@ -159,10 +159,10 @@ void flatten(fixed_9_2_t *input5,
   }
 }
 
-void fc1(fixed_9_2_t *input6,
-         fixed_9_2_t *weights,
-         fixed_9_2_t *bias,
-         fixed_9_2_t *output6)
+void fc1(float *input6,
+         float *weights,
+         float *bias,
+         float *output6)
 {
   int i, j;
   for (i = 0; i < 120; i++)
@@ -177,8 +177,8 @@ void fc1(fixed_9_2_t *input6,
   }
 }
 
-void relu3(fixed_9_2_t *input7,
-           fixed_9_2_t *output7)
+void relu3(float *input7,
+           float *output7)
 {
   int i;
   for (i = 0; i < 120; i++)
@@ -187,10 +187,10 @@ void relu3(fixed_9_2_t *input7,
   }
 }
 
-void fc2(fixed_9_2_t *input8,
-         fixed_9_2_t *weights,
-         fixed_9_2_t *bias,
-         fixed_9_2_t *output8)
+void fc2(float *input8,
+         float *weights,
+         float *bias,
+         float *output8)
 {
   int i, j;
   for (i = 0; i < 84; i++)
@@ -205,8 +205,8 @@ void fc2(fixed_9_2_t *input8,
   }
 }
 
-void relu4(fixed_9_2_t *input9,
-           fixed_9_2_t *output9)
+void relu4(float *input9,
+           float *output9)
 {
   int i;
   for (i = 0; i < 84; i++)
@@ -215,10 +215,10 @@ void relu4(fixed_9_2_t *input9,
   }
 }
 
-void fc3(fixed_9_2_t *input10,
-         fixed_9_2_t *weights,
-         fixed_9_2_t *bias,
-         fixed_9_2_t *output10)
+void fc3(float *input10,
+         float *weights,
+         float *bias,
+         float *output10)
 {
   int i, j;
   for (i = 0; i < 10; i++)
@@ -233,28 +233,28 @@ void fc3(fixed_9_2_t *input10,
   }
 }
 
-void softmax(fixed_9_2_t *input11,
-             fixed_9_2_t *output11)
+void softmax(float *input11,
+             float *output11)
 {
   int i;
-  fixed_9_2_t temp;
-  fixed_9_2_t sum = 0;
+  float temp;
+  float sum = 0;
   for (i = 0; i < 10; i++)
   {
-    sum += exp_fixed(input11[i]);
+    sum += exp(input11[i]);
   }
 
   for (i = 0; i < 10; i++)
   {
-    temp = exp_fixed(input11[i]);
-    output11[i] = fabs(temp.to_double() / (sum.to_double() * 1.0f));
+    temp = exp(input11[i]);
+    output11[i] = fabs(temp / (sum * 1.0f));
   }
 }
 
-void getmax(fixed_9_2_t *input12, int *result,int position)
+void getmax(float *input12, int *result, int position)
 {
-   result[position] = 0;
-  fixed_9_2_t max = input12[0];
+  result[position] = 0;
+  float max = input12[0];
   for (int j = 1; j < 10; j++)
   {
     if (input12[j] > max)
@@ -265,46 +265,46 @@ void getmax(fixed_9_2_t *input12, int *result,int position)
   }
 }
 
-component void pred(fixed_9_2_t *image,
-                    fixed_9_2_t *w_conv1,
-                    fixed_9_2_t *b_conv1,
-                    fixed_9_2_t *w_conv2,
-                    fixed_9_2_t *b_conv2,
-                    fixed_9_2_t *w_fc1,
-                    fixed_9_2_t *b_fc1,
-                    fixed_9_2_t *w_fc2,
-                    fixed_9_2_t *b_fc2,
-                    fixed_9_2_t *w_fc3,
-                    fixed_9_2_t *b_fc3,
+component void pred(float *image,
+                    float *w_conv1,
+                    float *b_conv1,
+                    float *w_conv2,
+                    float *b_conv2,
+                    float *w_fc1,
+                    float *b_fc1,
+                    float *w_fc2,
+                    float *b_fc2,
+                    float *w_fc3,
+                    float *b_fc3,
                     int *result)
 {
   int i, j, k, m, n, index;
   int mm, nn;
-  hls_memory_impl("MLAB") fixed_9_2_t o_conv1[6 * 28 * 28];
-  hls_memory_impl("MLAB") fixed_9_2_t o_relu1[6 * 28 * 28];
-  hls_memory_impl("MLAB") fixed_9_2_t o_avgpooling1[6 * 14 * 14];
-  hls_memory_impl("MLAB") fixed_9_2_t o_conv2[16 * 10 * 10];
-  hls_memory_impl("MLAB") fixed_9_2_t o_relu2[16 * 10 * 10];
-  hls_memory_impl("MLAB") fixed_9_2_t o_avgpooling2[16 * 5 * 5];
-  hls_memory_impl("MLAB") fixed_9_2_t o_flatten[400];
-  hls_memory_impl("MLAB") fixed_9_2_t o_fc1[120];
-  hls_memory_impl("MLAB") fixed_9_2_t o_relu3[120];
-  hls_memory_impl("MLAB") fixed_9_2_t o_fc2[84];
-  hls_memory_impl("MLAB") fixed_9_2_t o_relu4[84];
-  hls_memory_impl("MLAB") fixed_9_2_t o_fc3[10];
+  hls_memory_impl("MLAB") float o_conv1[6 * 28 * 28];
+  hls_memory_impl("MLAB") float o_relu1[6 * 28 * 28];
+  hls_memory_impl("MLAB") float o_avgpooling1[6 * 14 * 14];
+  hls_memory_impl("MLAB") float o_conv2[16 * 10 * 10];
+  hls_memory_impl("MLAB") float o_relu2[16 * 10 * 10];
+  hls_memory_impl("MLAB") float o_avgpooling2[16 * 5 * 5];
+  hls_memory_impl("MLAB") float o_flatten[400];
+  hls_memory_impl("MLAB") float o_fc1[120];
+  hls_memory_impl("MLAB") float o_relu3[120];
+  hls_memory_impl("MLAB") float o_fc2[84];
+  hls_memory_impl("MLAB") float o_relu4[84];
+  hls_memory_impl("MLAB") float o_fc3[10];
 
-  hls_memory_impl("MLAB") fixed_9_2_t image1[28 * 28];
-  hls_memory_impl("MLAB") fixed_9_2_t w_conv11[6];
-  hls_memory_impl("MLAB") fixed_9_2_t w_conv22[16 * 6 * 5 * 5];
-  hls_memory_impl("MLAB") fixed_9_2_t w_fc11[120 * 400];
-  hls_memory_impl("MLAB") fixed_9_2_t w_fc22[84 * 120];
-  hls_memory_impl("MLAB") fixed_9_2_t w_fc33[10 * 84];
-  hls_memory_impl("MLAB") fixed_9_2_t b_conv11[6];
-  hls_memory_impl("MLAB") fixed_9_2_t b_conv22[16];
-  hls_memory_impl("MLAB") fixed_9_2_t b_fc11[120];
-  hls_memory_impl("MLAB") fixed_9_2_t b_fc22[84];
-  hls_memory_impl("MLAB") fixed_9_2_t b_fc33[10];
-  hls_memory_impl("MLAB")  fixed_9_2_t probs[10];
+  hls_memory_impl("MLAB") float image1[28 * 28];
+  hls_memory_impl("MLAB") float w_conv11[6];
+  hls_memory_impl("MLAB") float w_conv22[16 * 6 * 5 * 5];
+  hls_memory_impl("MLAB") float w_fc11[120 * 400];
+  hls_memory_impl("MLAB") float w_fc22[84 * 120];
+  hls_memory_impl("MLAB") float w_fc33[10 * 84];
+  hls_memory_impl("MLAB") float b_conv11[6];
+  hls_memory_impl("MLAB") float b_conv22[16];
+  hls_memory_impl("MLAB") float b_fc11[120];
+  hls_memory_impl("MLAB") float b_fc22[84];
+  hls_memory_impl("MLAB") float b_fc33[10];
+  hls_memory_impl("MLAB") float probs[10];
 
   for (int i = 0; i < 6; i++)
   {
@@ -372,13 +372,14 @@ component void pred(fixed_9_2_t *image,
   {
     b_fc33[i] = b_fc3[i];
   }
-  for (int num_test = 0; num_test < LABEL_LEN; num_test++)
-  {
+  for (int num_test1 = 0; num_test1 < LABEL_LEN; num_test1++)
     for (mm = 0; mm < 28; mm++)
       for (nn = 0; nn < 28; nn++)
       {
-        image1[28 * mm + nn] = image[28 * 28 * num_test + 28 * mm + nn];
+        image1[28 * mm + nn] = image[28 * 28 * num_test1 + 28 * mm + nn];
       }
+  for (int num_test = 0; num_test < LABEL_LEN; num_test++)
+  {
 
     conv1(image1, w_conv11, b_conv11, o_conv1);
     relu1(o_conv1, o_relu1);

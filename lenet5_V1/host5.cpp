@@ -12,27 +12,30 @@
 int main()
 {
   // float *dataset = (float *)malloc(LABEL_LEN * 28 * 28 * sizeof(float));
-  fixed_9_2_t dataset[LABEL_LEN * 28 * 28];
+  float dataset[LABEL_LEN * 28 * 28];
   int test_value[LABEL_LEN];
   int i, j, k, m, n, index;
   int acc = 0;
   int mm, nn;
   float *datain;
-  fixed_9_2_t o_conv1[6 * 28 * 28];
-  fixed_9_2_t image[28 * 28];
-  fixed_9_2_t w_conv1[6];
-  fixed_9_2_t w_conv2[16 * 6 * 5 * 5];
-  fixed_9_2_t w_fc1[120 * 400];
-  fixed_9_2_t w_fc2[84 * 120];
-  fixed_9_2_t w_fc3[10 * 84];
-  fixed_9_2_t b_conv1[6];
-  fixed_9_2_t b_conv2[16];
-  fixed_9_2_t b_fc1[120];
-  fixed_9_2_t b_fc2[84];
-  fixed_9_2_t b_fc3[10];
-  fixed_9_2_t probs[10];
+  float o_conv1[6 * 28 * 28];
+  float image[28 * 28];
+  float w_conv1[6];
+  float w_conv2[16 * 6 * 5 * 5];
+  float w_fc1[120 * 400];
+  float w_fc2[84 * 120];
+  float w_fc3[10 * 84];
+  float b_conv1[6];
+  float b_conv2[16];
+  float b_fc1[120];
+  float b_fc2[84];
+  float b_fc3[10];
+  float probs[10];
   float temp;
-
+  // ihc::mm_host<int, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<256>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> > mm_A(A, sizeof(int)*TEST_SIZE);
+  // ihc::mm_host<int, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<256>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> > mm_B(B, sizeof(int)*TEST_SIZE);
+  // ihc::mm_host<int, ihc::aspace<2>, ihc::awidth<32>, ihc::dwidth<256>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> > mm_C(C, sizeof(int)*TEST_SIZE);
+  
   FILE *fp;
   fp = fopen("C:/Users/Admins/Downloads/New folder/handwritten-digits-recognition-hls-main/data/weights/w_conv1.txt", "r");
   for (i = 0; i < 6; i++)
@@ -163,7 +166,7 @@ int main()
     pred(dataset, w_conv1, b_conv1, w_conv2, b_conv2, w_fc1, b_fc1, w_fc2, b_fc2, w_fc3, b_fc3, test_value);
       // pred(image, w_conv1, b_conv1,o_conv1);
     // int index = 0;
-    // fixed_9_2_t max = probs[0];
+    // float max = probs[0];
     // for (j = 1; j < 10; j++)
     // {
     //   if (probs[j] > max)

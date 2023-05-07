@@ -22,69 +22,69 @@
 #define SOFT_MAX_SIZE 15 // 10 * (1.5)
 
 #define _CRT_SECURE_NO_DEPRECATE
-typedef ac_fixed<16, 8, true> fixed_9_2_t;
+// typedef ac_fixed<16, 8, true> float;
 void conv1(
-    fixed_9_2_t *input0,
-    fixed_9_2_t *w_conv1,
-    fixed_9_2_t *b_conv1,
-    fixed_9_2_t *o_conv1);
+    float *input0,
+    float *w_conv1,
+    float *b_conv1,
+    float *o_conv1);
 
-void relu1(fixed_9_2_t *input1,
-           fixed_9_2_t *output1);
+void relu1(float *input1,
+           float *output1);
 
-void avgpooling1(fixed_9_2_t *input1,
-                 fixed_9_2_t *output1);
+void avgpooling1(float *input1,
+                 float *output1);
 
-void conv2(fixed_9_2_t *input2,
-           fixed_9_2_t *kernel,
-           fixed_9_2_t *bias,
-           fixed_9_2_t *output2);
+void conv2(float *input2,
+           float *kernel,
+           float *bias,
+           float *output2);
 
-void relu2(fixed_9_2_t *input3,
-           fixed_9_2_t *output3);
+void relu2(float *input3,
+           float *output3);
 
-void avgpooling2(fixed_9_2_t *input4,
-                 fixed_9_2_t *output4);
+void avgpooling2(float *input4,
+                 float *output4);
 
-void flatten(fixed_9_2_t *input5,
-             fixed_9_2_t *output5);
+void flatten(float *input5,
+             float *output5);
 
-void fc1(fixed_9_2_t *input6,
-         fixed_9_2_t *weights,
-         fixed_9_2_t *bias,
-         fixed_9_2_t *output6);
+void fc1(float *input6,
+         float *weights,
+         float *bias,
+         float *output6);
 
-void relu3(fixed_9_2_t *input7,
-           fixed_9_2_t *output7);
+void relu3(float *input7,
+           float *output7);
 
-void fc2(fixed_9_2_t *input8,
-         fixed_9_2_t *weights,
-         fixed_9_2_t *bias,
-         fixed_9_2_t *output8);
+void fc2(float *input8,
+         float *weights,
+         float *bias,
+         float *output8);
 
-void relu4(fixed_9_2_t *input9,
-           fixed_9_2_t *output9);
+void relu4(float *input9,
+           float *output9);
 
-void fc3(fixed_9_2_t *input10,
-         fixed_9_2_t *weights,
-         fixed_9_2_t *bias,
-         fixed_9_2_t *output10);
+void fc3(float *input10,
+         float *weights,
+         float *bias,
+         float *output10);
 
-void softmax(fixed_9_2_t *input11,
-             fixed_9_2_t *output11);
-component void pred(fixed_9_2_t *image,
-                    fixed_9_2_t *w_conv1,
-                    fixed_9_2_t *b_conv1,
-                    fixed_9_2_t *w_conv2,
-                    fixed_9_2_t *b_conv2,
-                    fixed_9_2_t *w_fc1,
-                    fixed_9_2_t *b_fc1,
-                    fixed_9_2_t *w_fc2,
-                    fixed_9_2_t *b_fc2,
-                    fixed_9_2_t *w_fc3,
-                    fixed_9_2_t *b_fc3,
+void softmax(float *input11,
+             float *output11);
+component void pred(float *image,
+                    float *w_conv1,
+                    float *b_conv1,
+                    float *w_conv2,
+                    float *b_conv2,
+                    float *w_fc1,
+                    float *b_fc1,
+                    float *w_fc2,
+                    float *b_fc2,
+                    float *w_fc3,
+                    float *b_fc3,
                      int *result);
-// component void pred(fixed_9_2_t *image,
-//                     fixed_9_2_t *w_conv11,
-//                     fixed_9_2_t *b_conv11,
-//                     fixed_9_2_t *o_conv11);
+// component void pred(float *image,
+//                     float *w_conv11,
+//                     float *b_conv11,
+//                     float *o_conv11);

@@ -265,18 +265,19 @@ void getmax(float *input12, int *result, int position)
   }
 }
 
-component void pred(float *image,
-                    float *w_conv1,
-                    float *b_conv1,
-                    float *w_conv2,
-                    float *b_conv2,
-                    float *w_fc1,
-                    float *b_fc1,
-                    float *w_fc2,
-                    float *b_fc2,
-                    float *w_fc3,
-                    float *b_fc3,
-                    int *result)
+component void pred(
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> >& image,
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> >& w_conv1,
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> >& b_conv1,
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> >& w_conv2,
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> >& b_conv2,
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> >& w_fc1,
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> >& b_fc1,
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> >& w_fc2,
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> >& b_fc2,
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> >& w_fc3,
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> >& b_fc3,
+  ihc::mm_host<int, ihc::aspace<2>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<3>, ihc::waitrequest<true> >& result)
 {
   int i, j, k, m, n, index;
   int mm, nn;

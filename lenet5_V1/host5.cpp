@@ -32,9 +32,20 @@ int main()
   float b_fc3[10];
   float probs[10];
   float temp;
-  // ihc::mm_host<int, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<256>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> > mm_A(A, sizeof(int)*TEST_SIZE);
-  // ihc::mm_host<int, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<256>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> > mm_B(B, sizeof(int)*TEST_SIZE);
-  // ihc::mm_host<int, ihc::aspace<2>, ihc::awidth<32>, ihc::dwidth<256>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> > mm_C(C, sizeof(int)*TEST_SIZE);
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> > mm_dataset(dataset, sizeof(float)*LABEL_LEN * 28 * 28);
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> > mm_w_conv1(w_conv1, sizeof(float)*6);
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> > mm_w_conv2(w_conv2, sizeof(float)*16 * 6 * 5 * 5);
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> > mm_w_fc1(w_fc1, sizeof(float)*120 * 400);
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> > mm_w_fc2(w_fc2, sizeof(float)*84 * 120);
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> > mm_w_fc3(w_fc3, sizeof(float)*10 * 84);
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> > mm_b_conv1(b_conv1, sizeof(float)*6);
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> > mm_b_conv2(b_conv2, sizeof(float)*16);
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> > mm_b_fc1(b_fc1, sizeof(float)*120);
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> > mm_b_fc2(b_fc2, sizeof(float)*84);
+  ihc::mm_host<float, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> > mm_b_fc3(b_fc3, sizeof(float)*10);
+  ihc::mm_host<int, ihc::aspace<2>, ihc::awidth<32>, ihc::dwidth<1024>, ihc::latency<0>, ihc::maxburst<3>, ihc::waitrequest<true> > mm_test_value(test_value, sizeof(int)*LABEL_LEN);
+
+
   
   FILE *fp;
   fp = fopen("C:/Users/Admins/Downloads/New folder/handwritten-digits-recognition-hls-main/data/weights/w_conv1.txt", "r");
@@ -163,7 +174,7 @@ int main()
     //   }
 
     // conv1(image, w_conv1, b_conv1, o_conv1);
-    pred(dataset, w_conv1, b_conv1, w_conv2, b_conv2, w_fc1, b_fc1, w_fc2, b_fc2, w_fc3, b_fc3, test_value);
+    pred(mm_dataset,mm_w_conv1, mm_b_conv1, mm_w_conv2, mm_b_conv2, mm_w_fc1, mm_b_fc1, mm_w_fc2, mm_b_fc2, mm_w_fc3, mm_b_fc3, mm_test_value);
       // pred(image, w_conv1, b_conv1,o_conv1);
     // int index = 0;
     // float max = probs[0];

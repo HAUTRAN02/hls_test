@@ -66,9 +66,8 @@ void avgpooling1(float *input1,
     {
       for (j = 0; j < 28; j += 2)
       {
-        t1 = n_channel * 14 * 14 + 14 * (i / 2) + (j / 2);
-        temp = (input1[n_channel * 28 * 28 + 28 * i + j] + input1[n_channel * 28 * 28 + (i + 1) * 28 + j] + input1[n_channel * 28 * 28 + i * 28 + (j + 1)] + input1[n_channel * 28 * 28 + (i + 1) * 28 + (j + 1)]);
-        output1[t1] = temp / (4.0f);
+
+        output1[n_channel * 14 * 14 + 14 * (i / 2) + (j / 2)] = (input1[n_channel * 28 * 28 + 28 * i + j] + input1[n_channel * 28 * 28 + (i + 1) * 28 + j] + input1[n_channel * 28 * 28 + i * 28 + (j + 1)] + input1[n_channel * 28 * 28 + (i + 1) * 28 + (j + 1)]) / (4.0f);
       }
     }
   }
@@ -133,31 +132,14 @@ void avgpooling2(float *input4,
     {
       for (j = 0; j < 10; j += 2)
       {
-        t1 = n_channel * 5 * 5 + 5 * (i / 2) + (j / 2);
-        temp = (input4[n_channel * 10 * 10 + 10 * i + j] + input4[n_channel * 10 * 10 + 10 * (i + 1) + j] + input4[n_channel * 10 * 10 + i * 10 + (j + 1)] + input4[n_channel * 10 * 10 + 10 * (i + 1) + j + 1]);
-        output4[t1] = temp / (4.0f);
+      
+        output4[n_channel * 5 * 5 + 5 * (i / 2) + (j / 2)] = (input4[n_channel * 10 * 10 + 10 * i + j] + input4[n_channel * 10 * 10 + 10 * (i + 1) + j] + input4[n_channel * 10 * 10 + i * 10 + (j + 1)] + input4[n_channel * 10 * 10 + 10 * (i + 1) + j + 1]) / (4.0f);
       }
     }
   }
 }
 
-void flatten(float *input5,
-             float *output5)
-{
-  int i, j, k;
-  int index = 0;
-  for (k = 0; k < 16; k++)
-  {
-    for (i = 0; i < 5; i++)
-    {
-      for (j = 0; j < 5; j++)
-      {
-        output5[index] = input5[k * 5 * 5 + 5 * i + j];
-        index++;
-      }
-    }
-  }
-}
+
 
 void fc1(float *input6,
          float *weights,
@@ -287,7 +269,7 @@ component void pred(
   hls_memory_impl("MLAB") float o_conv2[16 * 10 * 10];
   hls_memory_impl("MLAB") float o_relu2[16 * 10 * 10];
   hls_memory_impl("MLAB") float o_avgpooling2[16 * 5 * 5];
-  hls_memory_impl("MLAB") float o_flatten[400];
+  // hls_memory_impl("MLAB") float o_flatten[400];
   hls_memory_impl("MLAB") float o_fc1[120];
   hls_memory_impl("MLAB") float o_relu3[120];
   hls_memory_impl("MLAB") float o_fc2[84];
@@ -388,8 +370,9 @@ component void pred(
     conv2(o_avgpooling1, w_conv22, b_conv22, o_conv2);
     relu2(o_conv2, o_relu2);
     avgpooling2(o_relu2, o_avgpooling2);
-    flatten(o_avgpooling2, o_flatten);
-    fc1(o_flatten, w_fc11, b_fc11, o_fc1);
+    // flatten(o_avgpooling2, o_flatten);
+   fc1(o_avgpooling2, w_fc11, b_fc11, o_fc1);
+    // fc1(o_flatten, w_fc11, b_fc11, o_fc1);
     relu3(o_fc1, o_relu3);
     fc2(o_relu3, w_fc22, b_fc22, o_fc2);
     relu4(o_fc2, o_relu4);

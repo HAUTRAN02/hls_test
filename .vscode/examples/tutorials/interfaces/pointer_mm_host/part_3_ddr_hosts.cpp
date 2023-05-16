@@ -7,16 +7,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-component void vector_add(ihc::mm_host<int, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<256>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> >& a, // bank 1
-                          ihc::mm_host<int, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<256>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> >& b, // bank 1
-                          ihc::mm_host<int, ihc::aspace<2>, ihc::awidth<32>, ihc::dwidth<256>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> >& c, // bank 2
+component void vector_add(ihc::mm_host<int, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<256>, ihc::latency<0>, ihc::maxburst<32>, ihc::waitrequest<true> >& a, // bank 1
+                          ihc::mm_host<int, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<256>, ihc::latency<0>, ihc::maxburst<32>, ihc::waitrequest<true> >& b, // bank 1
+                          ihc::mm_host<int, ihc::aspace<2>, ihc::awidth<32>, ihc::dwidth<256>, ihc::latency<0>, ihc::maxburst<32>, ihc::waitrequest<true> >& c, // bank 2
                           int N) {
   for (int i = 0; i < N; ++i) {
     c[i] = a[i] + b[i];  
   }
 }
 
-#define TEST_SIZE 1000
+#define TEST_SIZE 2000
 #define SEED 4
 
 int main(void) {
@@ -26,15 +26,15 @@ int main(void) {
   int C[TEST_SIZE];
 
   // mm_host interface class instances
-  ihc::mm_host<int, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<256>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> > mm_A(A, sizeof(int)*TEST_SIZE);
-  ihc::mm_host<int, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<256>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> > mm_B(B, sizeof(int)*TEST_SIZE);
-  ihc::mm_host<int, ihc::aspace<2>, ihc::awidth<32>, ihc::dwidth<256>, ihc::latency<0>, ihc::maxburst<8>, ihc::waitrequest<true> > mm_C(C, sizeof(int)*TEST_SIZE);
+  ihc::mm_host<int, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<256>, ihc::latency<0>, ihc::maxburst<32>, ihc::waitrequest<true> > mm_A(A, sizeof(int)*TEST_SIZE);
+  ihc::mm_host<int, ihc::aspace<1>, ihc::awidth<32>, ihc::dwidth<256>, ihc::latency<0>, ihc::maxburst<32>, ihc::waitrequest<true> > mm_B(B, sizeof(int)*TEST_SIZE);
+  ihc::mm_host<int, ihc::aspace<2>, ihc::awidth<32>, ihc::dwidth<256>, ihc::latency<0>, ihc::maxburst<32>, ihc::waitrequest<true> > mm_C(C, sizeof(int)*TEST_SIZE);
 
   // prepare the input data
   srand(SEED);
   for (int i = 0; i < TEST_SIZE; ++i) {
-    A[i] = rand();
-    B[i] = rand();
+    A[i] = i;
+    B[i] = i+1;
   }
 
   // Run the component

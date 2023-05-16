@@ -16,7 +16,7 @@ component void vector_add(ihc::mm_host<int, ihc::aspace<1>, ihc::awidth<16>, ihc
   }
 }
 
-#define TEST_SIZE 1000
+#define TEST_SIZE 200
 #define SEED 4
 
 int main(void) {
